@@ -205,7 +205,7 @@ public class HardWareUtil {
 			if (!file.exists()) {
 				file.mkdirs();
 			}
-			writer = new BufferedWriter(new FileWriter("c:/xtt/machine_date.txt"));
+			writer = new BufferedWriter(new FileWriter("c:/xtt/machine_data.txt"));
 			writer.append(AESUtil.encrypt(generateMachineCode(), CIPHER_KEY));
 			writer.flush();// 需要及时清掉流的缓冲区，万一文件过大就有可能无法写入了
 			System.out.println("文件生成结束...");
@@ -221,8 +221,8 @@ public class HardWareUtil {
 
 		BufferedReader br = null;
 		try {
-			InputStream fileURL = HardWareUtil.class.getResourceAsStream("/config/license.key");
-			br = new BufferedReader(new InputStreamReader(fileURL));
+			InputStream is = HardWareUtil.class.getResourceAsStream("/config/license.key");
+			br = new BufferedReader(new InputStreamReader(is));
 			String lics[] = null;
 			String temp = null;
 			while ((temp = br.readLine()) != null) {
@@ -249,41 +249,6 @@ public class HardWareUtil {
 				}
 			}
 		}
-	}
-
-	public static void createLicenseFile(String aesCode, String validDate) {
-		BufferedWriter writer = null;
-		try {
-			System.out.println("抓取信息开始...");
-			File file = new File("c:/xtt");
-			if (!file.exists()) {
-				file.mkdirs();
-			}
-			writer = new BufferedWriter(new FileWriter("c:/xtt/machine_date.txt"));
-
-			///////////////////////////////
-			StringBuffer info = new StringBuffer();
-			info.append(MD5Util.md5(AESUtil.decrypt(aesCode, CIPHER_KEY)));
-			info.append("=");
-			info.append(AESUtil.encrypt(validDate, CIPHER_KEY));
-			writer.append(info.toString());
-			////////////////////////////////
-			System.out.println(info.toString());
-			writer.flush();// 需要及时清掉流的缓冲区，万一文件过大就有可能无法写入了
-			System.out.println("文件生成结束...");
-			writer.close();
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-
-	}
-
-	public static void main(String[] args) throws IOException {
-		// createMachineCodeFile();
-		// System.out.println(AESUtil.encrypt(generateMachineCode(), CIPHER_KEY));
-		String aesCode = "4F824E7FC2020CBAEB02D28AA24F8A90462DF7183914F4A042B3F586706882E5893BAEE453CA6B4976E756E3514A1EDEF5E36C027A3DDA3AC0870E59D858D57AE8ACDCC40B271485343AF42053489A728ADDA5A8A51B18A532DBBF61038DED0DBFA03A21CC51C5D4FBF95AB206572D1E84216EC4A4C2384113EF958197AA0C3AC78A34B6BD12DC0741AB03BB744EB9F34F1A2967A6341E8B0A27B15FA3809D1A8E3725CE978A1CF3230D1D511A83637E";
-		createLicenseFile(aesCode, "2099-08-07 23:59:59");
-		// System.out.println(validateLicense());
 	}
 
 }
