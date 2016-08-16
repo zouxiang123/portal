@@ -25,7 +25,7 @@ import org.springframework.util.concurrent.ListenableFuture;
 public class KafkaProducerUtil {
 	private static final Logger LOGGER = LoggerFactory.getLogger(KafkaProducerUtil.class);
 	/** 最大尝试次数 */
-	private static final Integer MAX_TRY_COUNT = 3;
+	private static final Integer MAX_TRY_COUNT = 1;
 
 	public static final String TOPIC_SYS_LOG = "sysLog";
 	public static final String TOPIC_SECRETARY = "secretary";
@@ -61,12 +61,12 @@ public class KafkaProducerUtil {
 
 	private static void send(String topic, String msg, KafkaExceptionCallback callback, int times) {
 		ListenableFuture<SendResult<Integer, String>> listenter = kafkaTemplate.send(topic, msg);
+		times++;
 		if (listenter.isDone()) {
 			try {
 				listenter.get();
 			} catch (Exception e) {
 				if (times <= MAX_TRY_COUNT) {
-					times++;
 					send(topic, msg, callback, times);
 				} else {
 					LOGGER.warn("send massage{topic:" + topic + ",content:" + msg + " } failed,callback");
