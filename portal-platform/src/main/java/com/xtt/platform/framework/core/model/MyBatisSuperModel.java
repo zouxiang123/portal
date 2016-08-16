@@ -111,6 +111,7 @@ public class MyBatisSuperModel {
 	}
 
 	public void setRequestPath(HttpServletRequest request) {
+		if(request == null) return;
 		String servletPath = request.getServletPath();
 		if (null != servletPath && servletPath.indexOf(".") != -1) {
 			servletPath = servletPath.substring(1, servletPath.indexOf("."));
