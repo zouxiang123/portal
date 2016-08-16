@@ -21,6 +21,8 @@ import javax.crypto.spec.SecretKeySpec;
  */
 public class AESUtil {
 
+	private final static String CIPHER_KEY = "xtt-HDIS";
+
 	public static void main(String[] args) {
 		String content = "上次介绍了《JAVA实现AES加密》，中间提到近些年DES使用越来越少，原因就在于其使用56位密钥，比较容易被破解，近些年来逐渐被AES替代，AES已经变成目前对称加密中最流行算法之一；AES可以使用128、192、和256位密钥，并且用128位分组加密和解密数据。本文就简单介绍如何通过JAVA实现AES加密。";
 		String password = "xtt-HD";
@@ -119,6 +121,14 @@ public class AESUtil {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	public static String encrypt(String content) {
+		return encrypt(content, CIPHER_KEY);
+	}
+
+	public static String decrypt(String content) {
+		return decrypt(content, CIPHER_KEY);
 	}
 
 }
