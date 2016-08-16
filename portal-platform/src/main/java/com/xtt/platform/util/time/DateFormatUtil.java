@@ -1,5 +1,7 @@
 package com.xtt.platform.util.time;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -57,6 +59,57 @@ public class DateFormatUtil extends DateFormatUtils {
 
 		return convertDateToStr(date, FORMAT_DATE1);
 
+	}
+
+	/**
+	 * 获得两个String型日期之间相差的天数（第2个减第1个）
+	 * 
+	 * @param String
+	 *            first, String second
+	 * @return int 相差的天数
+	 */
+	public static int getDaysBetweenDates(String first, String second) {
+		Date d1 = getFormatDateTime(first, IDateConst.DATE_FORMAT);
+		Date d2 = getFormatDateTime(second, IDateConst.DATE_FORMAT);
+
+		Long mils = (d2.getTime() - d1.getTime()) / (IDateConst.TIME_DAY_MILLISECOND);
+
+		return mils.intValue();
+	}
+
+	/**
+	 * 根据格式得到格式化后的时间
+	 * 
+	 * @param currDate
+	 *            要格式化的时间
+	 * @param format
+	 *            时间格式，如yyyy-MM-dd HH:mm:ss
+	 * @see java.text.SimpleDateFormat#parse(java.lang.String)
+	 * @return Date 返回格式化后的时间，格式由参数<code>format</code>定义，如yyyy-MM-dd HH:mm:ss
+	 */
+	public static Date getFormatDateTime(String currDate, String format) {
+		if (currDate == null) {
+			return null;
+		}
+		SimpleDateFormat dtFormatdB = null;
+		try {
+			dtFormatdB = new SimpleDateFormat(format);
+			return dtFormatdB.parse(currDate);
+		} catch (Exception e) {
+			dtFormatdB = new SimpleDateFormat(IDateConst.TIME_FORMAT);
+			try {
+				return dtFormatdB.parse(currDate);
+			} catch (Exception ex) {
+			}
+		}
+		return null;
+	}
+
+	public static String getCurrentDateStr(String formatStr) {
+		String strDate = "";
+		DateFormat dateFormat = new SimpleDateFormat(formatStr);
+		strDate = dateFormat.format(new Date(System.currentTimeMillis()));
+		return strDate;
 	}
 
 	/**
