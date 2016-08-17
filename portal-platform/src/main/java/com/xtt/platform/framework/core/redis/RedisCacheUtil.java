@@ -136,7 +136,7 @@ public class RedisCacheUtil {
 		}
 	}
 
-	public Boolean flushDB() {
+	public static Boolean flushDB() {
 		return redisTemplate.execute(new RedisCallback<Boolean>() {
 			@Override
 			public Boolean doInRedis(RedisConnection connection) throws DataAccessException {
@@ -146,7 +146,7 @@ public class RedisCacheUtil {
 		});
 	}
 
-	public Long DBSize() {
+	public static Long DBSize() {
 		return redisTemplate.execute(new RedisCallback<Long>() {
 			@Override
 			public Long doInRedis(RedisConnection connection) throws DataAccessException {

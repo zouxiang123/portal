@@ -21,13 +21,16 @@ public class SpringUtil implements ApplicationContextAware {
 
 	private static ApplicationContext applicationContext;
 
-	public final void setApplicationContext(
-			ApplicationContext applicationContext) throws BeansException {
+	public final void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
 		this.applicationContext = applicationContext;
 	}
 
 	public static Object getBean(String beanName) {
 		return applicationContext.getBean(beanName);
+	}
+
+	public static <T> T getBean(String beanName, Class<T> beanType) {
+		return applicationContext.getBean(beanName, beanType);
 	}
 
 	public static Map getBeansByType(Class beanType) {
