@@ -1,14 +1,19 @@
 package com.xtt.platform.framework.core.redis;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.dao.DataAccessException;
+import org.springframework.data.redis.connection.RedisConnection;
+import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 
 /**
@@ -55,15 +60,6 @@ public class RedisCacheUtil {
 	}
 
 	/**
-	 * 全局删除
-	 * 
-	 * @param key
-	 */
-	public static void delete(String key) {
-		redisTemplate.delete(key);
-	}
-
-	/**
 	 * List数据存储
 	 * 
 	 * @param key
@@ -76,10 +72,6 @@ public class RedisCacheUtil {
 
 	public static List<?> getList(String key) {
 		return (List<?>) redisTemplate.opsForList().range(key, 0, -1);
-	}
-
-	public static void delList(String key) {
-		redisTemplate.delete(key);
 	}
 
 	/**
@@ -97,10 +89,6 @@ public class RedisCacheUtil {
 		return redisTemplate.opsForHash().entries(key);
 	}
 
-	public static void delMap(String key) {
-		redisTemplate.delete(key);
-	}
-
 	/**
 	 * Set数据存储
 	 * 
@@ -116,8 +104,55 @@ public class RedisCacheUtil {
 		return (Set<?>) redisTemplate.opsForSet().members(key);
 	}
 
-	public static void delSet(String key) {
+	/**
+	 * 通过key删除
+	 * 
+	 * @param key
+	 */
+	public static void delete(String key) {
 		redisTemplate.delete(key);
+	}
+
+	/**
+	 * 通过keys 批量删除
+	 * 
+	 * @param key
+	 */
+	public static void delete(Collection<String> keys) {
+		redisTemplate.delete(keys);
+	}
+
+	/**
+	 * 通过pattern模糊删除
+	 * 
+	 * @Title: deletePattern
+	 * @param pattern
+	 *
+	 */
+	public static void deletePattern(String pattern) {
+		Set<String> keys = redisTemplate.keys(pattern);
+		if (keys != null && !keys.isEmpty()) {
+			delete(keys);
+		}
+	}
+
+	public Boolean flushDB() {
+		return redisTemplate.execute(new RedisCallback<Boolean>() {
+			@Override
+			public Boolean doInRedis(RedisConnection connection) throws DataAccessException {
+				connection.flushDb();
+				return true;
+			}
+		});
+	}
+
+	public Long DBSize() {
+		return redisTemplate.execute(new RedisCallback<Long>() {
+			@Override
+			public Long doInRedis(RedisConnection connection) throws DataAccessException {
+				return connection.dbSize();
+			}
+		});
 	}
 
 	public static RedisTemplate<String, Object> getRedisTemplate() {
@@ -173,5 +208,14 @@ public class RedisCacheUtil {
 		RedisCacheUtil.setSet("demoSet1", set1);
 		System.out.println(RedisCacheUtil.getSet("demoSet1"));
 
+		RedisTemplate<String, Object> temp = RedisCacheUtil.getRedisTemplate();
+		RedisCacheUtil.setString("11111111", "22222222222");
+		temp.expire("test", 1, TimeUnit.SECONDS);
+		try {
+			Thread.sleep(2000);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		System.out.println(RedisCacheUtil.getString("11111111"));
 	}
 }
