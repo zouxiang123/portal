@@ -58,13 +58,13 @@ public class RedisCacheUtil {
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public static void batchSetObject(Map<String, Object> map) {
+	public static void batchSetObject(Map<String, ?> map) {
 		final RedisSerializer keySerializer = redisTemplate.getKeySerializer();
 		final RedisSerializer valueSerializer = redisTemplate.getValueSerializer();
 		redisTemplate.executePipelined(new RedisCallback<Object>() {
 			@Override
 			public Object doInRedis(RedisConnection connection) throws DataAccessException {
-				for (Entry<String, Object> entry : map.entrySet()) {
+				for (Entry<String, ?> entry : map.entrySet()) {
 					connection.set(keySerializer.serialize(entry.getKey()), valueSerializer.serialize(entry.getValue()));
 				}
 				return null;
