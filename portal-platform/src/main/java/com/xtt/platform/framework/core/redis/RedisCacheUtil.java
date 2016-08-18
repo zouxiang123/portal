@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
@@ -15,6 +16,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.RedisSerializer;
 
 /**
  * redis远程远程操作 存储返回 true 成功 false失败
@@ -55,8 +57,38 @@ public class RedisCacheUtil {
 		redisTemplate.opsForValue().set(key, obj);
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public static void batchSetObject(Map<String, Object> map) {
+		final RedisSerializer keySerializer = redisTemplate.getKeySerializer();
+		final RedisSerializer valueSerializer = redisTemplate.getValueSerializer();
+		redisTemplate.executePipelined(new RedisCallback<Object>() {
+			@Override
+			public Object doInRedis(RedisConnection connection) throws DataAccessException {
+				for (Entry<String, Object> entry : map.entrySet()) {
+					connection.set(keySerializer.serialize(entry.getKey()), valueSerializer.serialize(entry.getValue()));
+				}
+				return null;
+			}
+		});
+	}
+
 	public static Object getObject(String key) {
 		return redisTemplate.opsForValue().get(key);
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public static List<Object> batchGetObject(Collection<String> keys) {
+		final RedisSerializer keySerializer = redisTemplate.getKeySerializer();
+		return redisTemplate.executePipelined(new RedisCallback<Object>() {
+			@Override
+			public Object doInRedis(RedisConnection connection) throws DataAccessException {
+				for (String key : keys) {
+					connection.get(keySerializer.serialize(key));
+					// connection.rPop(keySerializer.serialize(key));
+				}
+				return null;
+			}
+		}, redisTemplate.getValueSerializer());
 	}
 
 	/**
