@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -77,9 +78,9 @@ public class RedisCacheUtil {
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public static List<Object> batchGetObject(Collection<String> keys) {
+	public static List<?> batchGetObject(Collection<String> keys) {
 		final RedisSerializer keySerializer = redisTemplate.getKeySerializer();
-		return redisTemplate.executePipelined(new RedisCallback<Object>() {
+		List<Object> list = redisTemplate.executePipelined(new RedisCallback<Object>() {
 			@Override
 			public Object doInRedis(RedisConnection connection) throws DataAccessException {
 				for (String key : keys) {
@@ -89,6 +90,13 @@ public class RedisCacheUtil {
 				return null;
 			}
 		}, redisTemplate.getValueSerializer());
+		if (list != null && !list.isEmpty()) {
+			for (Iterator<Object> it = list.iterator(); it.hasNext();) {
+				if (it.next() == null)
+					it.remove();
+			}
+		}
+		return list;
 	}
 
 	/**

@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
 import org.springframework.util.concurrent.ListenableFuture;
+import org.springframework.util.concurrent.ListenableFutureCallback;
 
 /**
  * kafka producer util
@@ -24,8 +25,6 @@ import org.springframework.util.concurrent.ListenableFuture;
  */
 public class KafkaProducerUtil {
 	private static final Logger LOGGER = LoggerFactory.getLogger(KafkaProducerUtil.class);
-	/** 最大尝试次数 */
-	private static final Integer MAX_TRY_COUNT = 1;
 
 	public static final String TOPIC_SYS_LOG = "sysLog";
 	public static final String TOPIC_SECRETARY = "secretary";
@@ -61,19 +60,19 @@ public class KafkaProducerUtil {
 
 	private static void send(String topic, String msg, KafkaExceptionCallback callback, int times) {
 		ListenableFuture<SendResult<Integer, String>> listenter = kafkaTemplate.send(topic, msg);
-		times++;
-		if (listenter.isDone()) {
-			try {
-				listenter.get();
-			} catch (Exception e) {
-				if (times <= MAX_TRY_COUNT) {
-					send(topic, msg, callback, times);
-				} else {
-					LOGGER.warn("send massage{topic:" + topic + ",content:" + msg + " } failed,callback");
-					callback.onException();
-				}
+		listenter.addCallback(new ListenableFutureCallback<SendResult<Integer, String>>() {
+			@Override
+			public void onSuccess(SendResult<Integer, String> result) {
+
 			}
-		}
+
+			@Override
+			public void onFailure(Throwable ex) {
+				LOGGER.warn("send massage{topic:" + topic + ",content:" + msg + " } failed,callback", ex.getMessage());
+				callback.onException();
+			}
+		});
+
 	}
 
 	public KafkaTemplate<Integer, String> getKafkaTemplate() {
