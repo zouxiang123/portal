@@ -120,7 +120,8 @@ public class RedisCacheUtil {
 					connection.select(dbIndex);
 				}
 				RedisSerializer keySerializer = redisTemplate.getKeySerializer();
-				return connection.get(keySerializer.serialize(key));
+				RedisSerializer valueSerializer = redisTemplate.getValueSerializer();
+				return valueSerializer.deserialize(connection.get(keySerializer.serialize(key)));
 			}
 		});
 	}
