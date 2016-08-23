@@ -59,6 +59,22 @@ public class RedisCacheUtil {
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public static void setObject(String key, Object obj, Integer dbIndex) {
+		redisTemplate.execute(new RedisCallback<Object>() {
+			@Override
+			public Object doInRedis(RedisConnection connection) throws DataAccessException {
+				if (dbIndex != null) {
+					connection.select(dbIndex);
+				}
+				RedisSerializer keySerializer = redisTemplate.getKeySerializer();
+				RedisSerializer valueSerializer = redisTemplate.getValueSerializer();
+				connection.set(keySerializer.serialize(key), valueSerializer.serialize(obj));
+				return null;
+			}
+		});
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static void batchSetObject(Map<String, ?> map) {
 		final RedisSerializer keySerializer = redisTemplate.getKeySerializer();
 		final RedisSerializer valueSerializer = redisTemplate.getValueSerializer();
@@ -73,8 +89,40 @@ public class RedisCacheUtil {
 		});
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public static void batchSetObject(Map<String, ?> map, Integer dbIndex) {
+		final RedisSerializer keySerializer = redisTemplate.getKeySerializer();
+		final RedisSerializer valueSerializer = redisTemplate.getValueSerializer();
+		redisTemplate.executePipelined(new RedisCallback<Object>() {
+			@Override
+			public Object doInRedis(RedisConnection connection) throws DataAccessException {
+				if (dbIndex != null) {
+					connection.select(dbIndex);
+				}
+				for (Entry<String, ?> entry : map.entrySet()) {
+					connection.set(keySerializer.serialize(entry.getKey()), valueSerializer.serialize(entry.getValue()));
+				}
+				return null;
+			}
+		});
+	}
+
 	public static Object getObject(String key) {
 		return redisTemplate.opsForValue().get(key);
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public static Object getObject(String key, Integer dbIndex) {
+		return redisTemplate.execute(new RedisCallback<Object>() {
+			@Override
+			public Object doInRedis(RedisConnection connection) throws DataAccessException {
+				if (dbIndex != null) {
+					connection.select(dbIndex);
+				}
+				RedisSerializer keySerializer = redisTemplate.getKeySerializer();
+				return connection.get(keySerializer.serialize(key));
+			}
+		});
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
