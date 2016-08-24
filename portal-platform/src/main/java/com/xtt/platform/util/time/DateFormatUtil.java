@@ -243,23 +243,31 @@ public class DateFormatUtil extends DateFormatUtils {
 		return map;
 	}
 
-	public static String getStartTime(String startDateStr) {
+	public static String getStartTimeStr(String startDateStr) {
 		return startDateStr + START_TIME_SUF;
 	}
 
-	public static String getEndTime(String endDateStr) {
+	public static String getEndTimeStr(String endDateStr) {
 		return endDateStr + END_TIME_SUF;
 	}
 
 	public static Date getStartTime(Date date) {
 		String startDateStr = convertDateToStr(date);
-		startDateStr = getStartTime(startDateStr);
+		startDateStr = getStartTimeStr(startDateStr);
 		return convertStrToDate(startDateStr, FORMAT_TIME1);
 	}
 
 	public static Date getEndTime(Date date) {
 		String endDateStr = convertDateToStr(date);
-		endDateStr = getEndTime(endDateStr);
+		endDateStr = getEndTimeStr(endDateStr);
 		return convertStrToDate(endDateStr, FORMAT_TIME1);
+	}
+
+	public static Date getStartTime(String startDateStr) {
+		return convertStrToDate(getStartTimeStr(startDateStr), FORMAT_TIME1);
+	}
+
+	public static Date getEndTime(String endDateStr) {
+		return convertStrToDate(getEndTimeStr(endDateStr), FORMAT_TIME1);
 	}
 }
