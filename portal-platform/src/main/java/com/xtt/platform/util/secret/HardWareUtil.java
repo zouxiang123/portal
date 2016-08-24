@@ -191,8 +191,8 @@ public class HardWareUtil {
 	public static String generateMachineCode() {
 
 		String info = "MotherboardSN=" + getMotherboardSN() + "\n";
-		info += "HardDiskSN=" + getHardDiskSN("c") + "\n";
-		info += "MAC=" + getLocalMac();
+		info += "HardDiskSN=" + getHardDiskSN("c");
+		// info += "MAC=" + getLocalMac();
 
 		return info;
 	}
