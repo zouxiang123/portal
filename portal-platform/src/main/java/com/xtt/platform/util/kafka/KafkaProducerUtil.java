@@ -51,6 +51,7 @@ public class KafkaProducerUtil {
 	 *
 	 */
 	public static void send(String topic, String msg, KafkaExceptionCallback callback) {
+		long start = System.currentTimeMillis();
 		ListenableFuture<SendResult<Integer, String>> listenter = kafkaTemplate.send(topic, msg);
 		listenter.addCallback(new ListenableFutureCallback<SendResult<Integer, String>>() {
 			@Override
@@ -60,12 +61,13 @@ public class KafkaProducerUtil {
 
 			@Override
 			public void onFailure(Throwable ex) {
-				LOGGER.warn("send massage{topic:" + topic + ",content:" + msg + " } failed,callback", ex.getMessage());
+				LOGGER.warn("failed to send message{topic:" + topic + ",content:" + msg + " }, ", ex.getCause());
 				if (callback != null) {
 					callback.onException();
 				}
 			}
 		});
+		System.out.println("send one message total cost " + (System.currentTimeMillis() - start) + " ms");
 	}
 
 	public KafkaTemplate<Integer, String> getKafkaTemplate() {
