@@ -11,6 +11,8 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.dao.DataAccessException;
@@ -25,6 +27,7 @@ import org.springframework.data.redis.serializer.RedisSerializer;
  * @author wolf.yansl
  */
 public class RedisCacheUtil {
+	private static final Logger LOGGER = LoggerFactory.getLogger("RedisLogger");
 
 	private static RedisTemplate<String, Object> redisTemplate;
 
@@ -40,11 +43,21 @@ public class RedisCacheUtil {
 	 * @return
 	 */
 	public static void setString(String key, String str) {
-		redisTemplate.opsForValue().set(key, str);
+		try {
+			redisTemplate.opsForValue().set(key, str);
+		} catch (Exception e) {
+			LOGGER.error("catch redis setString error", e);
+			throw e;
+		}
 	}
 
 	public static String getString(String key) {
-		return (String) redisTemplate.opsForValue().get(key);
+		try {
+			return (String) redisTemplate.opsForValue().get(key);
+		} catch (Exception e) {
+			LOGGER.error("catch redis getString error", e);
+			throw e;
+		}
 	}
 
 	/**
@@ -55,97 +68,132 @@ public class RedisCacheUtil {
 	 * @return
 	 */
 	public static void setObject(String key, Object obj) {
-		redisTemplate.opsForValue().set(key, obj);
+		try {
+			redisTemplate.opsForValue().set(key, obj);
+		} catch (Exception e) {
+			LOGGER.error("catch redis setObject error", e);
+			throw e;
+		}
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static void setObject(String key, Object obj, Integer dbIndex) {
-		redisTemplate.execute(new RedisCallback<Object>() {
-			@Override
-			public Object doInRedis(RedisConnection connection) throws DataAccessException {
-				if (dbIndex != null) {
-					connection.select(dbIndex);
+		try {
+			redisTemplate.execute(new RedisCallback<Object>() {
+				@Override
+				public Object doInRedis(RedisConnection connection) throws DataAccessException {
+					if (dbIndex != null) {
+						connection.select(dbIndex);
+					}
+					RedisSerializer keySerializer = redisTemplate.getKeySerializer();
+					RedisSerializer valueSerializer = redisTemplate.getValueSerializer();
+					connection.set(keySerializer.serialize(key), valueSerializer.serialize(obj));
+					return null;
 				}
-				RedisSerializer keySerializer = redisTemplate.getKeySerializer();
-				RedisSerializer valueSerializer = redisTemplate.getValueSerializer();
-				connection.set(keySerializer.serialize(key), valueSerializer.serialize(obj));
-				return null;
-			}
-		});
+			});
+		} catch (Exception e) {
+			LOGGER.error("catch redis setObject with dbindex error", e);
+			throw e;
+		}
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static void batchSetObject(Map<String, ?> map) {
-		final RedisSerializer keySerializer = redisTemplate.getKeySerializer();
-		final RedisSerializer valueSerializer = redisTemplate.getValueSerializer();
-		redisTemplate.executePipelined(new RedisCallback<Object>() {
-			@Override
-			public Object doInRedis(RedisConnection connection) throws DataAccessException {
-				for (Entry<String, ?> entry : map.entrySet()) {
-					connection.set(keySerializer.serialize(entry.getKey()), valueSerializer.serialize(entry.getValue()));
+		try {
+			final RedisSerializer keySerializer = redisTemplate.getKeySerializer();
+			final RedisSerializer valueSerializer = redisTemplate.getValueSerializer();
+			redisTemplate.executePipelined(new RedisCallback<Object>() {
+				@Override
+				public Object doInRedis(RedisConnection connection) throws DataAccessException {
+					for (Entry<String, ?> entry : map.entrySet()) {
+						connection.set(keySerializer.serialize(entry.getKey()), valueSerializer.serialize(entry.getValue()));
+					}
+					return null;
 				}
-				return null;
-			}
-		});
+			});
+		} catch (Exception e) {
+			LOGGER.error("catch redis batchSetObject error", e);
+			throw e;
+		}
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static void batchSetObject(Map<String, ?> map, Integer dbIndex) {
-		final RedisSerializer keySerializer = redisTemplate.getKeySerializer();
-		final RedisSerializer valueSerializer = redisTemplate.getValueSerializer();
-		redisTemplate.executePipelined(new RedisCallback<Object>() {
-			@Override
-			public Object doInRedis(RedisConnection connection) throws DataAccessException {
-				if (dbIndex != null) {
-					connection.select(dbIndex);
+		try {
+			final RedisSerializer keySerializer = redisTemplate.getKeySerializer();
+			final RedisSerializer valueSerializer = redisTemplate.getValueSerializer();
+			redisTemplate.executePipelined(new RedisCallback<Object>() {
+				@Override
+				public Object doInRedis(RedisConnection connection) throws DataAccessException {
+					if (dbIndex != null) {
+						connection.select(dbIndex);
+					}
+					for (Entry<String, ?> entry : map.entrySet()) {
+						connection.set(keySerializer.serialize(entry.getKey()), valueSerializer.serialize(entry.getValue()));
+					}
+					return null;
 				}
-				for (Entry<String, ?> entry : map.entrySet()) {
-					connection.set(keySerializer.serialize(entry.getKey()), valueSerializer.serialize(entry.getValue()));
-				}
-				return null;
-			}
-		});
+			});
+		} catch (Exception e) {
+			LOGGER.error("catch redis batchSetObject with dbindex error", e);
+			throw e;
+		}
 	}
 
 	public static Object getObject(String key) {
-		return redisTemplate.opsForValue().get(key);
+		try {
+			return redisTemplate.opsForValue().get(key);
+		} catch (Exception e) {
+			LOGGER.error("catch redis getObject error", e);
+			throw e;
+		}
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static Object getObject(String key, Integer dbIndex) {
-		return redisTemplate.execute(new RedisCallback<Object>() {
-			@Override
-			public Object doInRedis(RedisConnection connection) throws DataAccessException {
-				if (dbIndex != null) {
-					connection.select(dbIndex);
+		try {
+			return redisTemplate.execute(new RedisCallback<Object>() {
+				@Override
+				public Object doInRedis(RedisConnection connection) throws DataAccessException {
+					if (dbIndex != null) {
+						connection.select(dbIndex);
+					}
+					RedisSerializer keySerializer = redisTemplate.getKeySerializer();
+					RedisSerializer valueSerializer = redisTemplate.getValueSerializer();
+					return valueSerializer.deserialize(connection.get(keySerializer.serialize(key)));
 				}
-				RedisSerializer keySerializer = redisTemplate.getKeySerializer();
-				RedisSerializer valueSerializer = redisTemplate.getValueSerializer();
-				return valueSerializer.deserialize(connection.get(keySerializer.serialize(key)));
-			}
-		});
+			});
+		} catch (Exception e) {
+			LOGGER.error("catch redis getObject with dbIndex error", e);
+			throw e;
+		}
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static List<?> batchGetObject(Collection<String> keys) {
-		final RedisSerializer keySerializer = redisTemplate.getKeySerializer();
-		List<Object> list = redisTemplate.executePipelined(new RedisCallback<Object>() {
-			@Override
-			public Object doInRedis(RedisConnection connection) throws DataAccessException {
-				for (String key : keys) {
-					connection.get(keySerializer.serialize(key));
-					// connection.rPop(keySerializer.serialize(key));
+		try {
+			final RedisSerializer keySerializer = redisTemplate.getKeySerializer();
+			List<Object> list = redisTemplate.executePipelined(new RedisCallback<Object>() {
+				@Override
+				public Object doInRedis(RedisConnection connection) throws DataAccessException {
+					for (String key : keys) {
+						connection.get(keySerializer.serialize(key));
+						// connection.rPop(keySerializer.serialize(key));
+					}
+					return null;
 				}
-				return null;
+			}, redisTemplate.getValueSerializer());
+			if (list != null && !list.isEmpty()) {
+				for (Iterator<Object> it = list.iterator(); it.hasNext();) {
+					if (it.next() == null)
+						it.remove();
+				}
 			}
-		}, redisTemplate.getValueSerializer());
-		if (list != null && !list.isEmpty()) {
-			for (Iterator<Object> it = list.iterator(); it.hasNext();) {
-				if (it.next() == null)
-					it.remove();
-			}
+			return list;
+		} catch (Exception e) {
+			LOGGER.error("catch redis batchGetObject error", e);
+			throw e;
 		}
-		return list;
 	}
 
 	/**
@@ -156,11 +204,21 @@ public class RedisCacheUtil {
 	 * @return
 	 */
 	public static void setList(String key, List<?> listValue) {
-		redisTemplate.opsForList().leftPush(key, listValue);
+		try {
+			redisTemplate.opsForList().leftPush(key, listValue);
+		} catch (Exception e) {
+			LOGGER.error("catch redis setList error", e);
+			throw e;
+		}
 	}
 
 	public static List<?> getList(String key) {
-		return (List<?>) redisTemplate.opsForList().range(key, 0, -1);
+		try {
+			return (List<?>) redisTemplate.opsForList().range(key, 0, -1);
+		} catch (Exception e) {
+			LOGGER.error("catch redis getList error", e);
+			throw e;
+		}
 	}
 
 	/**
@@ -171,11 +229,21 @@ public class RedisCacheUtil {
 	 * @return
 	 */
 	public static void setMap(String key, Map<Object, Object> mapValue) {
-		redisTemplate.opsForHash().putAll(key, mapValue);
+		try {
+			redisTemplate.opsForHash().putAll(key, mapValue);
+		} catch (Exception e) {
+			LOGGER.error("catch redis setMap error", e);
+			throw e;
+		}
 	}
 
 	public static Map<Object, Object> getMap(String key) {
-		return redisTemplate.opsForHash().entries(key);
+		try {
+			return redisTemplate.opsForHash().entries(key);
+		} catch (Exception e) {
+			LOGGER.error("catch redis getMap error", e);
+			throw e;
+		}
 	}
 
 	/**
@@ -186,11 +254,21 @@ public class RedisCacheUtil {
 	 * @return
 	 */
 	public static void setSet(String key, Set<?> setValue) {
-		redisTemplate.opsForSet().add(key, setValue);
+		try {
+			redisTemplate.opsForSet().add(key, setValue);
+		} catch (Exception e) {
+			LOGGER.error("catch redis setSet error", e);
+			throw e;
+		}
 	}
 
 	public static Set<?> getSet(String key) {
-		return (Set<?>) redisTemplate.opsForSet().members(key);
+		try {
+			return (Set<?>) redisTemplate.opsForSet().members(key);
+		} catch (Exception e) {
+			LOGGER.error("catch redis getSet error", e);
+			throw e;
+		}
 	}
 
 	/**
@@ -199,7 +277,12 @@ public class RedisCacheUtil {
 	 * @param key
 	 */
 	public static void delete(String key) {
-		redisTemplate.delete(key);
+		try {
+			redisTemplate.delete(key);
+		} catch (Exception e) {
+			LOGGER.error("catch redis delete error", e);
+			throw e;
+		}
 	}
 
 	/**
@@ -208,7 +291,12 @@ public class RedisCacheUtil {
 	 * @param key
 	 */
 	public static void delete(Collection<String> keys) {
-		redisTemplate.delete(keys);
+		try {
+			redisTemplate.delete(keys);
+		} catch (Exception e) {
+			LOGGER.error("catch redis batch delete error", e);
+			throw e;
+		}
 	}
 
 	/**
@@ -219,29 +307,44 @@ public class RedisCacheUtil {
 	 *
 	 */
 	public static void deletePattern(String pattern) {
-		Set<String> keys = redisTemplate.keys(pattern);
-		if (keys != null && !keys.isEmpty()) {
-			delete(keys);
+		try {
+			Set<String> keys = redisTemplate.keys(pattern);
+			if (keys != null && !keys.isEmpty()) {
+				delete(keys);
+			}
+		} catch (Exception e) {
+			LOGGER.error("catch redis deletePattern error", e);
+			throw e;
 		}
 	}
 
 	public static Boolean flushDB() {
-		return redisTemplate.execute(new RedisCallback<Boolean>() {
-			@Override
-			public Boolean doInRedis(RedisConnection connection) throws DataAccessException {
-				connection.flushDb();
-				return true;
-			}
-		});
+		try {
+			return redisTemplate.execute(new RedisCallback<Boolean>() {
+				@Override
+				public Boolean doInRedis(RedisConnection connection) throws DataAccessException {
+					connection.flushDb();
+					return true;
+				}
+			});
+		} catch (Exception e) {
+			LOGGER.error("catch redis flushDB error", e);
+			throw e;
+		}
 	}
 
 	public static Long DBSize() {
-		return redisTemplate.execute(new RedisCallback<Long>() {
-			@Override
-			public Long doInRedis(RedisConnection connection) throws DataAccessException {
-				return connection.dbSize();
-			}
-		});
+		try {
+			return redisTemplate.execute(new RedisCallback<Long>() {
+				@Override
+				public Long doInRedis(RedisConnection connection) throws DataAccessException {
+					return connection.dbSize();
+				}
+			});
+		} catch (Exception e) {
+			LOGGER.error("catch redis DBSize error", e);
+			throw e;
+		}
 	}
 
 	public static RedisTemplate<String, Object> getRedisTemplate() {

@@ -24,7 +24,7 @@ import org.springframework.util.concurrent.ListenableFutureCallback;
  *
  */
 public class KafkaProducerUtil {
-	private static final Logger LOGGER = LoggerFactory.getLogger(KafkaProducerUtil.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger("MQLogger");
 
 	public static final String TOPIC_SYS_LOG = "sysLog";
 	public static final String TOPIC_SECRETARY = "secretary";
@@ -51,14 +51,6 @@ public class KafkaProducerUtil {
 	 *
 	 */
 	public static void send(String topic, String msg, KafkaExceptionCallback callback) {
-		if (callback != null) {
-			send(topic, msg, callback, 1);
-		} else {
-			send(topic, msg);
-		}
-	}
-
-	private static void send(String topic, String msg, KafkaExceptionCallback callback, int times) {
 		ListenableFuture<SendResult<Integer, String>> listenter = kafkaTemplate.send(topic, msg);
 		listenter.addCallback(new ListenableFutureCallback<SendResult<Integer, String>>() {
 			@Override
@@ -69,10 +61,11 @@ public class KafkaProducerUtil {
 			@Override
 			public void onFailure(Throwable ex) {
 				LOGGER.warn("send massage{topic:" + topic + ",content:" + msg + " } failed,callback", ex.getMessage());
-				callback.onException();
+				if (callback != null) {
+					callback.onException();
+				}
 			}
 		});
-
 	}
 
 	public KafkaTemplate<Integer, String> getKafkaTemplate() {
