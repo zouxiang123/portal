@@ -13,17 +13,18 @@
 		<aspectj.version>1.8.9</aspectj.version>
 		<jasypt.version>1.9.2</jasypt.version>
 		<activiti>5.15.1</activiti>
+		<kafka.version>1.0.3.RELEASE</kafka.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	<repositories>
-		<repository><!-- Spring-kafka的资源库地址 -->
+		<!-- <repository>Spring-kafka的资源库地址
 			<id>spring-milestones</id>
 			<name>Spring Milestones</name>
 			<url>https://repo.spring.io/libs-milestone</url>
 			<snapshots>
-				<enabled>true</enabled>
+				<enabled>false</enabled>
 			</snapshots>
-		</repository>
+		</repository> -->
 	</repositories>
 	<dependencies>
 		<!-- jstl标签 -->
@@ -393,12 +394,12 @@
 		<dependency>
 			<groupId>org.springframework.kafka</groupId>
 			<artifactId>spring-kafka</artifactId>
-			<version>1.0.3.RELEASE</version>
+			<version>${kafka.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.kafka</groupId>
 			<artifactId>spring-kafka-test</artifactId>
-			<version>1.0.3.RELEASE</version>
+			<version>${kafka.version}</version>
 		</dependency>
 
 		<!-- <dependency> <groupId>com.belerweb</groupId> <artifactId>pinyin4j</artifactId> <version>2.5.0</version> </dependency> -->
