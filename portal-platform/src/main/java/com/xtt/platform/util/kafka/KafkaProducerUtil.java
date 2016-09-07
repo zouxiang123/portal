@@ -51,7 +51,6 @@ public class KafkaProducerUtil {
 	 *
 	 */
 	public static void send(String topic, String msg, KafkaExceptionCallback callback) {
-		long start = System.currentTimeMillis();
 		ListenableFuture<SendResult<Integer, String>> listenter = kafkaTemplate.send(topic, msg);
 		listenter.addCallback(new ListenableFutureCallback<SendResult<Integer, String>>() {
 			@Override
@@ -67,7 +66,6 @@ public class KafkaProducerUtil {
 				}
 			}
 		});
-		System.out.println("send one message total cost " + (System.currentTimeMillis() - start) + " ms");
 	}
 
 	public KafkaTemplate<Integer, String> getKafkaTemplate() {
