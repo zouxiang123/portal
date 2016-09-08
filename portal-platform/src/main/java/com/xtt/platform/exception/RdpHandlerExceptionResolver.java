@@ -81,14 +81,6 @@ public class RdpHandlerExceptionResolver extends SimpleMappingExceptionResolver 
 	}
 
 	private void writeLog(Exception ex) {
-		StackTraceElement[] ste = ex.getStackTrace();
-		StringBuffer exception = new StringBuffer();
-		if (ex.getMessage() != null) {
-			exception.append(ex.getMessage());
-		}
-		for (int i = 0; i < ste.length; i++) {
-			exception.append("\n\tat " + ste[i]);
-		}
-		log.error(exception.toString());
+		log.error("catch error:", ex);
 	}
 }
