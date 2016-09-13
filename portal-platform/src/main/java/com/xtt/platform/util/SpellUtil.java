@@ -11,6 +11,7 @@ package com.xtt.platform.util;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.github.stuxuhai.jpinyin.PinyinFormat;
 import com.github.stuxuhai.jpinyin.PinyinHelper;
 
 /**
@@ -26,7 +27,7 @@ public class SpellUtil {
 		char[] names = name.toCharArray();
 		List<List<String>> list = new ArrayList<List<String>>();
 		for (char c : names) {
-			String[] pinyin = PinyinHelper.convertToPinyinArray(c);
+			String[] pinyin = PinyinHelper.convertToPinyinArray(c, PinyinFormat.WITHOUT_TONE);
 			if (pinyin == null)
 				continue;
 			List<String> mp = new ArrayList<String>();
