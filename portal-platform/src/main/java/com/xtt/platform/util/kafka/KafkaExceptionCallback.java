@@ -10,6 +10,6 @@ package com.xtt.platform.util.kafka;
 
 public interface KafkaExceptionCallback {
 	/** kafka call occured exception */
-	public void onException();
+	public void callBack();
 
 }
