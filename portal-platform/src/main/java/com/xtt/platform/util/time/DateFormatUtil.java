@@ -33,6 +33,7 @@ public class DateFormatUtil extends DateFormatUtils {
 	public static final String FORMAT_TIME1 = "yyyy-MM-dd HH:mm:ss";
 	public static final String FORMAT_TIME2 = "HH:mm";
 	public static final String FORMAT_TIME3 = "HHmmss";
+	public static final String FORMAT_TIME4 = "HH:mm:ss";
 
 	public static final String HOUR = "hour";
 	public static final String MINUTE = "minute";
