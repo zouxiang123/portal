@@ -26,6 +26,7 @@ import org.springframework.data.redis.serializer.RedisSerializer;
  * 
  * @author wolf.yansl
  */
+@SuppressWarnings({ "unchecked", "rawtypes" })
 public class RedisCacheUtil {
 	private static final Logger LOGGER = LoggerFactory.getLogger("RedisLogger");
 
@@ -63,79 +64,107 @@ public class RedisCacheUtil {
 	/**
 	 * 对象数据存储
 	 * 
-	 * @param key
-	 * @param obj
 	 * @return
 	 */
 	public static void setObject(String key, Object obj) {
+		setObject(key, obj, null, null);
+	}
+
+	/**
+	 * 设置数据到redis
+	 * 
+	 * @Title: setObjectWithDB
+	 * @param key
+	 * @param obj
+	 * @param dbIndex
+	 *
+	 */
+	public static void setObjectWithDB(String key, Object obj, Integer dbIndex) {
+		setObject(key, obj, dbIndex, null);
+	}
+
+	/**
+	 * 设置数据到redis
+	 * 
+	 * @Title: setObjectWithDelay
+	 * @param key
+	 * @param obj
+	 * @param liveTime(存活时间ms)
+	 *
+	 */
+	public static void setObjectWithLiveTime(String key, Object obj, long liveTime) {
+		setObject(key, obj, null, liveTime);
+	}
+
+	/**
+	 * 设置数据到redis
+	 * 
+	 * @Title: setObject
+	 * @param key
+	 * @param obj
+	 * @param dbIndex
+	 * @param liveTime(存活时间ms)
+	 *
+	 */
+	public static void setObject(String key, Object obj, Integer dbIndex, Long liveTime) {
 		try {
-			redisTemplate.opsForValue().set(key, obj);
+			if (dbIndex == null) {
+				redisTemplate.opsForValue().set(key, obj);
+				if (liveTime != null)
+					redisTemplate.expire(key, liveTime, TimeUnit.MILLISECONDS);
+				return;
+			}
+			redisTemplate.execute(new RedisCallback<Object>() {
+				@Override
+				public Object doInRedis(RedisConnection connection) throws DataAccessException {
+					connection.select(dbIndex);
+					RedisSerializer keySerializer = redisTemplate.getKeySerializer();
+					RedisSerializer valueSerializer = redisTemplate.getValueSerializer();
+					connection.set(keySerializer.serialize(key), valueSerializer.serialize(obj));
+					if (liveTime != null)
+						connection.pExpire(keySerializer.serialize(key), liveTime);
+					return null;
+				}
+			});
 		} catch (Exception e) {
 			LOGGER.error("catch redis setObject error", e);
 			throw e;
 		}
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public static void setObject(String key, Object obj, Integer dbIndex) {
-		try {
-			redisTemplate.execute(new RedisCallback<Object>() {
-				@Override
-				public Object doInRedis(RedisConnection connection) throws DataAccessException {
-					if (dbIndex != null) {
-						connection.select(dbIndex);
-					}
-					RedisSerializer keySerializer = redisTemplate.getKeySerializer();
-					RedisSerializer valueSerializer = redisTemplate.getValueSerializer();
-					connection.set(keySerializer.serialize(key), valueSerializer.serialize(obj));
-					return null;
-				}
-			});
-		} catch (Exception e) {
-			LOGGER.error("catch redis setObject with dbindex error", e);
-			throw e;
-		}
+	public static void batchSetObject(Map<String, ?> map) {
+		batchSetObject(map, null, null);
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public static void batchSetObject(Map<String, ?> map) {
+	public static void batchSetObjectWithDB(Map<String, ?> map, Integer dbIndex) {
+		batchSetObject(map, dbIndex, null);
+	}
+
+	public static void batchSetObjectWithLiveTime(Map<String, ?> map, long liveTime) {
+		batchSetObject(map, null, liveTime);
+	}
+
+	public static void batchSetObject(Map<String, ?> map, Integer dbIndex, Long liveTime) {
 		try {
 			final RedisSerializer keySerializer = redisTemplate.getKeySerializer();
 			final RedisSerializer valueSerializer = redisTemplate.getValueSerializer();
 			redisTemplate.executePipelined(new RedisCallback<Object>() {
 				@Override
 				public Object doInRedis(RedisConnection connection) throws DataAccessException {
+					if (dbIndex != null) {
+						connection.select(dbIndex);
+					}
 					for (Entry<String, ?> entry : map.entrySet()) {
 						connection.set(keySerializer.serialize(entry.getKey()), valueSerializer.serialize(entry.getValue()));
+						if (liveTime != null) {
+							connection.pExpire(keySerializer.serialize(entry.getKey()), liveTime);
+						}
 					}
 					return null;
 				}
 			});
 		} catch (Exception e) {
 			LOGGER.error("catch redis batchSetObject error", e);
-			throw e;
-		}
-	}
-
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public static void batchSetObject(Map<String, ?> map, Integer dbIndex) {
-		try {
-			final RedisSerializer keySerializer = redisTemplate.getKeySerializer();
-			final RedisSerializer valueSerializer = redisTemplate.getValueSerializer();
-			redisTemplate.executePipelined(new RedisCallback<Object>() {
-				@Override
-				public Object doInRedis(RedisConnection connection) throws DataAccessException {
-					if (dbIndex != null) {
-						connection.select(dbIndex);
-					}
-					for (Entry<String, ?> entry : map.entrySet()) {
-						connection.set(keySerializer.serialize(entry.getKey()), valueSerializer.serialize(entry.getValue()));
-					}
-					return null;
-				}
-			});
-		} catch (Exception e) {
-			LOGGER.error("catch redis batchSetObject with dbindex error", e);
 			throw e;
 		}
 	}
@@ -149,7 +178,6 @@ public class RedisCacheUtil {
 		}
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static Object getObject(String key, Integer dbIndex) {
 		try {
 			return redisTemplate.execute(new RedisCallback<Object>() {
@@ -169,7 +197,6 @@ public class RedisCacheUtil {
 		}
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static List<?> batchGetObject(Collection<String> keys) {
 		try {
 			final RedisSerializer keySerializer = redisTemplate.getKeySerializer();
