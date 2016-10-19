@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -16,6 +17,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.fasterxml.jackson.datatype.guava.GuavaModule;
 import com.google.common.base.Strings;
+import com.xtt.platform.util.lang.StringUtil;
 
 public class JsonUtil {
 
@@ -38,17 +40,11 @@ public class JsonUtil {
 	/**
 	 * 创建只输出非Null且非Empty(如List.isEmpty)的属性到Json字符串的Mapper,建议在外部接口中使用。
 	 * 
-	 * @return 只输出非Null且非Empty的属性到Json字符串的Mapper
-	 *  * <per> Exp data
-	 *               {"tenantId":null,"pageNo":1,"pageSize"
-	 *               :15,"totalRecord":0,"totalPage":0,
-	 *               "results":null,"id":11,"username":null,"password":"ddd"}
+	 * @return 只输出非Null且非Empty的属性到Json字符串的Mapper * <per> Exp data {"tenantId":null,"pageNo":1,"pageSize" :15,"totalRecord":0,"totalPage":0,
+	 *         "results":null,"id":11,"username":null,"password":"ddd"}
 	 * 
-	 *		result: 
-	 *				String json=JsonUtil.nonEmptyJsonUtil().toJson(user);
-	 *               {"pageNo":1,"pageSize":15,"totalRecord":0,"totalPage":0,"id":11,
-	 *               "username":"xxxx","password":"ddd"}
-	 *               <per>
+	 *         result: String json=JsonUtil.nonEmptyJsonUtil().toJson(user); {"pageNo":1,"pageSize":15,"totalRecord":0,"totalPage":0,"id":11,
+	 *         "username":"xxxx","password":"ddd"} <per>
 	 * 
 	 */
 	public static JsonUtil nonEmptyJsonUtil() {
@@ -58,16 +54,10 @@ public class JsonUtil {
 	/**
 	 * 创建只输出初始值被改变的属性到Json字符串的Mapper, 最节约的存储方式，建议在内部接口中使用。
 	 * 
-	 * @return 只输出初始值被改变的属性到Json字符串的Mapper
-	 *  * <per> Exp data
-	 *               {"tenantId":null,"pageNo":1,"pageSize"
-	 *               :15,"totalRecord":0,"totalPage":0,
-	 *               "results":null,"id":11,"username":null,"password":"ddd"}
+	 * @return 只输出初始值被改变的属性到Json字符串的Mapper * <per> Exp data {"tenantId":null,"pageNo":1,"pageSize" :15,"totalRecord":0,"totalPage":0,
+	 *         "results":null,"id":11,"username":null,"password":"ddd"}
 	 * 
-	 *		result: 
-	 *				String json=JsonUtil.nonDefaultJsonUtil().toJson(user);
-	 *               {"pageNo":2,"password":"ddd222"} 
-	 *               <per>
+	 *         result: String json=JsonUtil.nonDefaultJsonUtil().toJson(user); {"pageNo":2,"password":"ddd222"} <per>
 	 */
 	public static JsonUtil nonDefaultJsonUtil() {
 		return new JsonUtil(Include.NON_DEFAULT);
@@ -76,18 +66,11 @@ public class JsonUtil {
 	/**
 	 * 
 	 * @Title: AllJsonUtil
-	 * @Description: 所有属性值,无论是null 还是not null 
-	 * 	 * <per> Exp data
-	 *               {"tenantId":null,"pageNo":1,"pageSize"
-	 *               :15,"totalRecord":0,"totalPage":0,
+	 * @Description: 所有属性值,无论是null 还是not null * <per> Exp data {"tenantId":null,"pageNo":1,"pageSize" :15,"totalRecord":0,"totalPage":0,
 	 *               "results":null,"id":11,"username":null,"password":"ddd"}
 	 * 
-	 *		result: 
-	 *				String json=JsonUtil.NoNullJsonUtil().toJson(user);
-	 *              {"tenantId":null,"pageNo":1,"pageSize"
-	 *               :15,"totalRecord":0,"totalPage":0,
-	 *               "results":null,"id":11,"username":null,"password":"ddd"}
-	 *               <per>
+	 *               result: String json=JsonUtil.NoNullJsonUtil().toJson(user); {"tenantId":null,"pageNo":1,"pageSize"
+	 *               :15,"totalRecord":0,"totalPage":0, "results":null,"id":11,"username":null,"password":"ddd"} <per>
 	 * @version: V1.0
 	 * @return
 	 */
@@ -98,17 +81,11 @@ public class JsonUtil {
 	/**
 	 * 
 	 * @Title: NoNullJsonUtil
-	 * @Description: 获取非Null的属性值 
-	 * <per> Exp data
-	 *               {"tenantId":null,"pageNo":1,"pageSize"
-	 *               :15,"totalRecord":0,"totalPage":0,
+	 * @Description: 获取非Null的属性值 <per> Exp data {"tenantId":null,"pageNo":1,"pageSize" :15,"totalRecord":0,"totalPage":0,
 	 *               "results":null,"id":11,"username":null,"password":"ddd"}
 	 * 
-	 *		result: 
-	 *				String json=JsonUtil.NoNullJsonUtil().toJson(user);
-	 *               {"pageNo":1,"pageSize":15,"totalRecord":0,"totalPage":0,
-	 *               "id":11,"password":"ddd"} 
-	 *               <per>
+	 *               result: String json=JsonUtil.NoNullJsonUtil().toJson(user); {"pageNo":1,"pageSize":15,"totalRecord":0,"totalPage":0,
+	 *               "id":11,"password":"ddd"} <per>
 	 * @version: V1.0
 	 * @return
 	 */
@@ -134,28 +111,29 @@ public class JsonUtil {
 
 	/**
 	 * 
-	*
-	* @Title: fromJson
-	* @Description: <p>Json数据转换为对象性,可以转换为Map、Map集合、List集合以及具体的某一个对象 <p>
-	* <pre>
-		返回map对象
-		Map map=JsonUtil.AllJsonUtil.fromJson(jsonStr,Map.class);
-		将json字符串转换成List<Map>集合
-		List<Map<String, Object>> list = JsonUtil.AllJsonUtil.fromJson(jsonStr,List.class);
-		Json字符串转换成Array数组
-		String [] arr = JsonUtil.AllJsonUtil.fromJson(jsonStr, String [].class);
-		Json字符串转换成Map集合
-		Map<String, Map<String, Object>> maps = JsonUtil.AllJsonUtil.fromJson(jsonStr, Map.class);
-		Json字符串转换为一个具体的对象
-		SysUser user=JsonUtil.AllJsonUtil.fromJson(jsonStr, SysUser.class);
-	* </pre>
-	* @param: <p>@param jsonString
-	* @param: <p>@param clazz
-	* @param: <p>@return<p>
-	* @date: 2014年5月16日
-	* @return: T
-	* @throws 
-	*
+	 *
+	 * @Title: fromJson @Description:
+	 *         <p>
+	 *         Json数据转换为对象性,可以转换为Map、Map集合、List集合以及具体的某一个对象
+	 *         <p>
+	 * 
+	 *         <pre>
+	 *  返回map对象 Map
+	 * map=JsonUtil.AllJsonUtil.fromJson(jsonStr,Map.class); 将json字符串转换成List<Map>集合 List<Map<String, Object>> list =
+	 * JsonUtil.AllJsonUtil.fromJson(jsonStr,List.class); Json字符串转换成Array数组 String [] arr = JsonUtil.AllJsonUtil.fromJson(jsonStr, String [].class);
+	 * Json字符串转换成Map集合 Map<String, Map<String, Object>> maps = JsonUtil.AllJsonUtil.fromJson(jsonStr, Map.class); Json字符串转换为一个具体的对象 SysUser
+	 * user=JsonUtil.AllJsonUtil.fromJson(jsonStr, SysUser.class);
+	 *         </pre>
+	 * 
+	 * @param: <p>
+	 * @param jsonString
+	 * @param: <p>
+	 * @param clazz
+	 * @param: <p>
+	 * @return
+	 *         <p>
+	 * @date: 2014年5月16日 @return: T @throws
+	 *
 	 */
 	public <T> T fromJson(String jsonString, Class<T> clazz) {
 		if (Strings.isNullOrEmpty(jsonString)) {
@@ -177,8 +155,7 @@ public class JsonUtil {
 	 * @return
 	 */
 	public <T> T fromJson(String jsonString, JavaType javaType) {
-		if ((Strings.isNullOrEmpty(jsonString))
-				|| (!(jsonString.contains("{")))) {
+		if ((Strings.isNullOrEmpty(jsonString)) || (!(jsonString.contains("{")))) {
 			return null;
 
 		}
@@ -190,24 +167,40 @@ public class JsonUtil {
 		return null;
 	}
 
+	/**
+	 * 反序列化复杂Collection如List<Bean>.
+	 * 
+	 * @param jsonString
+	 * @param typeReference
+	 *            如：new TypeReference<List<Bean>>() { }
+	 * @return
+	 */
+	public <T> T fromJson(String jsonString, TypeReference<T> typeReference) {
+		if ((StringUtil.isNotBlank(jsonString))) {
+			return null;
+		}
+		try {
+			return this.mapper.readValue(jsonString, typeReference);
+		} catch (Exception e) {
+			logger.warn("parse json string error:" + jsonString, e);
+		}
+		return null;
+	}
+
 	public JsonNode treeFromJson(String jsonString) throws IOException {
 		return this.mapper.readTree(jsonString);
 	}
 
-	public <T> T treeToValue(JsonNode node, Class<T> clazz)
-			throws JsonProcessingException {
+	public <T> T treeToValue(JsonNode node, Class<T> clazz) throws JsonProcessingException {
 		return this.mapper.treeToValue(node, clazz);
 	}
 
 	/**
-	 * 构造泛型的Collection Type如: ArrayList<MyBean>,
-	 * 则调用constructCollectionType(ArrayList.class,MyBean.class)
-	 * HashMap<String,MyBean>, 则调用(HashMap.class,String.class, MyBean.class)
+	 * 构造泛型的Collection Type如: ArrayList<MyBean>, 则调用constructCollectionType(ArrayList.class,MyBean.class) HashMap<String,MyBean>,
+	 * 则调用(HashMap.class,String.class, MyBean.class)
 	 */
-	public JavaType createCollectionType(Class<?> collectionClass,
-			Class<?>[] elementClasses) {
-		return this.mapper.getTypeFactory().constructParametricType(
-				collectionClass, elementClasses);
+	public JavaType createCollectionType(Class<?> collectionClass, Class<?>[] elementClasses) {
+		return this.mapper.getTypeFactory().constructParametricType(collectionClass, elementClasses);
 	}
 
 	/**
@@ -222,11 +215,9 @@ public class JsonUtil {
 		try {
 			return this.mapper.readerForUpdating(object).readValue(jsonString);
 		} catch (JsonProcessingException e) {
-			logger.warn("update json string:" + jsonString + " to object:"
-					+ object + " error.", e);
+			logger.warn("update json string:" + jsonString + " to object:" + object + " error.", e);
 		} catch (IOException e) {
-			logger.warn("update json string:" + jsonString + " to object:"
-					+ object + " error.", e);
+			logger.warn("update json string:" + jsonString + " to object:" + object + " error.", e);
 		}
 		return null;
 	}
@@ -239,8 +230,7 @@ public class JsonUtil {
 	}
 
 	/**
-	 * 設定是否使用Enum的toString函數來讀寫Enum, 為False時時使用Enum的name()函數來讀寫Enum, 默認為False.
-	 * 注意本函數一定要在Mapper創建後, 所有的讀寫動作之前調用.
+	 * 設定是否使用Enum的toString函數來讀寫Enum, 為False時時使用Enum的name()函數來讀寫Enum, 默認為False. 注意本函數一定要在Mapper創建後, 所有的讀寫動作之前調用.
 	 */
 	public void enableEnumUseToString() {
 		this.mapper.enable(SerializationFeature.WRITE_ENUMS_USING_TO_STRING);
