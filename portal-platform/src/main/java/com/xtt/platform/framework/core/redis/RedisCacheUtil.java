@@ -125,7 +125,7 @@ public class RedisCacheUtil {
 						connection.pExpire(keySerializer.serialize(key), liveTime);
 					return null;
 				}
-			});
+			}, true);
 		} catch (Exception e) {
 			LOGGER.error("catch redis setObject error", e);
 			throw e;
@@ -190,7 +190,7 @@ public class RedisCacheUtil {
 					RedisSerializer valueSerializer = redisTemplate.getValueSerializer();
 					return valueSerializer.deserialize(connection.get(keySerializer.serialize(key)));
 				}
-			});
+			}, true);
 		} catch (Exception e) {
 			LOGGER.error("catch redis getObject with dbIndex error", e);
 			throw e;
@@ -198,14 +198,20 @@ public class RedisCacheUtil {
 	}
 
 	public static List<?> batchGetObject(Collection<String> keys) {
+		return batchGetObject(keys, null);
+	}
+
+	public static List<?> batchGetObject(Collection<String> keys, Integer dbIndex) {
 		try {
 			final RedisSerializer keySerializer = redisTemplate.getKeySerializer();
 			List<Object> list = redisTemplate.executePipelined(new RedisCallback<Object>() {
 				@Override
 				public Object doInRedis(RedisConnection connection) throws DataAccessException {
+					if (dbIndex != null) {
+						connection.select(dbIndex);
+					}
 					for (String key : keys) {
 						connection.get(keySerializer.serialize(key));
-						// connection.rPop(keySerializer.serialize(key));
 					}
 					return null;
 				}
@@ -304,8 +310,28 @@ public class RedisCacheUtil {
 	 * @param key
 	 */
 	public static void delete(String key) {
+		deleteWithDB(key, null);
+	}
+
+	/**
+	 * 通过key删除
+	 * 
+	 * @param key
+	 */
+	public static void deleteWithDB(String key, Integer dbIndex) {
 		try {
-			redisTemplate.delete(key);
+			if (dbIndex == null) {
+				redisTemplate.delete(key);
+			} else {
+				final RedisSerializer keySerializer = redisTemplate.getKeySerializer();
+				redisTemplate.execute(new RedisCallback<Object>() {
+					public Object doInRedis(RedisConnection connection) {
+						connection.select(dbIndex);
+						connection.del(keySerializer.serialize(key));
+						return null;
+					}
+				}, true);
+			}
 		} catch (Exception e) {
 			LOGGER.error("catch redis delete error", e);
 			throw e;
@@ -353,7 +379,7 @@ public class RedisCacheUtil {
 					connection.flushDb();
 					return true;
 				}
-			});
+			}, true);
 		} catch (Exception e) {
 			LOGGER.error("catch redis flushDB error", e);
 			throw e;
@@ -367,7 +393,7 @@ public class RedisCacheUtil {
 				public Long doInRedis(RedisConnection connection) throws DataAccessException {
 					return connection.dbSize();
 				}
-			});
+			}, true);
 		} catch (Exception e) {
 			LOGGER.error("catch redis DBSize error", e);
 			throw e;
