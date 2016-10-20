@@ -29,7 +29,9 @@ public class DateFormatUtil extends DateFormatUtils {
 	public static final String FORMAT_DATE1 = "yyyy-MM-dd";
 	public static final String FORMAT_DATE2 = "yyyy/MM/dd";
 	public static final String FORMAT_DATE3 = "MM/dd";
+	public static final String FORMAT_DATE_YYYYMMDD = "yyyyMMdd";
 	public static final String FORMAT_YYYY_MM = "yyyy-MM";
+	public static final String FORMAT_YYYYMM = "yyyyMM";
 	public static final String FORMAT_TIME1 = "yyyy-MM-dd HH:mm:ss";
 	public static final String FORMAT_TIME2 = "HH:mm";
 	public static final String FORMAT_TIME3 = "HHmmss";
