@@ -26,6 +26,7 @@ public class DateFormatUtil extends DateFormatUtils {
 	public static final String START_TIME_SUF = " 00:00:00";
 	public static final String END_TIME_SUF = " 23:59:59";
 
+	public static final String FORMAT_DATE_CN = "yyyy年MM月dd日";
 	public static final String FORMAT_DATE1 = "yyyy-MM-dd";
 	public static final String FORMAT_DATE2 = "yyyy/MM/dd";
 	public static final String FORMAT_DATE3 = "MM/dd";
