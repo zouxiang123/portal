@@ -35,6 +35,7 @@ public class KafkaProducerUtil {
 	public static final String TOPIC_SECRETARY = "secretary";
 	public static final String TOPIC_PROCESSHIST = "processHist";
 	public static final String TOPIC_CHARGE = "charge";
+	public static final String TOPIC_SHIFT_BORAD = "shiftBorad";
 
 	private static KafkaTemplate<Integer, String> kafkaTemplate;
 
