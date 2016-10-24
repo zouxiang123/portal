@@ -305,6 +305,18 @@ public class RedisCacheUtil {
 	}
 
 	/**
+	 * 更新或者设置key的存活时间
+	 * 
+	 * @Title: setLiveTime
+	 * @param key
+	 * @param liveTime
+	 *
+	 */
+	public static void setLiveTime(String key, Long liveTime) {
+		redisTemplate.expire(key, liveTime, TimeUnit.MILLISECONDS);
+	}
+
+	/**
 	 * 通过key删除
 	 * 
 	 * @param key
