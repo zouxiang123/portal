@@ -3,6 +3,7 @@ package com.xtt.platform.util.secret;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -221,7 +222,8 @@ public class HardWareUtil {
 
 		BufferedReader br = null;
 		try {
-			InputStream is = HardWareUtil.class.getResourceAsStream("/config/license.key");
+			String filePath = System.getProperty("catalina.home") + "/conf/license.key";
+			InputStream is = new FileInputStream(new File(filePath));//HardWareUtil.class.getResourceAsStream("/config/license.key");
 			br = new BufferedReader(new InputStreamReader(is));
 			String lics[] = null;
 			String temp = null;
