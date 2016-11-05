@@ -7,6 +7,7 @@ import java.util.Set;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -27,6 +28,12 @@ public class HttpClientUtil {
 
 	public static final String HTTP_GET = "GET";
 	public static final String HTTP_POST = "POST";
+	// 默认链接超时（ms）
+	public static final int DEFAULT_CONNECT_TIMEOUT = 30000;
+	// 默认请求获取数据的超时时间（ms）
+	public static final int DEFAULT_SOCKET_TIMEOUT = -1;
+	// 默认connect Manager获取Connection 超时时间（ms）
+	public static final int DEFAULT_CONNECTION_REQUEST_TIMEOUT = -1;
 
 	/**
 	 * get请求
@@ -41,6 +48,7 @@ public class HttpClientUtil {
 		try {
 			CloseableHttpClient httpClient = HttpClients.createDefault();
 			HttpGet httpGet = new HttpGet(uri);
+			httpGet.setConfig(getRequestConfig(null, null, null));
 			CloseableHttpResponse httpResponse = httpClient.execute(httpGet);
 
 			int status = httpResponse.getStatusLine().getStatusCode();
@@ -84,6 +92,7 @@ public class HttpClientUtil {
 		try {
 			CloseableHttpClient httpClient = HttpClients.createDefault();
 			HttpPost httpPost = new HttpPost(uri);
+			httpPost.setConfig(getRequestConfig(null, null, null));
 			List<NameValuePair> parameters = getHttpRequestParams(params);
 			UrlEncodedFormEntity entity = new UrlEncodedFormEntity(parameters, "utf-8");
 			httpPost.setEntity(entity);
@@ -120,6 +129,7 @@ public class HttpClientUtil {
 		try {
 			CloseableHttpClient httpClient = HttpClients.createDefault();
 			HttpPost httpPost = new HttpPost(uri);
+			httpPost.setConfig(getRequestConfig(null, null, null));
 			List<NameValuePair> parameters = getHttpRequestParamsb(params);
 			UrlEncodedFormEntity entity = new UrlEncodedFormEntity(parameters, "utf-8");
 			httpPost.setEntity(entity);
@@ -212,5 +222,27 @@ public class HttpClientUtil {
 		}
 		return nameValues;
 
+	}
+
+	/**
+	 * 获取请求配置
+	 * 
+	 * @Title: getRequestConfig
+	 * @param connectTimeOut
+	 *            设置连接超时时间，单位毫秒
+	 * @param socketTimeout
+	 *            请求获取数据的超时时间，单位毫秒。 如果访问一个接口，多少时间内无法返回数据，就直接放弃此次调用
+	 * @param connectionRequestTimeout
+	 *            设置从connect Manager获取Connection 超时时间，单位毫秒。这个属性是新加的属性，因为目前版本是可以共享连接池的。
+	 * @return
+	 *
+	 */
+	private static RequestConfig getRequestConfig(Integer connectTimeOut, Integer socketTimeout, Integer connectionRequestTimeout) {
+		connectTimeOut = connectTimeOut == null ? DEFAULT_CONNECT_TIMEOUT : connectTimeOut;
+		socketTimeout = socketTimeout == null ? DEFAULT_SOCKET_TIMEOUT : socketTimeout;
+		connectionRequestTimeout = connectionRequestTimeout == null ? DEFAULT_CONNECTION_REQUEST_TIMEOUT : connectionRequestTimeout;
+		RequestConfig requestConfig = RequestConfig.custom().setConnectTimeout(connectTimeOut).setConnectionRequestTimeout(connectionRequestTimeout)
+						.setSocketTimeout(socketTimeout).build();
+		return requestConfig;
 	}
 }
