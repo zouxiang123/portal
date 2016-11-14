@@ -6,6 +6,7 @@ package com.xtt.platform.util.time;
 public interface IDateConst {
 	int TIME_DAY_MILLISECOND = 86400000;
 
+	String YYYY = "yyyy";
 	String YYYYMMDD = "yyyyMMdd";
 	String YYYYMMDD_HHMMSS = "yyyyMMddHHmmss";
 	String YYYYMMDD_HHMM = "yyyyMMddHH";
