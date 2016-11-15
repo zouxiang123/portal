@@ -300,4 +300,27 @@ public class DateFormatUtil extends DateFormatUtils {
 		return dateStr;
 	}
 
+	/**
+	 * 当前时间之前或之后的时间
+	 * 
+	 * @param hourTime
+	 * @param beforeDate
+	 * @param beforeMonth
+	 * @return
+	 */
+	public static String beforeMonthDateByDate(Date date, int hourTime, int beforeDate, int beforeMonth, String format) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		DateFormat sdf = new SimpleDateFormat(format);
+		if (beforeMonth > 0) {
+			calendar.add(Calendar.MONTH, -beforeMonth);
+		} else if (beforeDate > 0) {
+			calendar.add(Calendar.DATE, -beforeDate);
+		} else if (hourTime > 0) {
+			calendar.add(Calendar.HOUR_OF_DAY, -hourTime);
+		}
+
+		return sdf.format(calendar.getTime());
+	}
+
 }
