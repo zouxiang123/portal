@@ -7,16 +7,22 @@ import java.util.Set;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
+import org.apache.http.client.CookieStore;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.cookie.BasicClientCookie;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+
+import com.xtt.platform.util.lang.StringUtil;
 
 /**
  * 请求第三方接口
@@ -153,16 +159,24 @@ public class HttpClientUtil {
 	}
 
 	public static HttpClientResultUtil postJson(String uri, String params) {
+		return postJson(uri, params, null);
+	}
+
+	public static HttpClientResultUtil postJson(String uri, String params, CookieStore cookieStore) {
 		HttpClientResultUtil result = new HttpClientResultUtil();
 		try {
-			CloseableHttpClient httpClient = HttpClients.createDefault();
-
+			CloseableHttpClient httpClient;
+			if (cookieStore != null) {
+				httpClient = HttpClients.custom().setDefaultCookieStore(cookieStore).build();
+			} else {
+				httpClient = HttpClients.createDefault();
+			}
 			HttpPost httpPost = new HttpPost(uri);
-			StringEntity s = new StringEntity(params);
+			StringEntity s = new StringEntity(params, ContentType.APPLICATION_JSON);
 			s.setContentEncoding("UTF-8");
-			s.setContentType("application/json");
 			httpPost.setEntity(s);
 
+			httpPost.addHeader("Accept", "application/json");
 			CloseableHttpResponse httpResponse = httpClient.execute(httpPost);
 
 			int status = httpResponse.getStatusLine().getStatusCode();
@@ -178,6 +192,23 @@ public class HttpClientUtil {
 			result.setExceptionMessage(e.getMessage());
 		}
 		return result;
+	}
+
+	/**
+	 * 创建cookieStore
+	 * 
+	 * @Title: createCookieStore
+	 * @return
+	 *
+	 */
+	public static CookieStore createCookieStore(String name, String value, String domain, String path) {
+		CookieStore cookieStore = new BasicCookieStore();
+		BasicClientCookie cookie = new BasicClientCookie(name, value);
+		cookie.setVersion(0);
+		cookie.setDomain(domain);
+		cookie.setPath(StringUtil.isBlank(path) ? "/" : path);
+		cookieStore.addCookie(cookie);
+		return cookieStore;
 	}
 
 	/**
