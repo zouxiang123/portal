@@ -176,7 +176,7 @@ public class JsonUtil {
 	 * @return
 	 */
 	public <T> T fromJson(String jsonString, TypeReference<T> typeReference) {
-		if ((StringUtil.isNotBlank(jsonString))) {
+		if ((StringUtil.isBlank(jsonString))) {
 			return null;
 		}
 		try {
@@ -210,7 +210,6 @@ public class JsonUtil {
 	 * @param object
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
 	public <T> T update(String jsonString, T object) {
 		try {
 			return this.mapper.readerForUpdating(object).readValue(jsonString);
