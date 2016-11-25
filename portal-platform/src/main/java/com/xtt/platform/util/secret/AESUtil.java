@@ -47,8 +47,13 @@ public class AESUtil {
 	 */
 	public static String encrypt(String content, String key) {
 		try {
+
+			SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
+			random.setSeed(key.getBytes());
+
 			KeyGenerator kgen = KeyGenerator.getInstance("AES");
-			kgen.init(128, new SecureRandom(key.getBytes()));
+			// kgen.init(128, new SecureRandom(key.getBytes()));
+			kgen.init(128, random);
 			SecretKey secretKey = kgen.generateKey();
 			byte[] enCodeFormat = secretKey.getEncoded();
 			SecretKeySpec secretKeySpec = new SecretKeySpec(enCodeFormat, "AES");
@@ -93,6 +98,13 @@ public class AESUtil {
 	public static String decrypt(String content, String key) {
 		if (content.length() < 1)
 			return null;
+		SecureRandom random = null;
+		try {
+			random = SecureRandom.getInstance("SHA1PRNG");
+			random.setSeed(key.getBytes());
+		} catch (NoSuchAlgorithmException e1) {
+			e1.printStackTrace();
+		}
 		byte[] byteRresult = new byte[content.length() / 2];
 		for (int i = 0; i < content.length() / 2; i++) {
 			int high = Integer.parseInt(content.substring(i * 2, i * 2 + 1), 16);
@@ -101,7 +113,8 @@ public class AESUtil {
 		}
 		try {
 			KeyGenerator kgen = KeyGenerator.getInstance("AES");
-			kgen.init(128, new SecureRandom(key.getBytes()));
+			// kgen.init(128, new SecureRandom(key.getBytes()));
+			kgen.init(128, random);
 			SecretKey secretKey = kgen.generateKey();
 			byte[] enCodeFormat = secretKey.getEncoded();
 			SecretKeySpec secretKeySpec = new SecretKeySpec(enCodeFormat, "AES");
