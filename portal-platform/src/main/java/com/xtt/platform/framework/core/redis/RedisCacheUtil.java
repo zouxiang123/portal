@@ -11,6 +11,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
@@ -18,8 +19,12 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.core.RedisCallback;
+import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.SessionCallback;
 import org.springframework.data.redis.serializer.RedisSerializer;
+import org.springframework.data.redis.serializer.SerializationUtils;
+import org.springframework.util.Assert;
 
 /**
  * redis远程远程操作 存储返回 true 成功 false失败
@@ -108,21 +113,15 @@ public class RedisCacheUtil {
 	 */
 	public static void setObject(String key, Object obj, Integer dbIndex, Long liveTime) {
 		try {
-			if (dbIndex == null) {
-				redisTemplate.opsForValue().set(key, obj);
-				if (liveTime != null)
-					redisTemplate.expire(key, liveTime, TimeUnit.MILLISECONDS);
-				return;
-			}
 			redisTemplate.execute(new RedisCallback<Object>() {
 				@Override
 				public Object doInRedis(RedisConnection connection) throws DataAccessException {
-					connection.select(dbIndex);
-					RedisSerializer keySerializer = redisTemplate.getKeySerializer();
-					RedisSerializer valueSerializer = redisTemplate.getValueSerializer();
-					connection.set(keySerializer.serialize(key), valueSerializer.serialize(obj));
+					if (dbIndex != null)
+						connection.select(dbIndex);
+					byte[] rawKey = serializeKey(key, redisTemplate.getKeySerializer());
+					connection.set(rawKey, serializeKey(obj, redisTemplate.getValueSerializer()));
 					if (liveTime != null)
-						connection.pExpire(keySerializer.serialize(key), liveTime);
+						connection.pExpire(rawKey, liveTime);
 					return null;
 				}
 			}, true);
@@ -154,10 +153,14 @@ public class RedisCacheUtil {
 					if (dbIndex != null) {
 						connection.select(dbIndex);
 					}
+					Map<byte[], byte[]> rawMap = new HashMap<>();
 					for (Entry<String, ?> entry : map.entrySet()) {
-						connection.set(keySerializer.serialize(entry.getKey()), valueSerializer.serialize(entry.getValue()));
-						if (liveTime != null) {
-							connection.pExpire(keySerializer.serialize(entry.getKey()), liveTime);
+						rawMap.put(keySerializer.serialize(entry.getKey()), valueSerializer.serialize(entry.getValue()));
+					}
+					connection.mSet(rawMap);
+					if (liveTime != null) {
+						for (byte[] rawKey : rawMap.keySet()) {
+							connection.pExpire(rawKey, liveTime);
 						}
 					}
 					return null;
@@ -203,26 +206,77 @@ public class RedisCacheUtil {
 
 	public static List<?> batchGetObject(Collection<String> keys, Integer dbIndex) {
 		try {
-			final RedisSerializer keySerializer = redisTemplate.getKeySerializer();
-			List<Object> list = redisTemplate.executePipelined(new RedisCallback<Object>() {
+			final RedisSerializer valueSerializer = redisTemplate.getValueSerializer();
+			List<Object> list = redisTemplate.execute(new RedisCallback<List<Object>>() {
 				@Override
-				public Object doInRedis(RedisConnection connection) throws DataAccessException {
+				public List<Object> doInRedis(RedisConnection connection) throws DataAccessException {
 					if (dbIndex != null) {
 						connection.select(dbIndex);
 					}
-					for (String key : keys) {
-						connection.get(keySerializer.serialize(key));
+					return SerializationUtils.deserialize(connection.mGet(serializeKeys(keys, redisTemplate.getKeySerializer())), valueSerializer);
+				}
+			});
+			removeNullValue(list);
+			return list;
+		} catch (Exception e) {
+			LOGGER.error("catch redis batchGetObject error", e);
+			throw e;
+		}
+	}
+
+	/**
+	 * 根据key模糊查询
+	 * 
+	 * @Title: getByPattern
+	 * @param pattern
+	 * @return
+	 *
+	 */
+	public static List<?> getByPattern(String pattern) {
+		return getByPattern(pattern, null);
+	}
+
+	/**
+	 * 根据key模糊查询
+	 * 
+	 * @Title: getByPattern
+	 * @param pattern
+	 * @param dbIndex
+	 * @return
+	 *
+	 */
+	public static List<?> getByPattern(String pattern, Integer dbIndex) {
+		try {
+			final RedisSerializer valueSerializer = redisTemplate.getValueSerializer();
+			return (List<Object>) redisTemplate.execute(new SessionCallback() {
+				@Override
+				public List<Object> execute(RedisOperations operations) throws DataAccessException {
+					Set<byte[]> rawKeys = redisTemplate.execute(new RedisCallback<Set<byte[]>>() {
+
+						public Set<byte[]> doInRedis(RedisConnection connection) {
+							if (dbIndex != null) {
+								connection.select(dbIndex);
+							}
+							return connection.keys(serializeKey(pattern, redisTemplate.getKeySerializer()));
+						}
+					}, true);
+
+					if (null != rawKeys && rawKeys.size() > 0) {
+						List<Object> values = (List<Object>) operations.execute(new RedisCallback<List<Object>>() {
+							@Override
+							public List<Object> doInRedis(RedisConnection connection) throws DataAccessException {
+								if (dbIndex != null) {
+									connection.select(dbIndex);
+								}
+								return SerializationUtils.deserialize(connection.mGet(rawKeys.toArray(new byte[rawKeys.size()][])), valueSerializer);
+							}
+						});
+						removeNullValue(values);
+						return values;
 					}
 					return null;
 				}
-			}, redisTemplate.getValueSerializer());
-			if (list != null && !list.isEmpty()) {
-				for (Iterator<Object> it = list.iterator(); it.hasNext();) {
-					if (it.next() == null)
-						it.remove();
-				}
-			}
-			return list;
+			});
 		} catch (Exception e) {
 			LOGGER.error("catch redis batchGetObject error", e);
 			throw e;
@@ -332,18 +386,15 @@ public class RedisCacheUtil {
 	 */
 	public static void deleteWithDB(String key, Integer dbIndex) {
 		try {
-			if (dbIndex == null) {
-				redisTemplate.delete(key);
-			} else {
-				final RedisSerializer keySerializer = redisTemplate.getKeySerializer();
-				redisTemplate.execute(new RedisCallback<Object>() {
-					public Object doInRedis(RedisConnection connection) {
+			redisTemplate.execute(new RedisCallback<Object>() {
+				public Object doInRedis(RedisConnection connection) {
+					if (dbIndex != null) {
 						connection.select(dbIndex);
-						connection.del(keySerializer.serialize(key));
-						return null;
 					}
-				}, true);
-			}
+					connection.del(serializeKey(key, redisTemplate.getKeySerializer()));
+					return null;
+				}
+			}, true);
 		} catch (Exception e) {
 			LOGGER.error("catch redis delete error", e);
 			throw e;
@@ -357,11 +408,38 @@ public class RedisCacheUtil {
 	 */
 	public static void delete(Collection<String> keys) {
 		try {
-			redisTemplate.delete(keys);
+			delete(keys, null);
 		} catch (Exception e) {
 			LOGGER.error("catch redis batch delete error", e);
 			throw e;
 		}
+	}
+
+	/**
+	 * 通过keys 批量删除
+	 * 
+	 * @param key
+	 */
+	public static boolean delete(Collection<String> keys, Integer dbIndex) {
+		try {
+			if (CollectionUtils.isEmpty(keys)) {
+				return true;
+			}
+			final byte[][] rawKeys = serializeKeys(keys, redisTemplate.getKeySerializer());
+			redisTemplate.execute(new RedisCallback<Boolean>() {
+				public Boolean doInRedis(RedisConnection connection) {
+					if (dbIndex != null) {
+						connection.select(dbIndex);
+					}
+					connection.del(rawKeys);
+					return true;
+				}
+			}, true);
+		} catch (Exception e) {
+			LOGGER.error("catch redis batch delete error", e);
+			throw e;
+		}
+		return false;
 	}
 
 	/**
@@ -372,22 +450,83 @@ public class RedisCacheUtil {
 	 *
 	 */
 	public static void deletePattern(String pattern) {
+		deletePattern(pattern, null);
+	}
+
+	/**
+	 * 通过pattern模糊删除
+	 * 
+	 * @Title: deletePattern
+	 * @param pattern
+	 *
+	 */
+	public static void deletePattern(String pattern, Integer dbIndex) {
 		try {
-			Set<String> keys = redisTemplate.keys(pattern);
-			if (keys != null && !keys.isEmpty()) {
-				delete(keys);
-			}
+			Set<String> keys = keys(pattern, dbIndex);
+			delete(keys, dbIndex);
 		} catch (Exception e) {
 			LOGGER.error("catch redis deletePattern error", e);
 			throw e;
 		}
 	}
 
+	/**
+	 * 通过pattern查询key
+	 * 
+	 * @Title: deletePattern
+	 * @param pattern
+	 *
+	 */
+	public static Set<String> keys(String pattern) {
+		try {
+			return keys(pattern, null);
+		} catch (Exception e) {
+			LOGGER.error("catch redis deletePattern error", e);
+			throw e;
+		}
+	}
+
+	/**
+	 * 通过pattern查询key
+	 * 
+	 * @Title: deletePattern
+	 * @param pattern
+	 * @param dbIndex
+	 * @return
+	 *
+	 */
+	public static Set<String> keys(String pattern, Integer dbIndex) {
+		try {
+			final RedisSerializer keySerializer = redisTemplate.getKeySerializer();
+			Set<String> keys = redisTemplate.execute(new RedisCallback<Set<String>>() {
+				@Override
+				public Set<String> doInRedis(RedisConnection connection) throws DataAccessException {
+					if (dbIndex != null) {
+						connection.select(dbIndex);
+					}
+					return SerializationUtils.deserialize(connection.keys(keySerializer.serialize(pattern)), keySerializer);
+				}
+			});
+			removeNullValue(keys);
+			return keys;
+		} catch (Exception e) {
+			LOGGER.error("catch redis keys error", e);
+			throw e;
+		}
+	}
+
 	public static Boolean flushDB() {
+		return flushDB(null);
+	}
+
+	public static Boolean flushDB(Integer dbIndex) {
 		try {
 			return redisTemplate.execute(new RedisCallback<Boolean>() {
 				@Override
 				public Boolean doInRedis(RedisConnection connection) throws DataAccessException {
+					if (dbIndex != null) {
+						connection.select(dbIndex);
+					}
 					connection.flushDb();
 					return true;
 				}
@@ -399,16 +538,52 @@ public class RedisCacheUtil {
 	}
 
 	public static Long DBSize() {
+		return DBSize(null);
+	}
+
+	public static Long DBSize(Integer dbIndex) {
 		try {
 			return redisTemplate.execute(new RedisCallback<Long>() {
 				@Override
 				public Long doInRedis(RedisConnection connection) throws DataAccessException {
+					if (dbIndex != null) {
+						connection.select(dbIndex);
+					}
 					return connection.dbSize();
 				}
 			}, true);
 		} catch (Exception e) {
 			LOGGER.error("catch redis DBSize error", e);
 			throw e;
+		}
+	}
+
+	private static byte[] serializeKey(Object key, final RedisSerializer keySerializer) {
+		Assert.notNull(key, "non null key required");
+		if (keySerializer == null && key instanceof byte[]) {
+			return (byte[]) key;
+		}
+		return keySerializer.serialize(key);
+	}
+
+	private static byte[][] serializeKeys(Collection<String> keys, final RedisSerializer serializer) {
+		if (CollectionUtils.isNotEmpty(keys)) {
+			final byte[][] rawKeys = new byte[keys.size()][];
+			int i = 0;
+			for (String key : keys) {
+				rawKeys[i++] = serializeKey(key, serializer);
+			}
+			return rawKeys;
+		}
+		return null;
+	}
+
+	private static void removeNullValue(Collection<?> list) {
+		if (CollectionUtils.isNotEmpty(list)) {
+			for (Iterator<?> it = list.iterator(); it.hasNext();) {
+				if (it.next() == null)
+					it.remove();
+			}
 		}
 	}
 
