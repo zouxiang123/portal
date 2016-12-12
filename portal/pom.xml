@@ -4,6 +4,21 @@
 	<artifactId>portal</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
+
+	<modules>
+		<module>../../automatic/automatic</module>
+		<module>../../automatic/automatic-core</module>
+		<module>../../common/common</module>
+		<module>../../common/common-dao</module>
+		<module>../../common/common-service</module>
+		<module>../../common/common-util</module>
+		<module>../portal-platform</module>
+		<module>../../project/cheetah</module>
+		<module>../../project/cheetah-dao</module>
+		<module>../../project/cheetah-service</module>
+		<module>../../secretary/secretary.service</module>
+	</modules>
+
 	<properties>
 		<org.springframework-version>4.2.5.RELEASE</org.springframework-version>
 		<org.apache.poi-version>3.13</org.apache.poi-version>

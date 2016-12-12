@@ -5,5 +5,16 @@
   	<artifactId>portal</artifactId>
   	<version>0.0.1-SNAPSHOT</version>
   </parent>
+  <groupId>com.xtt.platform</groupId>
   <artifactId>portal-platform</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+
+  <build>
+    <resources>
+        <resource>
+            <directory>src/main/resources</directory>
+            <filtering>true</filtering>
+        </resource>
+    </resources>
+  </build>
 </project>
