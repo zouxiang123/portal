@@ -14,9 +14,8 @@ public class FamilyUtil {
 	/**
 	 * 首字母为A的姓氏
 	 */
-  
-   public static Map<String, Object> familyMap(){
-	   Map<String, Object> map = new HashMap<>();
+   static final Map<String, Object> map = new HashMap<>();
+   static{
 	   /**
 		* 首字母为A的姓氏
 		*/
@@ -126,14 +125,14 @@ public class FamilyUtil {
 	   map.put("勾", "G"); 
 	   map.put("缑", "G");
 	   map.put("古", "G");
-	   map.put("谷", "");
-	   map.put("顾", ""); 
-	   map.put("关", ""); 
-	   map.put("广", ""); 
-	   map.put("归", "");
-	   map.put("桂", ""); 
-	   map.put("郭", "");
-	   map.put("国", "");
+	   map.put("谷", "G");
+	   map.put("顾", "G"); 
+	   map.put("关", "G"); 
+	   map.put("广", "G"); 
+	   map.put("归", "G");
+	   map.put("桂", "G"); 
+	   map.put("郭", "G");
+	   map.put("国", "G");
 	   /**
 		* 首字母为H的姓氏
 		*/
@@ -194,16 +193,16 @@ public class FamilyUtil {
 	   /**
 		* 首字母为K的姓氏
 		*/
-	   map.put("康", "");
-	   map.put("匡", "");
-	   map.put("况", "");
-	   map.put("柯", "");
-	   map.put("空", "");
-	   map.put("寇", "");
-	   map.put("隗", "");
-	   map.put("夔", "");
-	   map.put("阚", "");
-	   map.put("孔", "");
+	   map.put("康", "K");
+	   map.put("匡", "K");
+	   map.put("况", "K");
+	   map.put("柯", "K");
+	   map.put("空", "K");
+	   map.put("寇", "K");
+	   map.put("隗", "K");
+	   map.put("夔", "K");
+	   map.put("阚", "K");
+	   map.put("孔", "K");
 	   /**
 		* 首字母为L的姓氏
 		*/
@@ -481,53 +480,53 @@ public class FamilyUtil {
 	   map.put("越", "Y");
 	   map.put("乐", "Y");
 	   map.put("云", "Y");
+	   map.put("原", "Y");
 	   /**
 		* 首字母为Z的姓氏
 		*/
-	   map.put("赵", "");
-	   map.put("宰", "");
-	   map.put("昝", "");
-	   map.put("臧", "");
-	   map.put("曾", "");
-	   map.put("翟", "");
-	   map.put("詹", "");
-	   map.put("湛", "");
-	   map.put("张", "");
-	   map.put("章", "");
-	   map.put("仉", "");
-	   map.put("查", "");
-	   map.put("长", "");
-	   map.put("甄", "");
-	   map.put("郑", "");
-	   map.put("支", "");
-	   map.put("终", "");
-	   map.put("钟", "");
-	   map.put("钟", "");
-	   map.put("仲", "");
-	   map.put("周", "");
-	   map.put("朱", "");
-	   map.put("诸", "");
-	   map.put("竺", "");
-	   map.put("祝", "");
-	   map.put("颛", "");
-	   map.put("庄", "");
-	   map.put("卓", "");
-	   map.put("子", "");
-	   map.put("訾", "");
-	   map.put("宗", "");
-	   map.put("邹", "");
-	   map.put("祖", "");
-	   map.put("左", "");
-	   return map;
+	   map.put("赵", "Z");
+	   map.put("宰", "Z");
+	   map.put("昝", "Z");
+	   map.put("臧", "Z");
+	   map.put("曾", "Z");
+	   map.put("翟", "Z");
+	   map.put("詹", "Z");
+	   map.put("湛", "Z");
+	   map.put("张", "Z");
+	   map.put("章", "Z");
+	   map.put("仉", "Z");
+	   map.put("查", "Z");
+	   map.put("长", "Z");
+	   map.put("甄", "Z");
+	   map.put("郑", "Z");
+	   map.put("支", "Z");
+	   map.put("终", "Z");
+	   map.put("钟", "Z");
+	   map.put("钟", "Z");
+	   map.put("仲", "Z");
+	   map.put("周", "Z");
+	   map.put("朱", "Z");
+	   map.put("诸", "Z");
+	   map.put("竺", "Z");
+	   map.put("祝", "Z");
+	   map.put("颛", "Z");
+	   map.put("庄", "Z");
+	   map.put("卓", "Z");
+	   map.put("子", "Z");
+	   map.put("訾", "Z");
+	   map.put("宗", "Z");
+	   map.put("邹", "Z");
+	   map.put("祖", "Z");
+	   map.put("左", "Z");
    }
-
+   
    /**
     * 根据姓获取去姓的首字母
     * @param name
     * @return
     */
    public static String getInitial(String name){
-	   Map<String, Object> resultMap = familyMap();
+	   Map<String, Object> resultMap = map;
 	   if(name == null || name.equals("")){
 		   return "";
 	   }
