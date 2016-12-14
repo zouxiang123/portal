@@ -527,10 +527,10 @@ public class FamilyUtil {
     */
    public static String getInitial(String name){
 	   Map<String, Object> resultMap = map;
-	   if(name == null || name.equals("")){
+	   if(name == null || ("").equals(name)){
 		   return "";
 	   }
-	   if(resultMap.get(name) == null || resultMap.get(name).equals("")){
+	   if(resultMap.get(name) == null || ("").equals(resultMap.get(name))){
 		   return "";
 	   }
 	   return (String) resultMap.get(name);
