@@ -1,6 +1,8 @@
 package com.xtt.platform.framework.core.interceptor;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -24,6 +26,8 @@ import org.apache.ibatis.reflection.SystemMetaObject;
 import org.apache.ibatis.scripting.defaults.DefaultParameterHandler;
 
 import com.xtt.platform.framework.core.model.MyBatisSuperModel;
+import com.xtt.platform.framework.core.model.MybatisOrderByModel;
+import com.xtt.platform.util.lang.StringUtil;
 
 /**
  * 
@@ -58,6 +62,19 @@ public class MyBaitsPageInterceptor implements Interceptor {
 		BoundSql boundSql = delegate.getBoundSql();
 		// 拿到当前绑定Sql的参数对象，就是我们在调用对应的Mapper映射语句时所传入的参数对象
 		Object obj = boundSql.getParameterObject();
+
+		// 如果有排序条件，拼接排序条件
+		if (obj != null) {
+			List<MybatisOrderByModel> orderByList = getMybatisOrderByModel(obj);
+			if (orderByList != null && !orderByList.isEmpty()) {
+				// 获取当前要执行的Sql语句，也就是我们直接在Mapper映射语句中写的Sql语句
+				String sql = boundSql.getSql();
+				String orderByModelSql = getOrderByModelSql(orderByList, sql);
+
+				ReflectUtil.setFieldValue(boundSql, "sql", orderByModelSql);
+			}
+		}
+
 		// 这里我们简单的通过传入的是PageModel对象就认定它是需要进行分页操作的。
 		if (obj instanceof MyBatisSuperModel && ((MyBatisSuperModel) obj).isIspaging()) {
 			MyBatisSuperModel pageModel = (MyBatisSuperModel) obj;
@@ -74,6 +91,7 @@ public class MyBaitsPageInterceptor implements Interceptor {
 			// 利用反射设置当前BoundSql对应的sql属性为我们建立好的分页Sql语句
 			ReflectUtil.setFieldValue(boundSql, "sql", pageModelSql);
 		}
+
 		return invocation.proceed();
 	}
 
@@ -295,4 +313,84 @@ public class MyBaitsPageInterceptor implements Interceptor {
 		}
 	}
 
+	/**************** 排序 **************************/
+	/**
+	 * 获取排序条件集合
+	 * 
+	 * @Title: getMybatisOrderByModel
+	 * @param o1
+	 * @return
+	 *
+	 */
+	public List<MybatisOrderByModel> getMybatisOrderByModel(Object o1) {
+		Class c1 = o1.getClass();
+		Field[] fields = c1.getDeclaredFields();
+		try {
+			for (Field field : fields) {
+				Class<?> fieldClass = field.getType();
+				if (fieldClass.isAssignableFrom(List.class)) {
+					Type fc = field.getGenericType(); // 关键的地方，如果是List类型，得到其Generic的类型
+					if (fc instanceof ParameterizedType) // 【3】如果是泛型参数的类型
+					{
+						ParameterizedType pt = (ParameterizedType) fc;
+						Class genericClazz = (Class) pt.getActualTypeArguments()[0]; // 【4】
+						if (genericClazz.getName().endsWith("MybatisOrderByModel")) {
+							List<MybatisOrderByModel> l1 = (List<MybatisOrderByModel>) c1.getDeclaredMethod("getOrderByList").invoke(o1);
+							return l1;
+						}
+					}
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	/**
+	 * 拼接排序sql至原sql
+	 * 
+	 * @Title: getOrderByModelSql
+	 * @param orderByList
+	 * @param sql
+	 * @return
+	 *
+	 */
+	public String getOrderByModelSql(List<MybatisOrderByModel> orderByList, String sql) {
+		StringBuffer buffer = new StringBuffer(sql);
+		buffer.append(" ORDER BY ");
+		for (int i = 0; i < orderByList.size(); i++) {
+			MybatisOrderByModel model = orderByList.get(i);
+			if (i > 0) {
+				buffer.append(",");
+			}
+			buffer.append(convertPropertyToColumn(model.getParaName())).append(" ").append(model.getParaAsc());
+		}
+		return buffer.toString();
+	}
+
+	/**
+	 * 将实体类的属性名称转为表的属性名
+	 * 
+	 * @Title: convertPropertyToColumn
+	 * @param property
+	 * @return
+	 *
+	 */
+	public String convertPropertyToColumn(String property) {
+		char[] arr = property.toCharArray();
+		StringBuffer buffer = new StringBuffer();
+
+		for (int i = 0; i < arr.length; i++) {
+			char c1 = arr[i];
+			if (c1 >= 'A' && c1 <= 'Z') {// 如果是大写字母
+				if (StringUtil.isNotBlank(buffer.toString())) {
+					buffer.append("_");
+				}
+				c1 += 32;
+			}
+			buffer.append(c1);
+		}
+		return buffer.toString();
+	}
 }
