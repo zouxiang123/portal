@@ -47,7 +47,7 @@ public class CommonUtil {
 		try {
 			return mapper.readValue(json, clazz);
 		} catch (Exception e) {
-			log.error(getExceptionMessage(e));
+			log.error("json2Ojbect error:", e);
 			return null;
 		}
 	}
@@ -67,7 +67,7 @@ public class CommonUtil {
 		try {
 			return mapper.writeValueAsString(obj);
 		} catch (JsonProcessingException e) {
-			log.error(getExceptionMessage(e));
+			log.error("object2Json error:", e);
 			return null;
 		}
 	}
