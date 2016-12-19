@@ -22,6 +22,7 @@ import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.SessionCallback;
+import org.springframework.data.redis.core.TimeoutUtils;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.SerializationUtils;
 import org.springframework.util.Assert;
@@ -91,14 +92,14 @@ public class RedisCacheUtil {
 	/**
 	 * 设置数据到redis
 	 * 
-	 * @Title: setObjectWithDelay
+	 * @Title: setObjectWithTimeout
 	 * @param key
 	 * @param obj
-	 * @param liveTime(存活时间ms)
+	 * @param timeout(存活时间ms)
 	 *
 	 */
-	public static void setObjectWithLiveTime(String key, Object obj, long liveTime) {
-		setObject(key, obj, null, liveTime);
+	public static void setObjectWithTimeout(String key, Object obj, long timeout) {
+		setObject(key, obj, null, timeout);
 	}
 
 	/**
@@ -108,10 +109,10 @@ public class RedisCacheUtil {
 	 * @param key
 	 * @param obj
 	 * @param dbIndex
-	 * @param liveTime(存活时间ms)
+	 * @param timeout(存活时间ms)
 	 *
 	 */
-	public static void setObject(String key, Object obj, Integer dbIndex, Long liveTime) {
+	public static void setObject(String key, Object obj, Integer dbIndex, Long timeout) {
 		try {
 			redisTemplate.execute(new RedisCallback<Object>() {
 				@Override
@@ -120,8 +121,8 @@ public class RedisCacheUtil {
 						connection.select(dbIndex);
 					byte[] rawKey = serializeKey(key, redisTemplate.getKeySerializer());
 					connection.set(rawKey, serializeKey(obj, redisTemplate.getValueSerializer()));
-					if (liveTime != null)
-						connection.pExpire(rawKey, liveTime);
+					if (timeout != null)
+						connection.pExpire(rawKey, timeout);
 					return null;
 				}
 			}, true);
@@ -139,11 +140,11 @@ public class RedisCacheUtil {
 		batchSetObject(map, dbIndex, null);
 	}
 
-	public static void batchSetObjectWithLiveTime(Map<String, ?> map, long liveTime) {
-		batchSetObject(map, null, liveTime);
+	public static void batchSetObjectWithTimeout(Map<String, ?> map, long timeout) {
+		batchSetObject(map, null, timeout);
 	}
 
-	public static void batchSetObject(Map<String, ?> map, Integer dbIndex, Long liveTime) {
+	public static void batchSetObject(Map<String, ?> map, Integer dbIndex, Long timeout) {
 		try {
 			final RedisSerializer keySerializer = redisTemplate.getKeySerializer();
 			final RedisSerializer valueSerializer = redisTemplate.getValueSerializer();
@@ -158,9 +159,9 @@ public class RedisCacheUtil {
 						rawMap.put(keySerializer.serialize(entry.getKey()), valueSerializer.serialize(entry.getValue()));
 					}
 					connection.mSet(rawMap);
-					if (liveTime != null) {
+					if (timeout != null) {
 						for (byte[] rawKey : rawMap.keySet()) {
-							connection.pExpire(rawKey, liveTime);
+							connection.pExpire(rawKey, timeout);
 						}
 					}
 					return null;
@@ -361,13 +362,40 @@ public class RedisCacheUtil {
 	/**
 	 * 更新或者设置key的存活时间
 	 * 
-	 * @Title: setLiveTime
+	 * @Title: setTimeout
 	 * @param key
-	 * @param liveTime
+	 * @param timeout
 	 *
 	 */
-	public static void setLiveTime(String key, Long liveTime) {
-		redisTemplate.expire(key, liveTime, TimeUnit.MILLISECONDS);
+	public static void setTimeout(String key, Long timeout) {
+		setTimeout(key, timeout, null);
+	}
+
+	/**
+	 * 更新或者设置key的存活时间
+	 * 
+	 * @Title: setTimeout
+	 * @param key
+	 * @param timeout
+	 * @param dbIndex
+	 *
+	 */
+	public static boolean setTimeout(String key, Long timeout, Integer dbIndex) {
+		return redisTemplate.execute(new RedisCallback<Boolean>() {
+
+			public Boolean doInRedis(RedisConnection connection) {
+				if (dbIndex != null) {
+					connection.select(dbIndex);
+				}
+				byte[] rawKey = serializeKey(key, redisTemplate.getKeySerializer());
+				try {
+					return connection.pExpire(rawKey, timeout);
+				} catch (Exception e) {
+					// Driver may not support pExpire or we may be running on Redis 2.4
+					return connection.expire(rawKey, TimeoutUtils.toSeconds(timeout, TimeUnit.MILLISECONDS));
+				}
+			}
+		}, true);
 	}
 
 	/**
