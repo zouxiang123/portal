@@ -1,5 +1,8 @@
 package com.xtt.platform.util.lang;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -13,7 +16,7 @@ public class StringUtil extends StringUtils {
 	public static String fillLeft(String s, char c, int i) {
 		return fillStr(s, c, i, true);
 	}
-
+	
 	private static String fillStr(String s, char c, int i, boolean flag) {
 		int j = i - s.length();
 		if (j <= 0)
@@ -111,7 +114,19 @@ public class StringUtil extends StringUtils {
 		}
 		return formatNo;
 	}
-
+	public static boolean isNumber(String str) {
+		if (isNotEmpty(str)) {
+			String regex = "^(\\-)?\\d+(\\.\\d{1,4})?$";
+			Pattern pattern = Pattern.compile(regex);
+			Matcher match = pattern.matcher(str);
+			if (match.matches() == false) {
+				return false;
+			} else {
+				return true;
+			}
+		}
+		return false;
+	}
 	public static void main(String[] args) {
 
 	}
