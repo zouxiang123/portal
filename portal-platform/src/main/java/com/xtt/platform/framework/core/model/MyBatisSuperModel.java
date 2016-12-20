@@ -27,6 +27,8 @@ public class MyBatisSuperModel {
 	private List results;// 对应的当前页记录
 	private Map<String, Object> params;// 其他的参数我们把它分装成一个Map对象
 
+	private List<MybatisOrderByModel> orderByList;// 排序条件集合
+
 	private String tableId;
 
 	public String getTableId() {
@@ -111,7 +113,8 @@ public class MyBatisSuperModel {
 	}
 
 	public void setRequestPath(HttpServletRequest request) {
-		if(request == null) return;
+		if (request == null)
+			return;
 		String servletPath = request.getServletPath();
 		if (null != servletPath && servletPath.indexOf(".") != -1) {
 			servletPath = servletPath.substring(1, servletPath.indexOf("."));
@@ -119,6 +122,14 @@ public class MyBatisSuperModel {
 			servletPath = "user/listUser";
 		}
 		this.requestPath = servletPath;
+	}
+
+	public List<MybatisOrderByModel> getOrderByList() {
+		return orderByList;
+	}
+
+	public void setOrderByList(List<MybatisOrderByModel> orderByList) {
+		this.orderByList = orderByList;
 	}
 
 }

@@ -9,19 +9,21 @@
 package com.xtt.platform.framework.core.model;
 
 public class MybatisOrderByModel {
+	private String asName;// 别名
 	private String paraName;
 	private String paraAsc;
 
 	public static String PARA_ASC = "ASC";
 	public static String PARA_DESC = "DESC";
-	public static String FORMAT_MSG = "paraName:%s,paraAsc:%s";
+	public static String FORMAT_MSG = "asName:%s,paraName:%s,paraAsc:%s";
 
 	public MybatisOrderByModel(String paraName) {
 		this.paraName = paraName;
 		this.paraAsc = PARA_ASC;
 	}
 
-	public MybatisOrderByModel(String paraName, String paraAsc) {
+	public MybatisOrderByModel(String asName, String paraName, String paraAsc) {
+		this.asName = asName;
 		this.paraName = paraName;
 		this.paraAsc = paraAsc;
 	}
@@ -45,7 +47,15 @@ public class MybatisOrderByModel {
 	@Override
 	public String toString() {
 
-		return String.format(FORMAT_MSG, paraName, paraAsc);
+		return String.format(FORMAT_MSG, asName, paraName, paraAsc);
+	}
+
+	public String getAsName() {
+		return asName;
+	}
+
+	public void setAsName(String asName) {
+		this.asName = asName;
 	}
 
 }

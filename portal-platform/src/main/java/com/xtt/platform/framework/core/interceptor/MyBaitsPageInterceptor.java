@@ -64,8 +64,9 @@ public class MyBaitsPageInterceptor implements Interceptor {
 		Object obj = boundSql.getParameterObject();
 
 		// 如果有排序条件，拼接排序条件
-		if (obj != null) {
-			List<MybatisOrderByModel> orderByList = getMybatisOrderByModel(obj);
+		if (obj instanceof MyBatisSuperModel) {
+			MyBatisSuperModel pageModel = (MyBatisSuperModel) obj;
+			List<MybatisOrderByModel> orderByList = pageModel.getOrderByList();
 			if (orderByList != null && !orderByList.isEmpty()) {
 				// 获取当前要执行的Sql语句，也就是我们直接在Mapper映射语句中写的Sql语句
 				String sql = boundSql.getSql();
@@ -363,6 +364,9 @@ public class MyBaitsPageInterceptor implements Interceptor {
 			MybatisOrderByModel model = orderByList.get(i);
 			if (i > 0) {
 				buffer.append(",");
+			}
+			if (StringUtil.isNotBlank(model.getAsName())) {
+				buffer.append(model.getAsName()).append(".");
 			}
 			buffer.append(convertPropertyToColumn(model.getParaName())).append(" ").append(model.getParaAsc());
 		}
