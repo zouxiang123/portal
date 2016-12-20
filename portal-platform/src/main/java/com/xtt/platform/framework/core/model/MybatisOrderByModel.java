@@ -22,6 +22,11 @@ public class MybatisOrderByModel {
 		this.paraAsc = PARA_ASC;
 	}
 
+	public MybatisOrderByModel(String paraName, String paraAsc) {
+		this.paraName = paraName;
+		this.paraAsc = paraAsc;
+	}
+
 	public MybatisOrderByModel(String asName, String paraName, String paraAsc) {
 		this.asName = asName;
 		this.paraName = paraName;
