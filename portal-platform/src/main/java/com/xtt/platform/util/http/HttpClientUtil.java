@@ -93,11 +93,29 @@ public class HttpClientUtil {
 	 * @throws Exception
 	 */
 	public static HttpClientResultUtil post(String uri, Map<String, String> params) {
+		return post(uri, params, null);
+
+	}
+
+	/**
+	 * post 带Cookie请求
+	 * 
+	 * @param url
+	 * @param params
+	 * @return
+	 * @throws Exception
+	 */
+	public static HttpClientResultUtil post(String url, Map<String, String> params, CookieStore cookie) {
 		HttpClientResultUtil result = new HttpClientResultUtil();
 
 		try {
-			CloseableHttpClient httpClient = HttpClients.createDefault();
-			HttpPost httpPost = new HttpPost(uri);
+			CloseableHttpClient httpClient;
+			if (cookie != null) {
+				httpClient = HttpClients.custom().setDefaultCookieStore(cookie).build();
+			} else {
+				httpClient = HttpClients.createDefault();
+			}
+			HttpPost httpPost = new HttpPost(url);
 			httpPost.setConfig(getRequestConfig(null, null, null));
 			List<NameValuePair> parameters = getHttpRequestParams(params);
 			UrlEncodedFormEntity entity = new UrlEncodedFormEntity(parameters, "utf-8");
@@ -118,7 +136,6 @@ public class HttpClientUtil {
 		}
 
 		return result;
-
 	}
 
 	/**
