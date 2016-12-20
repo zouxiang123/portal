@@ -95,7 +95,8 @@ public class RedisCacheUtil {
 	 * @Title: setObjectWithTimeout
 	 * @param key
 	 * @param obj
-	 * @param timeout(存活时间ms)
+	 * @param timeout
+	 *            过期时间(milliseconds)
 	 *
 	 */
 	public static void setObjectWithTimeout(String key, Object obj, long timeout) {
@@ -109,7 +110,8 @@ public class RedisCacheUtil {
 	 * @param key
 	 * @param obj
 	 * @param dbIndex
-	 * @param timeout(存活时间ms)
+	 * @param timeout
+	 *            过期时间(milliseconds)
 	 *
 	 */
 	public static void setObject(String key, Object obj, Integer dbIndex, Long timeout) {
@@ -132,18 +134,53 @@ public class RedisCacheUtil {
 		}
 	}
 
+	/**
+	 * 批量设置对象
+	 * 
+	 * @Title: batchSetObject
+	 * @param map
+	 *
+	 */
 	public static void batchSetObject(Map<String, ?> map) {
 		batchSetObject(map, null, null);
 	}
 
+	/**
+	 * 批量设置对象
+	 * 
+	 * @Title: batchSetObjectWithDB
+	 * @param map
+	 * @param dbIndex
+	 *            数据库
+	 *
+	 */
 	public static void batchSetObjectWithDB(Map<String, ?> map, Integer dbIndex) {
 		batchSetObject(map, dbIndex, null);
 	}
 
+	/**
+	 * 批量设置对象
+	 * 
+	 * @Title: batchSetObjectWithTimeout
+	 * @param map
+	 * @param timeout
+	 *            过期时间(milliseconds)
+	 *
+	 */
 	public static void batchSetObjectWithTimeout(Map<String, ?> map, long timeout) {
 		batchSetObject(map, null, timeout);
 	}
 
+	/**
+	 * 批量设置对象
+	 * 
+	 * @Title: batchSetObject
+	 * @param map
+	 * @param dbIndex
+	 * @param timeout
+	 *            过期时间(milliseconds)
+	 *
+	 */
 	public static void batchSetObject(Map<String, ?> map, Integer dbIndex, Long timeout) {
 		try {
 			final RedisSerializer keySerializer = redisTemplate.getKeySerializer();
@@ -365,6 +402,7 @@ public class RedisCacheUtil {
 	 * @Title: setTimeout
 	 * @param key
 	 * @param timeout
+	 *            过期时间(milliseconds)
 	 *
 	 */
 	public static void setTimeout(String key, Long timeout) {
@@ -377,6 +415,7 @@ public class RedisCacheUtil {
 	 * @Title: setTimeout
 	 * @param key
 	 * @param timeout
+	 *            过期时间(milliseconds)
 	 * @param dbIndex
 	 *
 	 */
@@ -623,7 +662,6 @@ public class RedisCacheUtil {
 		RedisCacheUtil.redisTemplate = redisTemplate;
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static void main(String[] args) {
 		@SuppressWarnings({ "unused", "resource" })
 		ApplicationContext factory = new ClassPathXmlApplicationContext("config/springRedis.xml");
@@ -674,7 +712,6 @@ public class RedisCacheUtil {
 		try {
 			Thread.sleep(2000);
 		} catch (Exception e) {
-			// TODO: handle exception
 		}
 		System.out.println(RedisCacheUtil.getString("11111111"));
 	}
