@@ -1,9 +1,13 @@
 package com.xtt.platform.util.lang;
 
+import java.util.Date;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
+
+import com.xtt.platform.util.time.DateUtil;
 
 /**
  * 文本处理工具类
@@ -127,6 +131,13 @@ public class StringUtil extends StringUtils {
 		}
 		return false;
 	}
+	
+	public static String getUUIDFive(){
+		String reqId=(UUID.randomUUID().toString()).substring(0, 5);
+		String currentDate=DateUtil.format(new Date(), "yyyyMMdd");
+		return currentDate+"_"+reqId;
+	}
+	
 	public static void main(String[] args) {
 
 	}

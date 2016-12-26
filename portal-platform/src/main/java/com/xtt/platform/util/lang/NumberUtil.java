@@ -70,6 +70,11 @@ public class NumberUtil extends NumberUtils{
             return i + "";
     }
     
+	/**
+	 * 判断是否字符串是否是数字
+	 * @param str
+	 * @return
+	 */
 	public static boolean isNumeric(String str) {
 		Pattern pattern = Pattern.compile("[0-9]*");
 		return pattern.matcher(str).matches();
