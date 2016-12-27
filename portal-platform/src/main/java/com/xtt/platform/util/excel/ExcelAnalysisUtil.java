@@ -131,6 +131,51 @@ public class ExcelAnalysisUtil {
 		}
 		return resultRows;
 	}
+	
+	/**
+	 * 获取所有sheet中的数据
+	 * @Title: getSheetsRowData
+	 * @param excelInputStream	excel文件流
+	 * @param sheetIndex		读取几个sheet 默认从0开始
+	 * @param titleRowNum		从第几行开始读取
+	 * @return
+	 * @throws Exception
+	 *
+	 */
+	public static Map<Integer,List<Map<String, String>>> getSheetAll(InputStream excelInputStream, int sheetIndex,int titleRowNum) throws Exception {
+		Map<Integer,List<Map<String, String>>> resultSheets = new HashMap<Integer,List<Map<String, String>>>();
+		
+		Workbook excelBook = openExcelFile(excelInputStream);
+		
+		for(int si = 0 ; si <= sheetIndex; si ++){
+			List<Map<String,String>> resultRows = new ArrayList<Map<String,String>>();
+			Map<Integer,String> titleMap = new HashMap<Integer,String>();
+			Sheet excelSheet = getSheet(excelBook, si);
+			int maxRowNum = excelSheet.getLastRowNum();
+			if(maxRowNum <= 0 || titleRowNum>=maxRowNum){
+				continue;
+			}
+			
+			//读取起始行
+			int startRowNum = titleRowNum;
+			
+			//获取标题
+			getRowTitle(titleMap, excelSheet,startRowNum);
+			
+			//读取数据行
+			startRowNum ++;
+			
+			//获取所有数据行
+			for(int i = startRowNum ; i <= maxRowNum;i ++){
+				Row row = excelSheet.getRow(i);
+				Map<String, String> cellMap = getRowCellData(row,titleMap);
+				resultRows.add(cellMap);
+			}
+			resultSheets.put(si, resultRows);
+		}
+		
+		return resultSheets;
+	}
 
 	/**
 	 * 获取标题行
