@@ -6,7 +6,7 @@ package com.xtt.platform.util.config;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.net.URL;
+import java.io.InputStreamReader;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Properties;
@@ -14,20 +14,21 @@ import java.util.Properties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.xtt.platform.util.lang.StringUtil;
 
 /**
  * @author Tik
  * 
  */
 public class PropertiesUtil {
-	static Logger log =LoggerFactory.getLogger(PropertiesUtil.class);
+	static Logger log = LoggerFactory.getLogger(PropertiesUtil.class);
+
 	public PropertiesUtil() {
-		
+
 	}
 
 	/**
-	 * 读取配置文件 <per> ConfigUtil.getConfig("/spring/config.properties") return
-	 * Properties prop
+	 * 读取配置文件 <per> ConfigUtil.getConfig("/spring/config.properties") return Properties prop
 	 * 
 	 * prop.getProperty("username").trim();
 	 * 
@@ -36,12 +37,30 @@ public class PropertiesUtil {
 	 * 
 	 */
 	public static Properties loadProperties(String path) {
+		return loadProperties(path, "utf-8");
+	}
+
+	/**
+	 * 读取配置文件 <per> ConfigUtil.getConfig("/spring/config.properties") return Properties prop
+	 * 
+	 * prop.getProperty("username").trim();
+	 * 
+	 * @param strfile
+	 * @param charset
+	 * @return
+	 * 
+	 */
+	public static Properties loadProperties(String path, String charset) {
 		Properties prop = new Properties();
 		// String configFilePath = getDestFilePath(path);
 		InputStream is = null;
 		try {
 			is = new FileInputStream(path);
-			prop.load(is);
+			if (StringUtil.isNotBlank(charset)) {
+				prop.load(new InputStreamReader(is, charset));
+			} else {
+				prop.load(is);
+			}
 			is.close();
 		} catch (Exception e) {
 			log.info("loadProperties error: " + e.getMessage(), e);
@@ -57,37 +76,54 @@ public class PropertiesUtil {
 		return prop;
 	}
 
-    /**
-     * 读取配置文件 <per> ConfigUtil.getConfig("/spring/config.properties") return
-     * Properties prop
-     * 
-     * prop.getProperty("username").trim();
-     * 
-     * @param strfile
-     * @return
-     * 
-     */
-    public static Properties loadJarProperties(String path) {
-        Properties prop = new Properties();
-        // String configFilePath = getDestFilePath(path);
-        InputStream is = null;
-        try {
-            is = PropertiesUtil.class.getResourceAsStream(path);
-            prop.load(is);
-            is.close();
-        } catch (Exception e) {
-            log.info("loadProperties error: " + e.getMessage(), e);
-        } finally {
-            try {
-                if (is != null) {
-                    is.close();
-                    is = null;
-                }
-            } catch (Exception e) {
-            }
-        }
-        return prop;
-    }
+	/**
+	 * 读取配置文件 <per> ConfigUtil.getConfig("/spring/config.properties") return Properties prop
+	 * 
+	 * prop.getProperty("username").trim();
+	 * 
+	 * @param strfile
+	 * @return
+	 * 
+	 */
+	public static Properties loadJarProperties(String path) {
+		return loadJarProperties(path, "utf-8");
+	}
+
+	/**
+	 * 读取配置文件 <per> ConfigUtil.getConfig("/spring/config.properties") return Properties prop
+	 * 
+	 * prop.getProperty("username").trim();
+	 * 
+	 * @param path
+	 * @param charset
+	 * @return
+	 * 
+	 */
+	public static Properties loadJarProperties(String path, String charset) {
+		Properties prop = new Properties();
+		// String configFilePath = getDestFilePath(path);
+		InputStream is = null;
+		try {
+			is = PropertiesUtil.class.getResourceAsStream(path);
+			if (StringUtil.isNotBlank(charset)) {
+				prop.load(new InputStreamReader(is, charset));
+			} else {
+				prop.load(is);
+			}
+			is.close();
+		} catch (Exception e) {
+			log.info("loadProperties error: " + e.getMessage(), e);
+		} finally {
+			try {
+				if (is != null) {
+					is.close();
+					is = null;
+				}
+			} catch (Exception e) {
+			}
+		}
+		return prop;
+	}
 
 	/**
 	 * 
@@ -114,24 +150,29 @@ public class PropertiesUtil {
 
 	/**
 	 * 
-	*
-	* @Title: getContextProperty
-	* @Description: <p>获取config/下的config.properties文件属性值<p>
-	* <pre>
-		getContextProperty("user.name");
-	* </pre>
-	* @param: <p>@param key
-	* @param: <p>@return<p>
-	* @date: 2014年5月16日
-	* @return: Object
-	* @throws 
-	*
+	 *
+	 * @Title: getContextProperty @Description:
+	 *         <p>
+	 *         获取config/下的config.properties文件属性值
+	 *         <p>
+	 * 
+	 *         <pre>
+	 *         getContextProperty("user.name");
+	 *         </pre>
+	 * 
+	 * @param: <p>
+	 * @param key
+	 * @param: <p>
+	 * @return
+	 *         <p>
+	 * @date: 2014年5月16日 @return: Object @throws
+	 *
 	 */
-	public static Object getContextProperty(String key) {  
-        String default_Path = "/config/config.properties";
-		return getProperty(key,loadJarProperties(default_Path));
-    } 
-	
+	public static Object getContextProperty(String key) {
+		String default_Path = "/config/config.properties";
+		return getProperty(key, loadJarProperties(default_Path));
+	}
+
 	private InputStream getPropsIS(String propertiesPath) {
 		InputStream ins = this.getClass().getResourceAsStream(propertiesPath);
 		return ins;
@@ -143,7 +184,7 @@ public class PropertiesUtil {
 	 * @param key
 	 * @return value
 	 */
-	public String readSingleProps(String key,String propertiesPath) {
+	public String readSingleProps(String key, String propertiesPath) {
 		String retValue = "";
 		Properties props = new Properties();
 		try {
