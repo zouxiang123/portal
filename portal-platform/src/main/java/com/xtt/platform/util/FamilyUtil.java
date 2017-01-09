@@ -12,11 +12,10 @@ import com.xtt.platform.util.lang.StringUtil;
  *
  */
 public class FamilyUtil {
-
 	private static Properties familyProp;
 
 	/**
-	 * 根据姓获取去姓的首字母
+	 * 根据姓获取姓的首字母
 	 * 
 	 * @param name
 	 * @return
@@ -28,9 +27,6 @@ public class FamilyUtil {
 		if (familyProp == null) {
 			familyProp = PropertiesUtil.loadJarProperties("/family.properties", "utf-8");
 		}
-		if (familyProp.get(name) == null) {
-			return name;
-		}
-		return (String) familyProp.get(name);
+		return familyProp.get(name) == null ? SpellUtil.getSpellInitials(name) : (String) familyProp.get(name);
 	}
 }
