@@ -112,7 +112,7 @@ public class DateFormatUtil extends DateFormatUtils {
 	public static String getCurrentDateStr(String formatStr) {
 		String strDate = "";
 		DateFormat dateFormat = new SimpleDateFormat(formatStr);
-		strDate = dateFormat.format(new Date(System.currentTimeMillis()));
+		strDate = dateFormat.format(new Date());
 		return strDate;
 	}
 
