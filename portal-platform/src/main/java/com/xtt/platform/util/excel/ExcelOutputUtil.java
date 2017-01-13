@@ -114,7 +114,8 @@ public class ExcelOutputUtil {
     private static void exportWorkbook(Workbook hssWorkbook ,String exportfileName,HttpServletResponse response) throws Exception  
     {  
         //设置导出弹出框，以及下载文件名称  
-        response.setHeader("Content-Disposition","attachment;filename="+exportfileName+".xls");  
+    	exportfileName = java.net.URLEncoder.encode(exportfileName, "UTF-8");  
+        response.setHeader("Content-Disposition","attachment;filename="+exportfileName+".xls"); 
         OutputStream os = response.getOutputStream();  
         hssWorkbook.write(os);  
         os.flush();    
