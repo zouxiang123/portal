@@ -37,6 +37,7 @@ public class KafkaProducerUtil {
 	public static final String TOPIC_CHARGE = "charge";
 	public static final String TOPIC_SHIFT_BORAD = "shiftBorad";
 	public static final String TOPIC_MESSAGE = "message";
+	public static final String TOPIC_PATIENT_TYPE = "patientType";
 
 	private static KafkaTemplate<Integer, String> kafkaTemplate;
 
