@@ -15,14 +15,14 @@ import com.xtt.platform.util.config.CusotmizedPropertyUtil;
 import com.xtt.platform.util.model.MultiMediaConfigModel;
 
 *//**
-	 * 
-	 * @ClassName: FtpUtil
-	 * @description: FTP上传下载帮助类
-	 * @author: Tik
-	 * @date: 2014年6月12日 下午3:23:28
-	 * @version: V1.0
-	 * 
-	 */
+   * 
+   * @ClassName: FtpUtil
+   * @description: FTP上传下载帮助类
+   * @author: Tik
+   * @date: 2014年6月12日 下午3:23:28
+   * @version: V1.0
+   * 
+   */
 /*
 public class FtpUtil {
 
@@ -52,33 +52,33 @@ private static MultiMediaConfigModel init(MultiMediaConfigModel model) {
 }
 
 *//**
-	 * 
-	 * 
-	 * @Title: downloadFromFTP @Description:
-	 *         <p>
-	 *         FTp下载,下载整个目录
-	 *         <p>
-	 * 
-	 *         <pre>
-	 *  这里描述这个方法的使用方法 – 可选
-	 *         </pre>
-	 * 
-	 * 		@param:
-	 *         <p>
-	 * 		@param model @param:
-	 *         <p>
-	 * 		@param tenantId
-	 *         <p>
-	 * 		@date: 2014年6月12日 @return: void @throws
-	 * 
-	 */
+   * 
+   * 
+   * @Title: downloadFromFTP @Description:
+   *         <p>
+   *         FTp下载,下载整个目录
+   *         <p>
+   * 
+   *         <pre>
+   *  这里描述这个方法的使用方法 – 可选
+   *         </pre>
+   * 
+   * @param: <p>
+   * @param model
+   *            @param:
+   *            <p>
+   * @param tenantId
+   *            <p>
+   * @date: 2014年6月12日 @return: void @throws
+   * 
+   */
 /*
 public static void downloadFromFTP(MultiMediaConfigModel model,
 	String tenantId) {
 if (null != model) {
 	*//**
-		 * --------------------- 如果本地目录不存在，创建。 如果存在，删除本地文件 --------------------
-		 */
+       * --------------------- 如果本地目录不存在，创建。 如果存在，删除本地文件 --------------------
+       */
 /*
 String localPath = model.getDownloadPath();
 String serverPath = model.getServerPath();
@@ -101,8 +101,8 @@ if (files != null) {
 }
 
 *//**
-	 * --------------------- 获取远程路径及FTP连接参数 将FTP上的文件下载到本地 --------------------
-	 */
+   * --------------------- 获取远程路径及FTP连接参数 将FTP上的文件下载到本地 --------------------
+   */
 /*
 String remotePath = model.getFtpFilePath();
 if (!remotePath.endsWith("/")) {
@@ -159,30 +159,32 @@ logger.error(e.toString());
 }
 
 *//**
-	 * 
-	 * 
-	 * @Title: downloadFromFTP @Description:
-	 *         <p>
-	 *         下载指定的文件
-	 *         <p>
-	 * 
-	 *         <pre>
-	 *  这里描述这个方法的使用方法 – 可选
-	 *         </pre>
-	 * 
-	 * 		@param:
-	 *         <p>
-	 * 		@param model @param:
-	 *         <p>
-	 * 		@param tenantId @param:
-	 *         <p>
-	 * 		@param fileName @param:
-	 *         <p>
-	 * 		@return
-	 *         <p>
-	 * 		@date: 2014年6月12日 @return: String @throws
-	 * 
-	 */
+   * 
+   * 
+   * @Title: downloadFromFTP @Description:
+   *         <p>
+   *         下载指定的文件
+   *         <p>
+   * 
+   *         <pre>
+   *  这里描述这个方法的使用方法 – 可选
+   *         </pre>
+   * 
+   * @param: <p>
+   * @param model
+   *            @param:
+   *            <p>
+   * @param tenantId
+   *            @param:
+   *            <p>
+   * @param fileName
+   *            @param:
+   *            <p>
+   * @return
+   *         <p>
+   * @date: 2014年6月12日 @return: String @throws
+   * 
+   */
 /*
 public static String downloadFromFTP(MultiMediaConfigModel model,
 	String tenantId, String fileName) {
@@ -190,8 +192,8 @@ String localFilePath = "";
 model=FtpUtil.init(model);
 if (model != null) {
 	*//**
-		 * ------------------------ 如果本地目录不存在，创建目录 如果存在，删除本地同名文件 -----------------------
-		 */
+       * ------------------------ 如果本地目录不存在，创建目录 如果存在，删除本地同名文件 -----------------------
+       */
 /*
 String localPath = model.getDownloadPath();
 String serverPath = model.getServerPath();
@@ -219,8 +221,8 @@ if (files != null) {
 }
 
 *//**
-	 * --------------------- 获取远程路径及FTP连接参数 将FTP上的文件下载到本地 --------------------
-	 */
+   * --------------------- 获取远程路径及FTP连接参数 将FTP上的文件下载到本地 --------------------
+   */
 /*
 String remotePath = model.getFtpFilePath();
 if (!remotePath.endsWith("/")) {
@@ -282,26 +284,26 @@ return localFilePath;
 }
 
 *//**
-	 * 
-	 * 
-	 * @Title: uploadToFTP @Description:
-	 *         <p>
-	 *         上传文件到FTP
-	 *         <p>
-	 * 
-	 *         <pre>
-	 *  这里描述这个方法的使用方法 – 可选
-	 *         </pre>
-	 * 
-	 * 		@param:
-	 *         <p>
-	 * 		@param model @param:
-	 *         <p>
-	 * 		@param tenantId
-	 *         <p>
-	 * 		@date: 2014年6月12日 @return: void @throws
-	 * 
-	 */
+   * 
+   * 
+   * @Title: uploadToFTP @Description:
+   *         <p>
+   *         上传文件到FTP
+   *         <p>
+   * 
+   *         <pre>
+   *  这里描述这个方法的使用方法 – 可选
+   *         </pre>
+   * 
+   * @param: <p>
+   * @param model
+   *            @param:
+   *            <p>
+   * @param tenantId
+   *            <p>
+   * @date: 2014年6月12日 @return: void @throws
+   * 
+   */
 /*
 public static void uploadToFTP(MultiMediaConfigModel model, String tenantId) {
 if (model != null) {
@@ -378,16 +380,16 @@ logger.error(e.toString());
 }
 
 *//**
-	 * --------------------------------------------------------------------- 向FTP上传指定文件到配置好的目录中
-	 * 
-	 * @param mmc
-	 *            配置对象<该对象可通过getMultiMediaConfig(String configId)获得>
-	 * @param tenantId
-	 *            租户ID,系统资源按租户存放
-	 * @param fileName
-	 *            本地文件名
-	 * @return void 将指定文件上传到FTP指定目录下,无返回值 ---------------------------------------- -----------------------------
-	 */
+   * --------------------------------------------------------------------- 向FTP上传指定文件到配置好的目录中
+   * 
+   * @param mmc
+   *            配置对象<该对象可通过getMultiMediaConfig(String configId)获得>
+   * @param tenantId
+   *            租户ID,系统资源按租户存放
+   * @param fileName
+   *            本地文件名
+   * @return void 将指定文件上传到FTP指定目录下,无返回值 ---------------------------------------- -----------------------------
+   */
 /*
 public static void uploadToFTP(MultiMediaConfigModel model,
 	String tenantId, String fileName) {
@@ -470,18 +472,18 @@ logger.error(e.toString());
 }
 
 *//**
-	 * --------------------------------------------------------------------- 向FTP上传指定文件到配置好的目录中
-	 * 
-	 * @param mmc
-	 *            配置对象<该对象可通过getMultiMediaConfig(String configId)获得>
-	 * @param tenantId
-	 *            租户ID,系统资源按租户存放
-	 * @param localFile
-	 *            本地文件
-	 * @param remoteFileName
-	 *            远程文件名
-	 * @return void 将指定文件上传到FTP指定目录下,无返回值 ---------------------------------------- -----------------------------
-	 */
+   * --------------------------------------------------------------------- 向FTP上传指定文件到配置好的目录中
+   * 
+   * @param mmc
+   *            配置对象<该对象可通过getMultiMediaConfig(String configId)获得>
+   * @param tenantId
+   *            租户ID,系统资源按租户存放
+   * @param localFile
+   *            本地文件
+   * @param remoteFileName
+   *            远程文件名
+   * @return void 将指定文件上传到FTP指定目录下,无返回值 ---------------------------------------- -----------------------------
+   */
 /*
 public static void uploadToFTP(MultiMediaConfigModel model,
 	String tenantId, File localFile, String remoteFileName) {
@@ -553,24 +555,24 @@ logger.error("关闭FTP连接出错" + e.getMessage(), e);
 }
 
 *//**
-	 * --------------------------------------------------------------------- 〈验证文件是否存在，并且从FTP上把文件写入到临时文件夹〉
-	 * 
-	 * @param mmc
-	 *            配置对象<该对象可通过getMultiMediaConfig(String configId)获得>
-	 * @param tenantId
-	 *            租户ID,系统资源按租户存放
-	 * @param fileName
-	 *            需要下载的文件
-	 * @return String 全路径 -------------------------------------------------------- -------------
-	 */
+   * --------------------------------------------------------------------- 〈验证文件是否存在，并且从FTP上把文件写入到临时文件夹〉
+   * 
+   * @param mmc
+   *            配置对象<该对象可通过getMultiMediaConfig(String configId)获得>
+   * @param tenantId
+   *            租户ID,系统资源按租户存放
+   * @param fileName
+   *            需要下载的文件
+   * @return String 全路径 -------------------------------------------------------- -------------
+   */
 /*
 public static String validateFtpFileIsExist(MultiMediaConfigModel model,
 	String tenantId, String fileName) {
 String localFilePath = "";
 try {
 	*//**
-		 * ------------------------ 如果本地目录不存在，创建目录 如果存在，删除本地同名文件 -----------------------
-		 */
+       * ------------------------ 如果本地目录不存在，创建目录 如果存在，删除本地同名文件 -----------------------
+       */
 /*
 String localPath = model.getDownloadPath();
 String serverPath = model.getServerPath();
@@ -585,8 +587,8 @@ localDir.mkdirs();
 }
 
 *//**
-	 * --------------------- 获取远程路径及FTP连接参数 将FTP上的文件下载到本地 --------------------
-	 */
+   * --------------------- 获取远程路径及FTP连接参数 将FTP上的文件下载到本地 --------------------
+   */
 /*
 String remotePath = model.getFtpFilePath();
 if (!remotePath.endsWith("/")) {
@@ -643,26 +645,26 @@ return localFilePath;
 }
 
 *//**
-	 * --------------------------------------------------------------------- 〈从FTP下载指定文件到配置好的目录中,并把文件内容读到输出流中〉
-	 * 
-	 * @param mmc
-	 *            配置对象<该对象可通过getMultiMediaConfig(String configId)获得>
-	 * @param tenantId
-	 *            租户ID,系统资源按租户存放
-	 * @param fileName
-	 *            需要下载的文件
-	 * @param response
-	 *            response
-	 * @return void -------------------------------------------------------------- -------
-	 */
+   * --------------------------------------------------------------------- 〈从FTP下载指定文件到配置好的目录中,并把文件内容读到输出流中〉
+   * 
+   * @param mmc
+   *            配置对象<该对象可通过getMultiMediaConfig(String configId)获得>
+   * @param tenantId
+   *            租户ID,系统资源按租户存放
+   * @param fileName
+   *            需要下载的文件
+   * @param response
+   *            response
+   * @return void -------------------------------------------------------------- -------
+   */
 /*
 public static void downloadToOutputStream(MultiMediaConfigModel mmc,
 	String tenantId, String fileName, HttpServletResponse response) {
 String localFilePath = "";
 if (mmc != null) {
 	*//**
-		 * ------------------------ 如果本地目录不存在，创建目录 如果存在，删除本地同名文件 -----------------------
-		 */
+       * ------------------------ 如果本地目录不存在，创建目录 如果存在，删除本地同名文件 -----------------------
+       */
 /*
 String localPath = mmc.getDownloadPath();
 String serverPath = mmc.getServerPath();
@@ -677,8 +679,8 @@ localDir.mkdirs();
 }
 
 *//**
-	 * --------------------- 获取远程路径及FTP连接参数 将FTP上的文件下载到本地 --------------------
-	 */
+   * --------------------- 获取远程路径及FTP连接参数 将FTP上的文件下载到本地 --------------------
+   */
 /*
 String remotePath = mmc.getFtpFilePath();
 if (!remotePath.endsWith("/")) {
@@ -784,20 +786,20 @@ FtpUtil.returnMsg(response, "error");// 查询配置出错(可能数据库问题
 }
 
 *//**
-	 * --------------------------------------------------------------------- 〈从FTP下载指定文件到配置好的目录中,并把文件内容读到输出流中,并默认保存为指定的文件名〉
-	 * 
-	 * @param mmc
-	 *            配置对象<该对象可通过getMultiMediaConfig(String configId)获得>
-	 * @param tenantId
-	 *            租户ID,系统资源按租户存放
-	 * @param fileName
-	 *            需要下载的文件
-	 * @param downloadName
-	 *            下载保存的文件名
-	 * @param response
-	 *            response
-	 * @return void -------------------------------------------------------------- -------
-	 */
+   * --------------------------------------------------------------------- 〈从FTP下载指定文件到配置好的目录中,并把文件内容读到输出流中,并默认保存为指定的文件名〉
+   * 
+   * @param mmc
+   *            配置对象<该对象可通过getMultiMediaConfig(String configId)获得>
+   * @param tenantId
+   *            租户ID,系统资源按租户存放
+   * @param fileName
+   *            需要下载的文件
+   * @param downloadName
+   *            下载保存的文件名
+   * @param response
+   *            response
+   * @return void -------------------------------------------------------------- -------
+   */
 /*
 public static void downloadToOutputStream(MultiMediaConfigModel mmc,
 	String tenantId, String fileName, String downloadName,
@@ -805,8 +807,8 @@ public static void downloadToOutputStream(MultiMediaConfigModel mmc,
 String localFilePath = "";
 if (mmc != null) {
 	*//**
-		 * ------------------------ 如果本地目录不存在，创建目录 如果存在，删除本地同名文件 -----------------------
-		 */
+       * ------------------------ 如果本地目录不存在，创建目录 如果存在，删除本地同名文件 -----------------------
+       */
 /*
 String localPath = mmc.getDownloadPath();
 String serverPath = mmc.getServerPath();
@@ -821,8 +823,8 @@ localDir.mkdirs();
 }
 
 *//**
-	 * --------------------- 获取远程路径及FTP连接参数 将FTP上的文件下载到本地 --------------------
-	 */
+   * --------------------- 获取远程路径及FTP连接参数 将FTP上的文件下载到本地 --------------------
+   */
 /*
 String remotePath = mmc.getFtpFilePath();
 if (!remotePath.endsWith("/")) {
@@ -877,8 +879,8 @@ if (login) {
 				response.reset();
 				response.setContentType("application/x-download");
 				*//**
-					 * 注意：此处对文件名重新编码非常重要，否则当文件名中有中文字符时， 可能出现一些难以理解的奇怪问题，例如显示无法打开internet站点、下载文件为未知类型等
-					 */
+                   * 注意：此处对文件名重新编码非常重要，否则当文件名中有中文字符时， 可能出现一些难以理解的奇怪问题，例如显示无法打开internet站点、下载文件为未知类型等
+                   */
 /*
 response.setHeader(
 	"content-disposition",
@@ -936,13 +938,13 @@ FtpUtil.returnMsg(response, "error");// 查询配置出错(可能数据库问题
 }
 
 *//**
-	 * 
-	 * 〈创建租户目录〉
-	 * 
-	 * @param mmc
-	 * @param tenantId
-	 * @return boolean
-	 */
+   * 
+   * 〈创建租户目录〉
+   * 
+   * @param mmc
+   * @param tenantId
+   * @return boolean
+   */
 /*
 public static boolean createTenantDir(MultiMediaConfigModel mmc,
 	String tenantId) {
@@ -982,26 +984,26 @@ return created;
 }
 
 *//**
-	 * --------------------------------------------------------------------- 〈从FTP下载指定文件到配置好的目录中,并把文件内容读到输出流中〉
-	 * 
-	 * @param mmc
-	 *            配置对象<该对象可通过getMultiMediaConfig(String configId)获得>
-	 * @param tenantId
-	 *            租户ID,系统资源按租户存放
-	 * @param fileName
-	 *            需要下载的文件
-	 * @param response
-	 *            response
-	 * @return void -------------------------------------------------------------- -------
-	 */
+   * --------------------------------------------------------------------- 〈从FTP下载指定文件到配置好的目录中,并把文件内容读到输出流中〉
+   * 
+   * @param mmc
+   *            配置对象<该对象可通过getMultiMediaConfig(String configId)获得>
+   * @param tenantId
+   *            租户ID,系统资源按租户存放
+   * @param fileName
+   *            需要下载的文件
+   * @param response
+   *            response
+   * @return void -------------------------------------------------------------- -------
+   */
 /*
 public static void downloadToOutputStream(MultiMediaConfigModel mmc,
 	String fileName, HttpServletResponse response) {
 String localFilePath = "";
 if (mmc != null) {
 	*//**
-		 * ------------------------ 如果本地目录不存在，创建目录 如果存在，删除本地同名文件 -----------------------
-		 */
+       * ------------------------ 如果本地目录不存在，创建目录 如果存在，删除本地同名文件 -----------------------
+       */
 /*
 String localPath = mmc.getDownloadPath();
 String serverPath = mmc.getServerPath();
@@ -1015,113 +1017,113 @@ if (!localDir.exists()) {
 localDir.mkdirs();
 } else {
 *//**
-	 * --------------------- 获取远程路径及FTP连接参数 将FTP上的文件下载到本地 --------------------
-	 *//*
-	String remotePath = mmc.getFtpFilePath();
-	if (!remotePath.endsWith("/")) {
-	remotePath = remotePath + "/";
-	}
-	
-	if ("/".equals(remotePath)) {
-	remotePath = "";
-	}
-	String ftpIp = mmc.getFtpAdd();
-	String userName = mmc.getFtpUserName();
-	String password = mmc.getFtpPassword();
-	
-	FTPClient fc = new FTPClient();
-	String[] ftpInfo = ftpIp.split(":");
-	try {
-	if (ftpInfo.length > 1) {
-	fc.connect(ftpInfo[0], Integer.parseInt(ftpInfo[1]));
-	} else {
-	fc.connect(ftpInfo[0]);
-	}
-	
-	boolean login = fc.login(userName, password);
-	if (login) {
-	FTPFile[] ftpFiles = fc.listFiles(remotePath);
-	if (ftpFiles != null) {
-		FileOutputStream fos = null;
-		for (int i = 0; i < ftpFiles.length; i++) {
-			FTPFile ftpFile = ftpFiles[i];
-			String ftpFileName = ftpFile.getName();
-			if (ftpFile.isFile()
-					&& ftpFile.getName().equals(fileName)) {
-				localFilePath = localPath + ftpFileName;
-				fos = new FileOutputStream(localFilePath);
-				fc.setFileType(FTPClient.BINARY_FILE_TYPE);
-				fc.retrieveFile(remotePath + ftpFileName,
-						fos);
-				fos.flush();
-			}
-	
-			if (fos != null) {
-				fos.close();
-			}
-		}
-	}
-	}
-	
-	fc.disconnect();
-	} catch (Exception e) {
-	logger.error(e.toString());
-	}
-	}
-	
-	File local = new File(localFilePath);
-	{
-	if (local.exists()) {
-	FileInputStream fis = null;
-	OutputStream out = null;
-	try {
-	response.setContentType("application/x-download");
-	response.setHeader("content-disposition",
-			"attachment; filename=" + fileName);
-	fis = new FileInputStream(local);
-	out = response.getOutputStream();
-	byte[] buffer = new byte[1024];
-	
-	while (fis.read(buffer) > 0) {
-		out.write(buffer);
-		out.flush();
-	}
-	} catch (Exception e) {
-	logger.error(e.toString());
-	}
-	
-	}
-	}
-	}
-	
-	}
-	
-	public static void returnMsg(HttpServletResponse response, String msg) {
-	if (msg == null || "".equals(msg)) {
-	return;
-	}
-	Writer out = null;
-	try {
-	response.setCharacterEncoding("utf-8");
-	out = response.getWriter();
-	out.write(msg);
-	
-	} catch (IOException e) {
-	e.printStackTrace();
-	} finally {
-	try {
-	out.close();
-	} catch (IOException e) {
-	e.printStackTrace();
-	}
-	}
-	}
-	
-	public static void main(String[] args) {
-	MultiMediaConfigModel model=new MultiMediaConfigModel();
-	model.setFtpFilePath("\\");
-	model.setDownloadPath("D:\\");
-	FtpUtil.downloadFromFTP(model, null, "a.txt");
-	}
-	}
-	*/
+   * --------------------- 获取远程路径及FTP连接参数 将FTP上的文件下载到本地 --------------------
+   *//*
+    String remotePath = mmc.getFtpFilePath();
+    if (!remotePath.endsWith("/")) {
+    remotePath = remotePath + "/";
+    }
+    
+    if ("/".equals(remotePath)) {
+    remotePath = "";
+    }
+    String ftpIp = mmc.getFtpAdd();
+    String userName = mmc.getFtpUserName();
+    String password = mmc.getFtpPassword();
+    
+    FTPClient fc = new FTPClient();
+    String[] ftpInfo = ftpIp.split(":");
+    try {
+    if (ftpInfo.length > 1) {
+    fc.connect(ftpInfo[0], Integer.parseInt(ftpInfo[1]));
+    } else {
+    fc.connect(ftpInfo[0]);
+    }
+    
+    boolean login = fc.login(userName, password);
+    if (login) {
+    FTPFile[] ftpFiles = fc.listFiles(remotePath);
+    if (ftpFiles != null) {
+    FileOutputStream fos = null;
+    for (int i = 0; i < ftpFiles.length; i++) {
+    	FTPFile ftpFile = ftpFiles[i];
+    	String ftpFileName = ftpFile.getName();
+    	if (ftpFile.isFile()
+    			&& ftpFile.getName().equals(fileName)) {
+    		localFilePath = localPath + ftpFileName;
+    		fos = new FileOutputStream(localFilePath);
+    		fc.setFileType(FTPClient.BINARY_FILE_TYPE);
+    		fc.retrieveFile(remotePath + ftpFileName,
+    				fos);
+    		fos.flush();
+    	}
+    
+    	if (fos != null) {
+    		fos.close();
+    	}
+    }
+    }
+    }
+    
+    fc.disconnect();
+    } catch (Exception e) {
+    logger.error(e.toString());
+    }
+    }
+    
+    File local = new File(localFilePath);
+    {
+    if (local.exists()) {
+    FileInputStream fis = null;
+    OutputStream out = null;
+    try {
+    response.setContentType("application/x-download");
+    response.setHeader("content-disposition",
+    	"attachment; filename=" + fileName);
+    fis = new FileInputStream(local);
+    out = response.getOutputStream();
+    byte[] buffer = new byte[1024];
+    
+    while (fis.read(buffer) > 0) {
+    out.write(buffer);
+    out.flush();
+    }
+    } catch (Exception e) {
+    logger.error(e.toString());
+    }
+    
+    }
+    }
+    }
+    
+    }
+    
+    public static void returnMsg(HttpServletResponse response, String msg) {
+    if (msg == null || "".equals(msg)) {
+    return;
+    }
+    Writer out = null;
+    try {
+    response.setCharacterEncoding("utf-8");
+    out = response.getWriter();
+    out.write(msg);
+    
+    } catch (IOException e) {
+    e.printStackTrace();
+    } finally {
+    try {
+    out.close();
+    } catch (IOException e) {
+    e.printStackTrace();
+    }
+    }
+    }
+    
+    public static void main(String[] args) {
+    MultiMediaConfigModel model=new MultiMediaConfigModel();
+    model.setFtpFilePath("\\");
+    model.setDownloadPath("D:\\");
+    FtpUtil.downloadFromFTP(model, null, "a.txt");
+    }
+    }
+    */

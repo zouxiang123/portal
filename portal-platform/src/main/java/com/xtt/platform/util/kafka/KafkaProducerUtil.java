@@ -26,76 +26,76 @@ import com.xtt.platform.util.config.PropertiesUtil;
  *
  */
 public class KafkaProducerUtil {
-	private static final Logger LOGGER = LoggerFactory.getLogger("MQLogger");
-	private static final String DEFAULT_STRATEGY = (String) PropertiesUtil.getContextProperty("MQStrategy");;
-	private static final String STRATEGY_NORMAL = "NORMAL";
-	private static final String STRATEGY_CALLBACK = "CALLBACK";
+    private static final Logger LOGGER = LoggerFactory.getLogger("MQLogger");
+    private static final String DEFAULT_STRATEGY = (String) PropertiesUtil.getContextProperty("MQStrategy");;
+    private static final String STRATEGY_NORMAL = "NORMAL";
+    private static final String STRATEGY_CALLBACK = "CALLBACK";
 
-	public static final String TOPIC_SYS_LOG = "sysLog";
-	public static final String TOPIC_SECRETARY = "secretary";
-	public static final String TOPIC_PROCESSHIST = "processHist";
-	public static final String TOPIC_CHARGE = "charge";
-	public static final String TOPIC_SHIFT_BORAD = "shiftBorad";
-	public static final String TOPIC_MESSAGE = "message";
-	public static final String TOPIC_PATIENT_TYPE = "patientType";
+    public static final String TOPIC_SYS_LOG = "sysLog";
+    public static final String TOPIC_SECRETARY = "secretary";
+    public static final String TOPIC_PROCESSHIST = "processHist";
+    public static final String TOPIC_CHARGE = "charge";
+    public static final String TOPIC_SHIFT_BORAD = "shiftBorad";
+    public static final String TOPIC_MESSAGE = "message";
+    public static final String TOPIC_PATIENT_TYPE = "patientType";
 
-	private static KafkaTemplate<Integer, String> kafkaTemplate;
+    private static KafkaTemplate<Integer, String> kafkaTemplate;
 
-	public static ListenableFuture<SendResult<Integer, String>> sendDefault(String msg) {
-		// just normal strategy need send
-		if (STRATEGY_NORMAL.equals(DEFAULT_STRATEGY)) {
-			return kafkaTemplate.sendDefault(msg);
-		}
-		return null;
-	}
+    public static ListenableFuture<SendResult<Integer, String>> sendDefault(String msg) {
+        // just normal strategy need send
+        if (STRATEGY_NORMAL.equals(DEFAULT_STRATEGY)) {
+            return kafkaTemplate.sendDefault(msg);
+        }
+        return null;
+    }
 
-	public static ListenableFuture<SendResult<Integer, String>> send(String topic, String msg) {
-		// just normal strategy need send
-		if (STRATEGY_NORMAL.equals(DEFAULT_STRATEGY)) {
-			return kafkaTemplate.send(topic, msg);
-		}
-		return null;
-	}
+    public static ListenableFuture<SendResult<Integer, String>> send(String topic, String msg) {
+        // just normal strategy need send
+        if (STRATEGY_NORMAL.equals(DEFAULT_STRATEGY)) {
+            return kafkaTemplate.send(topic, msg);
+        }
+        return null;
+    }
 
-	/**
-	 * send message with callback
-	 * 
-	 * @Title: send
-	 * @param topic
-	 * @param msg
-	 * @param callback
-	 *
-	 */
-	public static void send(String topic, String msg, KafkaExceptionCallback callback) {
-		if (STRATEGY_CALLBACK.equals(DEFAULT_STRATEGY)) {// if use call back strategy,do not send
-			if (callback != null) {
-				callback.callBack();
-			}
-			return;
-		}
-		ListenableFuture<SendResult<Integer, String>> listenter = kafkaTemplate.send(topic, msg);
-		listenter.addCallback(new ListenableFutureCallback<SendResult<Integer, String>>() {
-			@Override
-			public void onSuccess(SendResult<Integer, String> result) {
+    /**
+     * send message with callback
+     * 
+     * @Title: send
+     * @param topic
+     * @param msg
+     * @param callback
+     *
+     */
+    public static void send(String topic, String msg, KafkaExceptionCallback callback) {
+        if (STRATEGY_CALLBACK.equals(DEFAULT_STRATEGY)) {// if use call back strategy,do not send
+            if (callback != null) {
+                callback.callBack();
+            }
+            return;
+        }
+        ListenableFuture<SendResult<Integer, String>> listenter = kafkaTemplate.send(topic, msg);
+        listenter.addCallback(new ListenableFutureCallback<SendResult<Integer, String>>() {
+            @Override
+            public void onSuccess(SendResult<Integer, String> result) {
 
-			}
+            }
 
-			@Override
-			public void onFailure(Throwable ex) {
-				LOGGER.warn("failed to send message{topic:" + topic + ",content:" + msg + " }, ", ex.getCause());
-				if (callback != null) {
-					callback.callBack();
-				}
-			}
-		});
-	}
+            @Override
+            public void onFailure(Throwable ex) {
+                LOGGER.warn("failed to send message{topic:" + topic + ",content:" + msg + " }, ", ex.getCause());
+                if (callback != null) {
+                    callback.callBack();
+                }
+            }
+        });
+    }
 
-	public KafkaTemplate<Integer, String> getKafkaTemplate() {
-		return kafkaTemplate;
-	}
+    public KafkaTemplate<Integer, String> getKafkaTemplate() {
+        return kafkaTemplate;
+    }
 
-	public void setKafkaTemplate(KafkaTemplate<Integer, String> kafkaTemplate) {
-		KafkaProducerUtil.kafkaTemplate = kafkaTemplate;
-	}
+    public void setKafkaTemplate(KafkaTemplate<Integer, String> kafkaTemplate) {
+        KafkaProducerUtil.kafkaTemplate = kafkaTemplate;
+    }
 
 }

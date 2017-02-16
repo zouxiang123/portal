@@ -9,15 +9,15 @@ import org.apache.commons.lang3.math.NumberUtils;
 /**
  * 
  * @ClassName: NumberUtil
- * @author:  Tik 
- * @CreateDate: 2014-3-28 下午3:19:28   
- * @UpdateUser: Tik   
- * @UpdateDate: 2014-3-28 下午3:19:28   
+ * @author: Tik
+ * @CreateDate: 2014-3-28 下午3:19:28
+ * @UpdateUser: Tik
+ * @UpdateDate: 2014-3-28 下午3:19:28
  * @UpdateRemark: 说明本次修改内容
- * @Description:  数字转换、币值转换
+ * @Description: 数字转换、币值转换
  * @version: V1.0
  */
-public class NumberUtil extends NumberUtils{
+public class NumberUtil extends NumberUtils {
     public static double round(double d, int i) {
         if (i < 0) {
             throw new RuntimeException("The scale must be a positive integer or zero");
@@ -69,14 +69,15 @@ public class NumberUtil extends NumberUtils{
         else
             return i + "";
     }
-    
-	/**
-	 * 判断是否字符串是否是数字
-	 * @param str
-	 * @return
-	 */
-	public static boolean isNumeric(String str) {
-		Pattern pattern = Pattern.compile("[0-9]*");
-		return pattern.matcher(str).matches();
-	}
+
+    /**
+     * 判断是否字符串是否是数字
+     * 
+     * @param str
+     * @return
+     */
+    public static boolean isNumeric(String str) {
+        Pattern pattern = Pattern.compile("[0-9]*");
+        return pattern.matcher(str).matches();
+    }
 }

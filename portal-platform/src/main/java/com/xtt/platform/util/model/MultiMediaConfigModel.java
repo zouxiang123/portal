@@ -20,161 +20,161 @@
 package com.xtt.platform.util.model;
 
 public class MultiMediaConfigModel {
-	private String id;// 配置类型 1录音质检 2语音留言 3报表 4传真
-	private String accWay;// 访问方式 1FTP 2映射网络驱动器
-	private String ftpAdd;// IP地址
-	private String driverName;// 网络驱动器
-	private String ftpFilePath;// 文件在FTP的存放路径
-	private String downloadPath;// 文件下载到
-	private String ftpUserName;// 用户名
-	private String ftpPassword;// 密码
-	private int ftpPort;// ftp 端口
-	private String ftpFileIntercept; // 截取长度
-	private String serverPath;// 应用服务器地址
+    private String id;// 配置类型 1录音质检 2语音留言 3报表 4传真
+    private String accWay;// 访问方式 1FTP 2映射网络驱动器
+    private String ftpAdd;// IP地址
+    private String driverName;// 网络驱动器
+    private String ftpFilePath;// 文件在FTP的存放路径
+    private String downloadPath;// 文件下载到
+    private String ftpUserName;// 用户名
+    private String ftpPassword;// 密码
+    private int ftpPort;// ftp 端口
+    private String ftpFileIntercept; // 截取长度
+    private String serverPath;// 应用服务器地址
 
-	// 文件服务器
-	private String sharedAdd;// 文件服务器IP
-	private String sharedUserName;// 文件服务器用户名
-	private String sharedPassword;// 文件服务器密码
-	private String sharedFilePath;// 共享文件夹
-	private String description;// 配置描述
+    // 文件服务器
+    private String sharedAdd;// 文件服务器IP
+    private String sharedUserName;// 文件服务器用户名
+    private String sharedPassword;// 文件服务器密码
+    private String sharedFilePath;// 共享文件夹
+    private String description;// 配置描述
 
-	private String tenantId;
+    private String tenantId;
 
-	public String getServerPath() {
-		return serverPath;
-	}
+    public String getServerPath() {
+        return serverPath;
+    }
 
-	public void setServerPath(String serverPath) {
-		this.serverPath = serverPath;
-	}
+    public void setServerPath(String serverPath) {
+        this.serverPath = serverPath;
+    }
 
-	public int getFtpPort() {
-		return ftpPort;
-	}
+    public int getFtpPort() {
+        return ftpPort;
+    }
 
-	public void setFtpPort(int ftpPort) {
-		this.ftpPort = ftpPort;
-	}
+    public void setFtpPort(int ftpPort) {
+        this.ftpPort = ftpPort;
+    }
 
-	public String getId() {
-		return id;
-	}
+    public String getId() {
+        return id;
+    }
 
-	public void setId(String id) {
-		this.id = id;
-	}
+    public void setId(String id) {
+        this.id = id;
+    }
 
-	public String getAccWay() {
-		return accWay;
-	}
+    public String getAccWay() {
+        return accWay;
+    }
 
-	public void setAccWay(String accWay) {
-		this.accWay = accWay;
-	}
+    public void setAccWay(String accWay) {
+        this.accWay = accWay;
+    }
 
-	public String getDownloadPath() {
-		return downloadPath;
-	}
+    public String getDownloadPath() {
+        return downloadPath;
+    }
 
-	public void setDownloadPath(String downloadPath) {
-		this.downloadPath = downloadPath;
-	}
+    public void setDownloadPath(String downloadPath) {
+        this.downloadPath = downloadPath;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public String getFtpAdd() {
-		return ftpAdd;
-	}
+    public String getFtpAdd() {
+        return ftpAdd;
+    }
 
-	public void setFtpAdd(String ftpAdd) {
-		this.ftpAdd = ftpAdd;
-	}
+    public void setFtpAdd(String ftpAdd) {
+        this.ftpAdd = ftpAdd;
+    }
 
-	public String getFtpFilePath() {
-		return ftpFilePath;
-	}
+    public String getFtpFilePath() {
+        return ftpFilePath;
+    }
 
-	public void setFtpFilePath(String ftpFilePath) {
-		this.ftpFilePath = ftpFilePath;
-	}
+    public void setFtpFilePath(String ftpFilePath) {
+        this.ftpFilePath = ftpFilePath;
+    }
 
-	public String getFtpUserName() {
-		return ftpUserName;
-	}
+    public String getFtpUserName() {
+        return ftpUserName;
+    }
 
-	public void setFtpUserName(String ftpUserName) {
-		this.ftpUserName = ftpUserName;
-	}
+    public void setFtpUserName(String ftpUserName) {
+        this.ftpUserName = ftpUserName;
+    }
 
-	public String getFtpPassword() {
-		return ftpPassword;
-	}
+    public String getFtpPassword() {
+        return ftpPassword;
+    }
 
-	public void setFtpPassword(String ftpPassword) {
-		this.ftpPassword = ftpPassword;
-	}
+    public void setFtpPassword(String ftpPassword) {
+        this.ftpPassword = ftpPassword;
+    }
 
-	public String getSharedAdd() {
-		return sharedAdd;
-	}
+    public String getSharedAdd() {
+        return sharedAdd;
+    }
 
-	public void setSharedAdd(String sharedAdd) {
-		this.sharedAdd = sharedAdd;
-	}
+    public void setSharedAdd(String sharedAdd) {
+        this.sharedAdd = sharedAdd;
+    }
 
-	public String getSharedUserName() {
-		return sharedUserName;
-	}
+    public String getSharedUserName() {
+        return sharedUserName;
+    }
 
-	public void setSharedUserName(String sharedUserName) {
-		this.sharedUserName = sharedUserName;
-	}
+    public void setSharedUserName(String sharedUserName) {
+        this.sharedUserName = sharedUserName;
+    }
 
-	public String getSharedPassword() {
-		return sharedPassword;
-	}
+    public String getSharedPassword() {
+        return sharedPassword;
+    }
 
-	public void setSharedPassword(String sharedPassword) {
-		this.sharedPassword = sharedPassword;
-	}
+    public void setSharedPassword(String sharedPassword) {
+        this.sharedPassword = sharedPassword;
+    }
 
-	public String getSharedFilePath() {
-		return sharedFilePath;
-	}
+    public String getSharedFilePath() {
+        return sharedFilePath;
+    }
 
-	public void setSharedFilePath(String sharedFilePath) {
-		this.sharedFilePath = sharedFilePath;
-	}
+    public void setSharedFilePath(String sharedFilePath) {
+        this.sharedFilePath = sharedFilePath;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public String getTenantId() {
-		return tenantId;
-	}
+    public String getTenantId() {
+        return tenantId;
+    }
 
-	public void setTenantId(String tenantId) {
-		this.tenantId = tenantId;
-	}
+    public void setTenantId(String tenantId) {
+        this.tenantId = tenantId;
+    }
 
-	public String getDriverName() {
-		return driverName;
-	}
+    public String getDriverName() {
+        return driverName;
+    }
 
-	public void setDriverName(String driverName) {
-		this.driverName = driverName;
-	}
+    public void setDriverName(String driverName) {
+        this.driverName = driverName;
+    }
 
-	public String getFtpFileIntercept() {
-		return ftpFileIntercept;
-	}
+    public String getFtpFileIntercept() {
+        return ftpFileIntercept;
+    }
 
-	public void setFtpFileIntercept(String ftpFileIntercept) {
-		this.ftpFileIntercept = ftpFileIntercept;
-	}
+    public void setFtpFileIntercept(String ftpFileIntercept) {
+        this.ftpFileIntercept = ftpFileIntercept;
+    }
 
 }

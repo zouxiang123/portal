@@ -12,21 +12,21 @@ import com.xtt.platform.util.lang.StringUtil;
  *
  */
 public class FamilyUtil {
-	private static Properties familyProp;
+    private static Properties familyProp;
 
-	/**
-	 * 根据姓获取姓的首字母
-	 * 
-	 * @param name
-	 * @return
-	 */
-	public static String getInitial(String name) {
-		if (StringUtil.isBlank(name)) {
-			return name;
-		}
-		if (familyProp == null) {
-			familyProp = PropertiesUtil.loadJarProperties("/family.properties", "utf-8");
-		}
-		return familyProp.get(name) == null ? SpellUtil.getSpellInitials(name) : (String) familyProp.get(name);
-	}
+    /**
+     * 根据姓获取姓的首字母
+     * 
+     * @param name
+     * @return
+     */
+    public static String getInitial(String name) {
+        if (StringUtil.isBlank(name)) {
+            return name;
+        }
+        if (familyProp == null) {
+            familyProp = PropertiesUtil.loadJarProperties("/family.properties", "utf-8");
+        }
+        return familyProp.get(name) == null ? SpellUtil.getSpellInitials(name) : (String) familyProp.get(name);
+    }
 }

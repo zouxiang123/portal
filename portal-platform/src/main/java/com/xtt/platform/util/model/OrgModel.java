@@ -21,43 +21,43 @@ package com.xtt.platform.util.model;
 
 public class OrgModel {
 
-	private String orgId;
-	private String orgtype;
-	private String orgname;
-	private String orgpid;
+    private String orgId;
+    private String orgtype;
+    private String orgname;
+    private String orgpid;
 
-	public String getOrgId() {
-		this.orgId = "27";
-		return orgId;
-	}
+    public String getOrgId() {
+        this.orgId = "27";
+        return orgId;
+    }
 
-	public void setOrgId(String orgId) {
-		this.orgId = orgId;
-	}
+    public void setOrgId(String orgId) {
+        this.orgId = orgId;
+    }
 
-	public String getOrgtype() {
-		return orgtype;
-	}
+    public String getOrgtype() {
+        return orgtype;
+    }
 
-	public void setOrgtype(String orgtype) {
-		this.orgtype = orgtype;
-	}
+    public void setOrgtype(String orgtype) {
+        this.orgtype = orgtype;
+    }
 
-	public String getOrgname() {
-		orgname = "酱油组";
-		return orgname;
-	}
+    public String getOrgname() {
+        orgname = "酱油组";
+        return orgname;
+    }
 
-	public void setOrgname(String orgname) {
-		this.orgname = orgname;
-	}
+    public void setOrgname(String orgname) {
+        this.orgname = orgname;
+    }
 
-	public String getOrgpid() {
-		return orgpid;
-	}
+    public String getOrgpid() {
+        return orgpid;
+    }
 
-	public void setOrgpid(String orgpid) {
-		this.orgpid = orgpid;
-	}
+    public void setOrgpid(String orgpid) {
+        this.orgpid = orgpid;
+    }
 
 }

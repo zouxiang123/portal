@@ -26,61 +26,61 @@ import com.xtt.platform.util.CommonUtil;
  */
 public class RdpHandlerExceptionResolver extends SimpleMappingExceptionResolver {
 
-	Logger log = LoggerFactory.getLogger(RdpHandlerExceptionResolver.class);
+    Logger log = LoggerFactory.getLogger(RdpHandlerExceptionResolver.class);
 
-	@Override
-	protected ModelAndView doResolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
-		// String viewName = determineViewName(ex, request);
-		String url = "error/500";
-		// if (ex instanceof FileNotFoundException) {
-		// return new ModelAndView();
-		// }
-		if (isAjaxRequest(request)) {
-			response.setContentType("application/json");
-			try {
-				PrintWriter out = response.getWriter();
-				if (ex instanceof JsonResponseException) {
-					JsonResponseException jsonEx = (JsonResponseException) ex;
-					response.setStatus(jsonEx.getStatus());
-					out.print(ex.getMessage());
-					out.close();
-					writeLog(ex);
-					return new ModelAndView();
-				}
-				if (ex instanceof BindException) {
-					BindException bindException = (BindException) ex;
-					response.setStatus(400);
-					BindingResult result = bindException.getBindingResult();
-					if (result.hasErrors())
-						out.print(result.getFieldError().getDefaultMessage());
+    @Override
+    protected ModelAndView doResolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
+        // String viewName = determineViewName(ex, request);
+        String url = "error/500";
+        // if (ex instanceof FileNotFoundException) {
+        // return new ModelAndView();
+        // }
+        if (isAjaxRequest(request)) {
+            response.setContentType("application/json");
+            try {
+                PrintWriter out = response.getWriter();
+                if (ex instanceof JsonResponseException) {
+                    JsonResponseException jsonEx = (JsonResponseException) ex;
+                    response.setStatus(jsonEx.getStatus());
+                    out.print(ex.getMessage());
+                    out.close();
+                    writeLog(ex);
+                    return new ModelAndView();
+                }
+                if (ex instanceof BindException) {
+                    BindException bindException = (BindException) ex;
+                    response.setStatus(400);
+                    BindingResult result = bindException.getBindingResult();
+                    if (result.hasErrors())
+                        out.print(result.getFieldError().getDefaultMessage());
 
-					out.close();
-					writeLog(ex);
-					return new ModelAndView();
-				}
-				writeLog(ex);
-				response.setStatus(500);
-				return new ModelAndView();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		} else {
-			ModelAndView errorModel = new ModelAndView("error/500");
-			if (response.getStatus() == 404) {
-				errorModel.setViewName("error/404");
-			}
-			errorModel.addObject("message", CommonUtil.getExceptionMessage(ex));
-			return errorModel;
-		}
-		writeLog(ex);
-		return new ModelAndView(url);
-	}
+                    out.close();
+                    writeLog(ex);
+                    return new ModelAndView();
+                }
+                writeLog(ex);
+                response.setStatus(500);
+                return new ModelAndView();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            ModelAndView errorModel = new ModelAndView("error/500");
+            if (response.getStatus() == 404) {
+                errorModel.setViewName("error/404");
+            }
+            errorModel.addObject("message", CommonUtil.getExceptionMessage(ex));
+            return errorModel;
+        }
+        writeLog(ex);
+        return new ModelAndView(url);
+    }
 
-	private boolean isAjaxRequest(HttpServletRequest request) {
-		return Objects.equal(request.getHeader("X-Requested-With"), "XMLHttpRequest");
-	}
+    private boolean isAjaxRequest(HttpServletRequest request) {
+        return Objects.equal(request.getHeader("X-Requested-With"), "XMLHttpRequest");
+    }
 
-	private void writeLog(Exception ex) {
-		log.error("catch error:", ex);
-	}
+    private void writeLog(Exception ex) {
+        log.error("catch error:", ex);
+    }
 }

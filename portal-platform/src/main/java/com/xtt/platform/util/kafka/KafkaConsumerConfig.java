@@ -23,19 +23,19 @@ import com.xtt.platform.util.config.SpringUtil;
 @EnableKafka
 public class KafkaConsumerConfig {
 
-	@Bean
-	KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<Integer, String>> kafkaListenerContainerFactory() {
-		ConcurrentKafkaListenerContainerFactory<Integer, String> factory = new ConcurrentKafkaListenerContainerFactory<>();
-		factory.setConsumerFactory(consumerFactory());
-		factory.setConcurrency(3);
-		factory.getContainerProperties().setPollTimeout(3000);
-		return factory;
-	}
+    @Bean
+    KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<Integer, String>> kafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<Integer, String> factory = new ConcurrentKafkaListenerContainerFactory<>();
+        factory.setConsumerFactory(consumerFactory());
+        factory.setConcurrency(3);
+        factory.getContainerProperties().setPollTimeout(3000);
+        return factory;
+    }
 
-	@SuppressWarnings("unchecked")
-	@Bean
-	public ConsumerFactory<Integer, String> consumerFactory() {
-		Map<String, Object> configs = (Map<String, Object>) SpringUtil.getBean("consumerProperties");
-		return new DefaultKafkaConsumerFactory<>(configs);
-	}
+    @SuppressWarnings("unchecked")
+    @Bean
+    public ConsumerFactory<Integer, String> consumerFactory() {
+        Map<String, Object> configs = (Map<String, Object>) SpringUtil.getBean("consumerProperties");
+        return new DefaultKafkaConsumerFactory<>(configs);
+    }
 }
