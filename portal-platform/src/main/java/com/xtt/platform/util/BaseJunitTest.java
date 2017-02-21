@@ -14,7 +14,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration({ "/config/springContext.xml" })
 public class BaseJunitTest {
 
-	static {
-		System.setProperty("BASE_PATH", System.getProperty("os.name").toLowerCase().startsWith("win") ? "c:/xtt" : "/home/publish/xtt");
-	}
+    static {
+        System.setProperty("BASE_PATH", System.getProperty("os.name").toLowerCase().startsWith("win") ? "c:/xtt" : "/home/publish/xtt");
+    }
 }

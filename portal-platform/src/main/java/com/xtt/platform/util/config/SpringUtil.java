@@ -19,28 +19,28 @@ import org.springframework.context.ApplicationContextAware;
  */
 public class SpringUtil implements ApplicationContextAware {
 
-	private static ApplicationContext applicationContext;
+    private static ApplicationContext applicationContext;
 
-	public final void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-		this.applicationContext = applicationContext;
-	}
+    public final void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = applicationContext;
+    }
 
-	public static Object getBean(String beanName) {
-		return applicationContext.getBean(beanName);
-	}
+    public static Object getBean(String beanName) {
+        return applicationContext.getBean(beanName);
+    }
 
-	public static <T> T getBean(String beanName, Class<T> beanType) {
-		return applicationContext.getBean(beanName, beanType);
-	}
+    public static <T> T getBean(String beanName, Class<T> beanType) {
+        return applicationContext.getBean(beanName, beanType);
+    }
 
-	public static Map getBeansByType(Class beanType) {
-		return applicationContext.getBeansOfType(beanType);
-	}
+    public static Map getBeansByType(Class beanType) {
+        return applicationContext.getBeansOfType(beanType);
+    }
 
-	public static <T> T getBeanByType(Class<T> beanType) {
-		Map<String, T> beans = SpringUtil.applicationContext.getBeansOfType(beanType);
-		if (beans != null && beans.size() > 0)
-			return beans.values().iterator().next();
-		return null;
-	}
+    public static <T> T getBeanByType(Class<T> beanType) {
+        Map<String, T> beans = SpringUtil.applicationContext.getBeansOfType(beanType);
+        if (beans != null && beans.size() > 0)
+            return beans.values().iterator().next();
+        return null;
+    }
 }
