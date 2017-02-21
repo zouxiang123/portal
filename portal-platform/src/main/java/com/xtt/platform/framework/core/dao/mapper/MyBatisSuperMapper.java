@@ -68,13 +68,31 @@ public interface MyBatisSuperMapper<T> {
     /**
      * 
      *
-     * @Title: findEntityByStrCollection @Description: <p>根据字符集合获取实体集合，一般应用在IN下,返回 一个实体集合 <p> <pre> List xlist=new ArrayList(); xlist.add("jon");
+     * @Title: findEntityByStrCollection @Description:
+     *         <p>
+     *         根据字符集合获取实体集合，一般应用在IN下,返回 一个实体集合
+     *         <p>
+     * 
+     *         <pre>
+     *  List xlist=new ArrayList(); xlist.add("jon");
      * xlist.add("jon1"); xlist.add("jon2");
      * 
      * List <Object> ob=service.findEntityByInStr(xlist,"8001");
      * 
-     * 数据库层面一般应用在IN的查询之下 </pre> @param: <p>@param str_value @param: <p>@param tenantId @param: <p>@return @param: <p>@throws RDPException<p> @date:
-     * 2014年5月12日 @return: List<T> @throws
+     * 数据库层面一般应用在IN的查询之下
+     *         </pre>
+     * 
+     *         @param:
+     *         <p>
+     *         @param str_value @param:
+     *         <p>
+     *         @param tenantId @param:
+     *         <p>
+     *         @return @param:
+     *         <p>
+     *         @throws RDPException
+     *         <p>
+     *         @date: 2014年5月12日 @return: List<T> @throws
      *
      */
     public List<T> findEntityByInStr(@Param("str_value") List<Object> str_value) throws RDPException;
@@ -82,10 +100,30 @@ public interface MyBatisSuperMapper<T> {
     /**
      * 
      *
-     * @Title: findCollectionByInStr @Description: <p>根据字符集合获取实体集合，一般应用在IN下,返回的是一个数组集合<p> <pre> List xlist=new ArrayList(); xlist.add("jon");
-     * xlist.add("jon1"); xlist.add("jon2"); List <Map<Object,Object>> ob=service.findCollectionByInStr(xlist,"8001"); </pre> @param: <p>@param
-     * str_value @param: <p>@param tenantId @param: <p>@return @param: <p>@throws RDPException<p> @date: 2014年5月12日 @return:
-     * List<Map<Object,Object>> @throws
+     * @Title: findCollectionByInStr @Description:
+     *         <p>
+     *         根据字符集合获取实体集合，一般应用在IN下,返回的是一个数组集合
+     *         <p>
+     * 
+     *         <pre>
+     *         List xlist = new ArrayList();
+     *         xlist.add("jon");
+     *         xlist.add("jon1");
+     *         xlist.add("jon2");
+     *         List<Map<Object, Object>> ob = service.findCollectionByInStr(xlist, "8001");
+     *         </pre>
+     * 
+     *         @param:
+     *         <p>
+     *         @param str_value @param:
+     *         <p>
+     *         @param tenantId @param:
+     *         <p>
+     *         @return @param:
+     *         <p>
+     *         @throws RDPException
+     *         <p>
+     *         @date: 2014年5月12日 @return: List<Map<Object,Object>> @throws
      *
      */
     public List<Map<Object, Object>> findCollectionByInStr(@Param("str_value") List<Object> str_value) throws RDPException;
@@ -93,12 +131,34 @@ public interface MyBatisSuperMapper<T> {
     /**
      * 
      *
-     * @Title: findEntityByInStrAndAnykeyName @Description: <p>根据任意列来通过IN关键字获取数据信息,返回的是一个具体的实体类<p> <pre> List xlist=new ArrayList(); xlist.add("jon");
-     * xlist.add("jon1"); xlist.add("jon2");
+     * @Title: findEntityByInStrAndAnykeyName @Description:
+     *         <p>
+     *         根据任意列来通过IN关键字获取数据信息,返回的是一个具体的实体类
+     *         <p>
      * 
-     * List <Object> ob=service.findEntityByInStrAndAnykeyName("username",xlist,"8001"); //在mapper配置的xml文件中通过IF任意判断来获取不同的sql执行 List <Object>
-     * ob=service.findEntityByInStrAndAnykeyName("keyId",xlist,"8001"); </pre> @param: <p>@param key_name 列名 @param: <p>@param str_value 集合值 @param:
-     * <p>@param tenantId @param: <p>@return @param: <p>@throws RDPException<p> @date: 2014年5月28日 @return: List<T> @throws
+     *         <pre>
+     *         List xlist = new ArrayList();
+     *         xlist.add("jon");
+     *         xlist.add("jon1");
+     *         xlist.add("jon2");
+     * 
+     *         List<Object> ob = service.findEntityByInStrAndAnykeyName("username", xlist, "8001"); // 在mapper配置的xml文件中通过IF任意判断来获取不同的sql执行 List <Object>
+     *         ob = service.findEntityByInStrAndAnykeyName("keyId", xlist, "8001");
+     *         </pre>
+     * 
+     *         @param:
+     *         <p>
+     *         @param key_name 列名 @param:
+     *         <p>
+     *         @param str_value 集合值 @param:
+     *         <p>
+     *         @param tenantId @param:
+     *         <p>
+     *         @return @param:
+     *         <p>
+     *         @throws RDPException
+     *         <p>
+     *         @date: 2014年5月28日 @return: List<T> @throws
      *
      */
     public List<T> findEntityByInStrAndAnykeyName(@Param("key_name") String key_name, @Param("str_value") List<Object> str_value) throws RDPException;
@@ -106,12 +166,32 @@ public interface MyBatisSuperMapper<T> {
     /**
      * 
      *
-     * @Title: findCollectionByInStrAndAnykeyName @Description: <p>根据任意列来通过IN关键字获取数据信息,返回的是一个集合信息<p> <pre> List xlist=new ArrayList();
+     * @Title: findCollectionByInStrAndAnykeyName @Description:
+     *         <p>
+     *         根据任意列来通过IN关键字获取数据信息,返回的是一个集合信息
+     *         <p>
+     * 
+     *         <pre>
+     *  List xlist=new ArrayList();
      * xlist.add("jon"); xlist.add("jon1"); xlist.add("jon2");
      * 
      * List <Map<Object,Object>> ob=service.findCollectionByInStrAndAnykeyName("username",xlist,"8001"); //在mapper配置的xml文件中通过IF任意判断来获取不同的sql执行 List
-     * <Map<Object,Object>> ob=service.findCollectionByInStrAndAnykeyName("keyId",xlist,"8001"); </pre> @param: <p>@param key_name @param: <p>@param
-     * str_value @param: <p>@param tenantId @param: <p>@return @param: <p>@throws RDPException<p> @date: 2014年5月28日 @return: List<T> @throws
+     * <Map<Object,Object>> ob=service.findCollectionByInStrAndAnykeyName("keyId",xlist,"8001");
+     *         </pre>
+     * 
+     *         @param:
+     *         <p>
+     *         @param key_name @param:
+     *         <p>
+     *         @param str_value @param:
+     *         <p>
+     *         @param tenantId @param:
+     *         <p>
+     *         @return @param:
+     *         <p>
+     *         @throws RDPException
+     *         <p>
+     *         @date: 2014年5月28日 @return: List<T> @throws
      *
      */
     public List<T> findCollectionByInStrAndAnykeyName(@Param("key_name") String key_name, @Param("str_value") List<Object> str_value)
@@ -246,8 +326,24 @@ public interface MyBatisSuperMapper<T> {
     /**
      * 
      *
-     * @Title: saveBatch @Description: <p>批量插入实体信息<p> <pre> 这里描述这个方法的使用方法 – 可选 </pre> @param: <p>@param list 集合 @param <p> tenantId 租户ID @param:
-     * <p>@throws RDPException<p> @date: 2014年5月23日 @return: void @throws
+     * @Title: saveBatch @Description:
+     *         <p>
+     *         批量插入实体信息
+     *         <p>
+     * 
+     *         <pre>
+     *  这里描述这个方法的使用方法 – 可选
+     *         </pre>
+     * 
+     *         @param:
+     *         <p>
+     *         @param list 集合 @param
+     *         <p>
+     *         tenantId 租户ID @param:
+     *         <p>
+     *         @throws RDPException
+     *         <p>
+     *         @date: 2014年5月23日 @return: void @throws
      *
      */
     public void saveBatch(@Param("list") List<?> list) throws RDPException;

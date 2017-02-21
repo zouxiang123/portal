@@ -65,8 +65,7 @@ private static MultiMediaConfigModel init(MultiMediaConfigModel model) {
    * 
    * @param: <p>
    * @param model
-   *            @param:
-   *            <p>
+   * @param: <p>
    * @param tenantId
    *            <p>
    * @date: 2014年6月12日 @return: void @throws
@@ -172,14 +171,11 @@ logger.error(e.toString());
    * 
    * @param: <p>
    * @param model
-   *            @param:
-   *            <p>
+   * @param: <p>
    * @param tenantId
-   *            @param:
-   *            <p>
+   * @param: <p>
    * @param fileName
-   *            @param:
-   *            <p>
+   * @param: <p>
    * @return
    *         <p>
    * @date: 2014年6月12日 @return: String @throws
@@ -297,8 +293,7 @@ return localFilePath;
    * 
    * @param: <p>
    * @param model
-   *            @param:
-   *            <p>
+   * @param: <p>
    * @param tenantId
    *            <p>
    * @date: 2014年6月12日 @return: void @throws
@@ -1046,21 +1041,21 @@ localDir.mkdirs();
     if (ftpFiles != null) {
     FileOutputStream fos = null;
     for (int i = 0; i < ftpFiles.length; i++) {
-    	FTPFile ftpFile = ftpFiles[i];
-    	String ftpFileName = ftpFile.getName();
-    	if (ftpFile.isFile()
-    			&& ftpFile.getName().equals(fileName)) {
-    		localFilePath = localPath + ftpFileName;
-    		fos = new FileOutputStream(localFilePath);
-    		fc.setFileType(FTPClient.BINARY_FILE_TYPE);
-    		fc.retrieveFile(remotePath + ftpFileName,
-    				fos);
-    		fos.flush();
-    	}
+    FTPFile ftpFile = ftpFiles[i];
+    String ftpFileName = ftpFile.getName();
+    if (ftpFile.isFile()
+    		&& ftpFile.getName().equals(fileName)) {
+    	localFilePath = localPath + ftpFileName;
+    	fos = new FileOutputStream(localFilePath);
+    	fc.setFileType(FTPClient.BINARY_FILE_TYPE);
+    	fc.retrieveFile(remotePath + ftpFileName,
+    			fos);
+    	fos.flush();
+    }
     
-    	if (fos != null) {
-    		fos.close();
-    	}
+    if (fos != null) {
+    	fos.close();
+    }
     }
     }
     }
@@ -1079,7 +1074,7 @@ localDir.mkdirs();
     try {
     response.setContentType("application/x-download");
     response.setHeader("content-disposition",
-    	"attachment; filename=" + fileName);
+    "attachment; filename=" + fileName);
     fis = new FileInputStream(local);
     out = response.getOutputStream();
     byte[] buffer = new byte[1024];
