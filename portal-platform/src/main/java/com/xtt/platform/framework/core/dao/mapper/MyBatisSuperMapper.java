@@ -82,17 +82,18 @@ public interface MyBatisSuperMapper<T> {
      * 数据库层面一般应用在IN的查询之下
      *         </pre>
      * 
-     *         @param:
+     * @param: <p>
+     * @param str_value
+     *            @param:
+     *            <p>
+     * @param tenantId
+     *            @param:
+     *            <p>
+     * @return @param:
      *         <p>
-     *         @param str_value @param:
-     *         <p>
-     *         @param tenantId @param:
-     *         <p>
-     *         @return @param:
-     *         <p>
-     *         @throws RDPException
-     *         <p>
-     *         @date: 2014年5月12日 @return: List<T> @throws
+     * @throws RDPException
+     *             <p>
+     * @date: 2014年5月12日 @return: List<T> @throws
      *
      */
     public List<T> findEntityByInStr(@Param("str_value") List<Object> str_value) throws RDPException;
@@ -113,17 +114,18 @@ public interface MyBatisSuperMapper<T> {
      *         List<Map<Object, Object>> ob = service.findCollectionByInStr(xlist, "8001");
      *         </pre>
      * 
-     *         @param:
+     * @param: <p>
+     * @param str_value
+     *            @param:
+     *            <p>
+     * @param tenantId
+     *            @param:
+     *            <p>
+     * @return @param:
      *         <p>
-     *         @param str_value @param:
-     *         <p>
-     *         @param tenantId @param:
-     *         <p>
-     *         @return @param:
-     *         <p>
-     *         @throws RDPException
-     *         <p>
-     *         @date: 2014年5月12日 @return: List<Map<Object,Object>> @throws
+     * @throws RDPException
+     *             <p>
+     * @date: 2014年5月12日 @return: List<Map<Object,Object>> @throws
      *
      */
     public List<Map<Object, Object>> findCollectionByInStr(@Param("str_value") List<Object> str_value) throws RDPException;
@@ -146,19 +148,21 @@ public interface MyBatisSuperMapper<T> {
      *         ob = service.findEntityByInStrAndAnykeyName("keyId", xlist, "8001");
      *         </pre>
      * 
-     *         @param:
+     * @param: <p>
+     * @param key_name
+     *            列名 @param:
+     *            <p>
+     * @param str_value
+     *            集合值 @param:
+     *            <p>
+     * @param tenantId
+     *            @param:
+     *            <p>
+     * @return @param:
      *         <p>
-     *         @param key_name 列名 @param:
-     *         <p>
-     *         @param str_value 集合值 @param:
-     *         <p>
-     *         @param tenantId @param:
-     *         <p>
-     *         @return @param:
-     *         <p>
-     *         @throws RDPException
-     *         <p>
-     *         @date: 2014年5月28日 @return: List<T> @throws
+     * @throws RDPException
+     *             <p>
+     * @date: 2014年5月28日 @return: List<T> @throws
      *
      */
     public List<T> findEntityByInStrAndAnykeyName(@Param("key_name") String key_name, @Param("str_value") List<Object> str_value) throws RDPException;
@@ -179,19 +183,21 @@ public interface MyBatisSuperMapper<T> {
      * <Map<Object,Object>> ob=service.findCollectionByInStrAndAnykeyName("keyId",xlist,"8001");
      *         </pre>
      * 
-     *         @param:
+     * @param: <p>
+     * @param key_name
+     *            @param:
+     *            <p>
+     * @param str_value
+     *            @param:
+     *            <p>
+     * @param tenantId
+     *            @param:
+     *            <p>
+     * @return @param:
      *         <p>
-     *         @param key_name @param:
-     *         <p>
-     *         @param str_value @param:
-     *         <p>
-     *         @param tenantId @param:
-     *         <p>
-     *         @return @param:
-     *         <p>
-     *         @throws RDPException
-     *         <p>
-     *         @date: 2014年5月28日 @return: List<T> @throws
+     * @throws RDPException
+     *             <p>
+     * @date: 2014年5月28日 @return: List<T> @throws
      *
      */
     public List<T> findCollectionByInStrAndAnykeyName(@Param("key_name") String key_name, @Param("str_value") List<Object> str_value)
@@ -335,15 +341,15 @@ public interface MyBatisSuperMapper<T> {
      *  这里描述这个方法的使用方法 – 可选
      *         </pre>
      * 
-     *         @param:
-     *         <p>
-     *         @param list 集合 @param
-     *         <p>
-     *         tenantId 租户ID @param:
-     *         <p>
-     *         @throws RDPException
-     *         <p>
-     *         @date: 2014年5月23日 @return: void @throws
+     * @param: <p>
+     * @param list
+     *            集合 @param
+     *            <p>
+     *            tenantId 租户ID @param:
+     *            <p>
+     * @throws RDPException
+     *             <p>
+     * @date: 2014年5月23日 @return: void @throws
      *
      */
     public void saveBatch(@Param("list") List<?> list) throws RDPException;

@@ -25,22 +25,8 @@ public class ModelUtil {
     /**
      * pojo转换成HashMap
      *
-     * @Title: ConvertObjToMap @Description:
-     *         <p>
-     *         这里用一句话描述这个方法的作用
-     *         <p>
-     * 
-     *         <pre>
-     *  这里描述这个方法的使用方法 – 可选
-     *         </pre>
-     * 
-     *         @param:
-     *         <p>
-     *         @param obj @param:
-     *         <p>
-     *         @return
-     *         <p>
-     *         @date: 2014年5月27日 @return: Map<String,Object> @throws
+     * @Title: ConvertObjToMap @Description: <p>这里用一句话描述这个方法的作用<p> <pre> 这里描述这个方法的使用方法 – 可选 </pre> @param: <p>@param obj @param: <p>@return<p> @date:
+     * 2014年5月27日 @return: Map<String,Object> @throws
      *
      */
     public static Map<String, Object> ConvertPojoToMap(Object obj) {
