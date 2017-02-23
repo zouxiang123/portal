@@ -30,25 +30,25 @@ private static Logger logger = Logger.getLogger(FtpUtil.class);
 
 private static MultiMediaConfigModel init(MultiMediaConfigModel model) {
 
-	if (null == model) {
-		model = new MultiMediaConfigModel();
-	}
+    if (null == model) {
+        model = new MultiMediaConfigModel();
+    }
 
-	String ip = CusotmizedPropertyUtil.getContextProperty("FTP.IP")
-			.toString();
-	String name = CusotmizedPropertyUtil.getContextProperty("FTP.NAME")
-			.toString();
-	String pwd = CusotmizedPropertyUtil.getContextProperty("FTP.PWD")
-			.toString();
-	int port = new Integer(CusotmizedPropertyUtil.getContextProperty(
-			"FTP.PORT").toString()).intValue();
-	model.setAccWay("1");
-	model.setId("1");
-	model.setFtpAdd(ip);
-	model.setFtpPassword(pwd);
-	model.setFtpUserName(name);
-	model.setFtpPort(port);
-	return model;
+    String ip = CusotmizedPropertyUtil.getContextProperty("FTP.IP")
+            .toString();
+    String name = CusotmizedPropertyUtil.getContextProperty("FTP.NAME")
+            .toString();
+    String pwd = CusotmizedPropertyUtil.getContextProperty("FTP.PWD")
+            .toString();
+    int port = new Integer(CusotmizedPropertyUtil.getContextProperty(
+            "FTP.PORT").toString()).intValue();
+    model.setAccWay("1");
+    model.setId("1");
+    model.setFtpAdd(ip);
+    model.setFtpPassword(pwd);
+    model.setFtpUserName(name);
+    model.setFtpPort(port);
+    return model;
 }
 
 *//**
@@ -65,8 +65,7 @@ private static MultiMediaConfigModel init(MultiMediaConfigModel model) {
    * 
    * @param: <p>
    * @param model
-   *            @param:
-   *            <p>
+   * @param: <p>
    * @param tenantId
    *            <p>
    * @date: 2014年6月12日 @return: void @throws
@@ -74,9 +73,9 @@ private static MultiMediaConfigModel init(MultiMediaConfigModel model) {
    */
 /*
 public static void downloadFromFTP(MultiMediaConfigModel model,
-	String tenantId) {
+    String tenantId) {
 if (null != model) {
-	*//**
+    *//**
        * --------------------- 如果本地目录不存在，创建。 如果存在，删除本地文件 --------------------
        */
 /*
@@ -93,10 +92,10 @@ localDir.mkdirs();
 } else {
 File[] files = localDir.listFiles();
 if (files != null) {
-	for (int j = 0; j < files.length; j++) {
-		File localFile = files[j];
-		localFile.delete();
-	}
+    for (int j = 0; j < files.length; j++) {
+        File localFile = files[j];
+        localFile.delete();
+    }
 }
 }
 
@@ -117,39 +116,39 @@ try {
 fc.connect(ftpIp, model.getFtpPort());
 boolean login = fc.login(userName, password);
 if (login) {
-	String realPath = "";
-	if(null!=tenantId & !"".equals(tenantId)){
-		if ("/".equals(remotePath)) {
-			realPath = tenantId + "/";
-		} else {
-			realPath = remotePath + tenantId + "/";
-		}
-	}else{
-		if ("/".equals(remotePath)) {
-			realPath ="/";
-		} else {
-			realPath = remotePath +"/";
-		}
-	}
-	FTPFile[] ftpFiles = fc.listFiles(realPath);
-	if (ftpFiles != null) {
-		FileOutputStream fos = null;
-		for (int i = 0; i < ftpFiles.length; i++) {
-			FTPFile ftpFile = ftpFiles[i];
-			String ftpFileName = ftpFile.getName();
-			if (ftpFile.isFile()) {
-				String localFilePath = localPath + ftpFileName;
-				fos = new FileOutputStream(localFilePath);
-				fc.setFileType(FTPClient.BINARY_FILE_TYPE);
-				fc.retrieveFile(realPath + ftpFileName, fos);
-				fos.flush();
-			}
+    String realPath = "";
+    if(null!=tenantId & !"".equals(tenantId)){
+        if ("/".equals(remotePath)) {
+            realPath = tenantId + "/";
+        } else {
+            realPath = remotePath + tenantId + "/";
+        }
+    }else{
+        if ("/".equals(remotePath)) {
+            realPath ="/";
+        } else {
+            realPath = remotePath +"/";
+        }
+    }
+    FTPFile[] ftpFiles = fc.listFiles(realPath);
+    if (ftpFiles != null) {
+        FileOutputStream fos = null;
+        for (int i = 0; i < ftpFiles.length; i++) {
+            FTPFile ftpFile = ftpFiles[i];
+            String ftpFileName = ftpFile.getName();
+            if (ftpFile.isFile()) {
+                String localFilePath = localPath + ftpFileName;
+                fos = new FileOutputStream(localFilePath);
+                fc.setFileType(FTPClient.BINARY_FILE_TYPE);
+                fc.retrieveFile(realPath + ftpFileName, fos);
+                fos.flush();
+            }
 
-			if (fos != null) {
-				fos.close();
-			}
-		}
-	}
+            if (fos != null) {
+                fos.close();
+            }
+        }
+    }
 }
 fc.disconnect();
 } catch (Exception e) {
@@ -172,14 +171,11 @@ logger.error(e.toString());
    * 
    * @param: <p>
    * @param model
-   *            @param:
-   *            <p>
+   * @param: <p>
    * @param tenantId
-   *            @param:
-   *            <p>
+   * @param: <p>
    * @param fileName
-   *            @param:
-   *            <p>
+   * @param: <p>
    * @return
    *         <p>
    * @date: 2014年6月12日 @return: String @throws
@@ -187,11 +183,11 @@ logger.error(e.toString());
    */
 /*
 public static String downloadFromFTP(MultiMediaConfigModel model,
-	String tenantId, String fileName) {
+    String tenantId, String fileName) {
 String localFilePath = "";
 model=FtpUtil.init(model);
 if (model != null) {
-	*//**
+    *//**
        * ------------------------ 如果本地目录不存在，创建目录 如果存在，删除本地同名文件 -----------------------
        */
 /*
@@ -211,12 +207,12 @@ localDir.mkdirs();
 } else {
 File[] files = localDir.listFiles();
 if (files != null) {
-	for (int j = 0; j < files.length; j++) {
-		File localFile = files[j];
-		if (localFile.getName().equals(fileName)) {
-			localFile.delete();
-		}
-	}
+    for (int j = 0; j < files.length; j++) {
+        File localFile = files[j];
+        if (localFile.getName().equals(fileName)) {
+            localFile.delete();
+        }
+    }
 }
 }
 
@@ -237,41 +233,41 @@ try {
 fc.connect(ftpIp, model.getFtpPort());
 boolean login = fc.login(userName, password);
 if (login) {
-	String realPath = "";
-	if(null!=tenantId & !"".equals(tenantId)){
-		if ("/".equals(remotePath)) {
-			realPath = tenantId + "/";
-		} else {
-			realPath = remotePath + tenantId + "/";
-		}
-	}else{
-		if ("/".equals(remotePath)) {
-			realPath ="/";
-		} else {
-			realPath = remotePath +"/";
-		}
-	}
-	
-	FTPFile[] ftpFiles = fc.listFiles(realPath);
-	if (ftpFiles != null) {
-		FileOutputStream fos = null;
-		for (int i = 0; i < ftpFiles.length; i++) {
-			FTPFile ftpFile = ftpFiles[i];
-			String ftpFileName = ftpFile.getName();
-			if (ftpFile.isFile()
-					&& ftpFile.getName().equals(fileName)) {
-				localFilePath = localPath + ftpFileName;
-				fos = new FileOutputStream(localFilePath);
-				fc.setFileType(FTPClient.BINARY_FILE_TYPE);
-				fc.retrieveFile(realPath + ftpFileName, fos);
-				fos.flush();
-			}
+    String realPath = "";
+    if(null!=tenantId & !"".equals(tenantId)){
+        if ("/".equals(remotePath)) {
+            realPath = tenantId + "/";
+        } else {
+            realPath = remotePath + tenantId + "/";
+        }
+    }else{
+        if ("/".equals(remotePath)) {
+            realPath ="/";
+        } else {
+            realPath = remotePath +"/";
+        }
+    }
+    
+    FTPFile[] ftpFiles = fc.listFiles(realPath);
+    if (ftpFiles != null) {
+        FileOutputStream fos = null;
+        for (int i = 0; i < ftpFiles.length; i++) {
+            FTPFile ftpFile = ftpFiles[i];
+            String ftpFileName = ftpFile.getName();
+            if (ftpFile.isFile()
+                    && ftpFile.getName().equals(fileName)) {
+                localFilePath = localPath + ftpFileName;
+                fos = new FileOutputStream(localFilePath);
+                fc.setFileType(FTPClient.BINARY_FILE_TYPE);
+                fc.retrieveFile(realPath + ftpFileName, fos);
+                fos.flush();
+            }
 
-			if (fos != null) {
-				fos.close();
-			}
-		}
-	}
+            if (fos != null) {
+                fos.close();
+            }
+        }
+    }
 }
 
 fc.disconnect();
@@ -297,8 +293,7 @@ return localFilePath;
    * 
    * @param: <p>
    * @param model
-   *            @param:
-   *            <p>
+   * @param: <p>
    * @param tenantId
    *            <p>
    * @date: 2014年6月12日 @return: void @throws
@@ -307,33 +302,33 @@ return localFilePath;
 /*
 public static void uploadToFTP(MultiMediaConfigModel model, String tenantId) {
 if (model != null) {
-	String localPath = model.getDownloadPath();
-	String serverPath = model.getServerPath();
-	localPath = serverPath + localPath;
-	if (!localPath.endsWith("/")) {
-		localPath = localPath + "/";
-	}
+    String localPath = model.getDownloadPath();
+    String serverPath = model.getServerPath();
+    localPath = serverPath + localPath;
+    if (!localPath.endsWith("/")) {
+        localPath = localPath + "/";
+    }
 
-	localPath = localPath + tenantId;
-	String remotePath = model.getFtpFilePath();
-	if (!remotePath.endsWith("/")) {
-		remotePath = remotePath + "/";
-	}
-	FTPClient fc = new FTPClient();
+    localPath = localPath + tenantId;
+    String remotePath = model.getFtpFilePath();
+    if (!remotePath.endsWith("/")) {
+        remotePath = remotePath + "/";
+    }
+    FTPClient fc = new FTPClient();
 
-	String[] ftpInfo = model.getFtpAdd().split(":");
-	try {
-		if (ftpInfo.length > 1) {
-			fc.connect(ftpInfo[0], Integer.parseInt(ftpInfo[1]));
-		} else {
-			fc.connect(ftpInfo[0]);
-		}
+    String[] ftpInfo = model.getFtpAdd().split(":");
+    try {
+        if (ftpInfo.length > 1) {
+            fc.connect(ftpInfo[0], Integer.parseInt(ftpInfo[1]));
+        } else {
+            fc.connect(ftpInfo[0]);
+        }
 
-		boolean login = fc.login(model.getFtpUserName(),
-				model.getFtpPassword());
+        boolean login = fc.login(model.getFtpUserName(),
+                model.getFtpPassword());
 
-		if (login) {
-			*//** 上传前,先删除FTP上原有文件,以保持更新 */
+        if (login) {
+            *//** 上传前,先删除FTP上原有文件,以保持更新 */
 /*
 String ftpPath = "";
 if ("/".equals(remotePath)) {
@@ -392,35 +387,35 @@ logger.error(e.toString());
    */
 /*
 public static void uploadToFTP(MultiMediaConfigModel model,
-	String tenantId, String fileName) {
+    String tenantId, String fileName) {
 if (model != null) {
-	String localPath = model.getDownloadPath();
-	String serverPath = model.getServerPath();
-	localPath = serverPath + localPath;
-	if (!localPath.endsWith("/")) {
-		localPath = localPath + "/";
-	}
+    String localPath = model.getDownloadPath();
+    String serverPath = model.getServerPath();
+    localPath = serverPath + localPath;
+    if (!localPath.endsWith("/")) {
+        localPath = localPath + "/";
+    }
 
-	localPath = localPath + tenantId;
-	String remotePath = model.getFtpFilePath();
-	if (!remotePath.endsWith("/")) {
-		remotePath = remotePath + "/";
-	}
-	FTPClient fc = new FTPClient();
+    localPath = localPath + tenantId;
+    String remotePath = model.getFtpFilePath();
+    if (!remotePath.endsWith("/")) {
+        remotePath = remotePath + "/";
+    }
+    FTPClient fc = new FTPClient();
 
-	String[] ftpInfo = model.getFtpAdd().split(":");
-	try {
-		if (ftpInfo.length > 1) {
-			fc.connect(ftpInfo[0], Integer.parseInt(ftpInfo[1]));
-		} else {
-			fc.connect(ftpInfo[0]);
-		}
+    String[] ftpInfo = model.getFtpAdd().split(":");
+    try {
+        if (ftpInfo.length > 1) {
+            fc.connect(ftpInfo[0], Integer.parseInt(ftpInfo[1]));
+        } else {
+            fc.connect(ftpInfo[0]);
+        }
 
-		boolean login = fc.login(model.getFtpUserName(),
-				model.getFtpPassword());
+        boolean login = fc.login(model.getFtpUserName(),
+                model.getFtpPassword());
 
-		if (login) {
-			*//** 上传前,先删除FTP上原有同名文件,以保持更新 */
+        if (login) {
+            *//** 上传前,先删除FTP上原有同名文件,以保持更新 */
 /*
 String ftpPath = "";
 if ("/".equals(remotePath)) {
@@ -486,27 +481,27 @@ logger.error(e.toString());
    */
 /*
 public static void uploadToFTP(MultiMediaConfigModel model,
-	String tenantId, File localFile, String remoteFileName) {
+    String tenantId, File localFile, String remoteFileName) {
 if (model != null) {
-	String remotePath = model.getFtpFilePath();
-	if (!remotePath.endsWith("/")) {
-		remotePath = remotePath + "/";
-	}
-	FTPClient fc = new FTPClient();
+    String remotePath = model.getFtpFilePath();
+    if (!remotePath.endsWith("/")) {
+        remotePath = remotePath + "/";
+    }
+    FTPClient fc = new FTPClient();
 
-	String[] ftpInfo = model.getFtpAdd().split(":");
-	try {
-		if (ftpInfo.length > 1) {
-			fc.connect(ftpInfo[0], Integer.parseInt(ftpInfo[1]));
-		} else {
-			fc.connect(ftpInfo[0]);
-		}
+    String[] ftpInfo = model.getFtpAdd().split(":");
+    try {
+        if (ftpInfo.length > 1) {
+            fc.connect(ftpInfo[0], Integer.parseInt(ftpInfo[1]));
+        } else {
+            fc.connect(ftpInfo[0]);
+        }
 
-		boolean login = fc.login(model.getFtpUserName(),
-				model.getFtpPassword());
+        boolean login = fc.login(model.getFtpUserName(),
+                model.getFtpPassword());
 
-		if (login) {
-			*//** 上传前,先删除FTP上同名文件,以保持更新 */
+        if (login) {
+            *//** 上传前,先删除FTP上同名文件,以保持更新 */
 /*
 String ftpPath = "";
 if ("/".equals(remotePath)) {
@@ -567,10 +562,10 @@ logger.error("关闭FTP连接出错" + e.getMessage(), e);
    */
 /*
 public static String validateFtpFileIsExist(MultiMediaConfigModel model,
-	String tenantId, String fileName) {
+    String tenantId, String fileName) {
 String localFilePath = "";
 try {
-	*//**
+    *//**
        * ------------------------ 如果本地目录不存在，创建目录 如果存在，删除本地同名文件 -----------------------
        */
 /*
@@ -611,28 +606,28 @@ boolean login = fc.login(userName, password);
 if (login) {
 String realPath = "";
 if ("/".equals(remotePath)) {
-	realPath = tenantId + "/";
+    realPath = tenantId + "/";
 } else {
-	realPath = remotePath + tenantId + "/";
+    realPath = remotePath + tenantId + "/";
 }
 FTPFile[] ftpFiles = fc.listFiles(realPath);
 if (ftpFiles != null) {
-	FileOutputStream fos = null;
-	for (int i = 0; i < ftpFiles.length; i++) {
-		FTPFile ftpFile = ftpFiles[i];
-		String ftpFileName = ftpFile.getName();
-		if (ftpFile.isFile() && ftpFileName.equals(fileName)) {
-			localFilePath = localPath + ftpFileName;
-			fos = new FileOutputStream(localFilePath);
-			fc.setFileType(FTPClient.BINARY_FILE_TYPE);
-			fc.retrieveFile(realPath + ftpFileName, fos);
-			fos.flush();
-		}
+    FileOutputStream fos = null;
+    for (int i = 0; i < ftpFiles.length; i++) {
+        FTPFile ftpFile = ftpFiles[i];
+        String ftpFileName = ftpFile.getName();
+        if (ftpFile.isFile() && ftpFileName.equals(fileName)) {
+            localFilePath = localPath + ftpFileName;
+            fos = new FileOutputStream(localFilePath);
+            fc.setFileType(FTPClient.BINARY_FILE_TYPE);
+            fc.retrieveFile(realPath + ftpFileName, fos);
+            fos.flush();
+        }
 
-		if (fos != null) {
-			fos.close();
-		}
-	}
+        if (fos != null) {
+            fos.close();
+        }
+    }
 }
 fc.disconnect();
 }
@@ -659,10 +654,10 @@ return localFilePath;
    */
 /*
 public static void downloadToOutputStream(MultiMediaConfigModel mmc,
-	String tenantId, String fileName, HttpServletResponse response) {
+    String tenantId, String fileName, HttpServletResponse response) {
 String localFilePath = "";
 if (mmc != null) {
-	*//**
+    *//**
        * ------------------------ 如果本地目录不存在，创建目录 如果存在，删除本地同名文件 -----------------------
        */
 /*
@@ -694,85 +689,85 @@ FTPClient fc = new FTPClient();
 String[] ftpInfo = ftpIp.split(":");
 try {
 if (ftpInfo.length > 1) {
-	fc.connect(ftpInfo[0], Integer.parseInt(ftpInfo[1]));
+    fc.connect(ftpInfo[0], Integer.parseInt(ftpInfo[1]));
 } else {
-	fc.connect(ftpInfo[0]);
+    fc.connect(ftpInfo[0]);
 }
 
 boolean login = fc.login(userName, password);
 if (login) {
-	String realPath = "";
-	if ("/".equals(remotePath)) {
-		realPath = tenantId + "/";
-	} else {
-		realPath = remotePath + tenantId + "/";
-	}
-	FTPFile[] ftpFiles = fc.listFiles(realPath);
-	if (ftpFiles != null) {
-		FileOutputStream fos = null;
-		for (int i = 0; i < ftpFiles.length; i++) {
-			FTPFile ftpFile = ftpFiles[i];
-			String ftpFileName = ftpFile.getName();
-			if (ftpFile.isFile()
-					&& ftpFileName.equals(fileName)) {
-				localFilePath = localPath + ftpFileName;
-				fos = new FileOutputStream(localFilePath);
-				fc.setFileType(FTPClient.BINARY_FILE_TYPE);
-				fc.retrieveFile(realPath + ftpFileName, fos);
-				fos.flush();
-			}
+    String realPath = "";
+    if ("/".equals(remotePath)) {
+        realPath = tenantId + "/";
+    } else {
+        realPath = remotePath + tenantId + "/";
+    }
+    FTPFile[] ftpFiles = fc.listFiles(realPath);
+    if (ftpFiles != null) {
+        FileOutputStream fos = null;
+        for (int i = 0; i < ftpFiles.length; i++) {
+            FTPFile ftpFile = ftpFiles[i];
+            String ftpFileName = ftpFile.getName();
+            if (ftpFile.isFile()
+                    && ftpFileName.equals(fileName)) {
+                localFilePath = localPath + ftpFileName;
+                fos = new FileOutputStream(localFilePath);
+                fc.setFileType(FTPClient.BINARY_FILE_TYPE);
+                fc.retrieveFile(realPath + ftpFileName, fos);
+                fos.flush();
+            }
 
-			if (fos != null) {
-				fos.close();
-			}
-		}
+            if (fos != null) {
+                fos.close();
+            }
+        }
 
-		File local = new File(localFilePath);
-		{
-			if (local.exists()) {
-				FileInputStream fis = null;
-				OutputStream out = null;
-				try {
-					response.reset();
-					response.setContentType("application/x-download");
-					response.setHeader("content-disposition",
-							"attachment; filename=" + fileName);
-					fis = new FileInputStream(local);
-					out = response.getOutputStream();
-					byte[] bs = new byte[1024];
-					int len = 0;
-					while ((len = fis.read(bs)) > 0) {
-						out.write(bs, 0, len);
-					}
+        File local = new File(localFilePath);
+        {
+            if (local.exists()) {
+                FileInputStream fis = null;
+                OutputStream out = null;
+                try {
+                    response.reset();
+                    response.setContentType("application/x-download");
+                    response.setHeader("content-disposition",
+                            "attachment; filename=" + fileName);
+                    fis = new FileInputStream(local);
+                    out = response.getOutputStream();
+                    byte[] bs = new byte[1024];
+                    int len = 0;
+                    while ((len = fis.read(bs)) > 0) {
+                        out.write(bs, 0, len);
+                    }
 
-					out.flush();
-				} catch (Exception e) {
-					logger.error("FTP下载文件出错，" + e.toString(), e);
-				}
+                    out.flush();
+                } catch (Exception e) {
+                    logger.error("FTP下载文件出错，" + e.toString(), e);
+                }
 
-				if (out != null) {
-					try {
-						out.close();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				}
+                if (out != null) {
+                    try {
+                        out.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
 
-				if (fis != null) {
-					try {
-						fis.close();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				}
+                if (fis != null) {
+                    try {
+                        fis.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
 
-			} else {
-				FtpUtil.returnMsg(response, "error");// 文件不存在
-			}
-		}
-	}
+            } else {
+                FtpUtil.returnMsg(response, "error");// 文件不存在
+            }
+        }
+    }
 
-	fc.disconnect();
+    fc.disconnect();
 }
 
 } catch (Exception e) {
@@ -802,11 +797,11 @@ FtpUtil.returnMsg(response, "error");// 查询配置出错(可能数据库问题
    */
 /*
 public static void downloadToOutputStream(MultiMediaConfigModel mmc,
-	String tenantId, String fileName, String downloadName,
-	HttpServletResponse response) {
+    String tenantId, String fileName, String downloadName,
+    HttpServletResponse response) {
 String localFilePath = "";
 if (mmc != null) {
-	*//**
+    *//**
        * ------------------------ 如果本地目录不存在，创建目录 如果存在，删除本地同名文件 -----------------------
        */
 /*
@@ -838,56 +833,56 @@ FTPClient fc = new FTPClient();
 String[] ftpInfo = ftpIp.split(":");
 try {
 if (ftpInfo.length > 1) {
-	fc.connect(ftpInfo[0], Integer.parseInt(ftpInfo[1]));
+    fc.connect(ftpInfo[0], Integer.parseInt(ftpInfo[1]));
 } else {
-	fc.connect(ftpInfo[0]);
+    fc.connect(ftpInfo[0]);
 }
 
 boolean login = fc.login(userName, password);
 if (login) {
-	String realPath = "";
-	if ("/".equals(remotePath)) {
-		realPath = tenantId + "/";
-	} else {
-		realPath = remotePath + tenantId + "/";
-	}
-	FTPFile[] ftpFiles = fc.listFiles(realPath);
-	if (ftpFiles != null) {
-		FileOutputStream fos = null;
-		for (int i = 0; i < ftpFiles.length; i++) {
-			FTPFile ftpFile = ftpFiles[i];
-			String ftpFileName = ftpFile.getName();
-			if (ftpFile.isFile()
-					&& ftpFileName.equals(fileName)) {
-				localFilePath = localPath + ftpFileName;
-				fos = new FileOutputStream(localFilePath);
-				fc.setFileType(FTPClient.BINARY_FILE_TYPE);
-				fc.retrieveFile(realPath + ftpFileName, fos);
-				fos.flush();
-			}
+    String realPath = "";
+    if ("/".equals(remotePath)) {
+        realPath = tenantId + "/";
+    } else {
+        realPath = remotePath + tenantId + "/";
+    }
+    FTPFile[] ftpFiles = fc.listFiles(realPath);
+    if (ftpFiles != null) {
+        FileOutputStream fos = null;
+        for (int i = 0; i < ftpFiles.length; i++) {
+            FTPFile ftpFile = ftpFiles[i];
+            String ftpFileName = ftpFile.getName();
+            if (ftpFile.isFile()
+                    && ftpFileName.equals(fileName)) {
+                localFilePath = localPath + ftpFileName;
+                fos = new FileOutputStream(localFilePath);
+                fc.setFileType(FTPClient.BINARY_FILE_TYPE);
+                fc.retrieveFile(realPath + ftpFileName, fos);
+                fos.flush();
+            }
 
-			if (fos != null) {
-				fos.close();
-			}
-		}
+            if (fos != null) {
+                fos.close();
+            }
+        }
 
-		File local = new File(localFilePath);
-		if (local.exists()) {
-			FileInputStream fis = null;
-			OutputStream out = null;
-			try {
-				response.reset();
-				response.setContentType("application/x-download");
-				*//**
+        File local = new File(localFilePath);
+        if (local.exists()) {
+            FileInputStream fis = null;
+            OutputStream out = null;
+            try {
+                response.reset();
+                response.setContentType("application/x-download");
+                *//**
                    * 注意：此处对文件名重新编码非常重要，否则当文件名中有中文字符时， 可能出现一些难以理解的奇怪问题，例如显示无法打开internet站点、下载文件为未知类型等
                    */
 /*
 response.setHeader(
-	"content-disposition",
-	"attachment; filename="
-			+ new String(downloadName
-					.getBytes("gb2312"),
-					"iso8859-1"));
+    "content-disposition",
+    "attachment; filename="
+            + new String(downloadName
+                    .getBytes("gb2312"),
+                    "iso8859-1"));
 
 fis = new FileInputStream(local);
 out = response.getOutputStream();
@@ -947,11 +942,11 @@ FtpUtil.returnMsg(response, "error");// 查询配置出错(可能数据库问题
    */
 /*
 public static boolean createTenantDir(MultiMediaConfigModel mmc,
-	String tenantId) {
+    String tenantId) {
 boolean created = true;
 String remotePath = mmc.getFtpFilePath();
 if (!remotePath.endsWith("/")) {
-	remotePath = remotePath + "/";
+    remotePath = remotePath + "/";
 }
 String ftpIp = mmc.getFtpAdd();
 String userName = mmc.getFtpUserName();
@@ -960,25 +955,25 @@ String password = mmc.getFtpPassword();
 FTPClient fc = new FTPClient();
 String[] ftpInfo = ftpIp.split(":");
 try {
-	if (ftpInfo.length > 1) {
-		fc.connect(ftpInfo[0], Integer.parseInt(ftpInfo[1]));
-	} else {
-		fc.connect(ftpInfo[0]);
-	}
+    if (ftpInfo.length > 1) {
+        fc.connect(ftpInfo[0], Integer.parseInt(ftpInfo[1]));
+    } else {
+        fc.connect(ftpInfo[0]);
+    }
 
-	boolean login = fc.login(userName, password);
-	if (login) {
-		String tenantDir = "";
-		if ("/".equals(remotePath)) {
-			tenantDir = tenantId;
-		} else {
-			tenantDir = remotePath + tenantId;
-		}
-		fc.makeDirectory(tenantDir);
-	}
+    boolean login = fc.login(userName, password);
+    if (login) {
+        String tenantDir = "";
+        if ("/".equals(remotePath)) {
+            tenantDir = tenantId;
+        } else {
+            tenantDir = remotePath + tenantId;
+        }
+        fc.makeDirectory(tenantDir);
+    }
 } catch (Exception e) {
-	logger.error(e.toString());
-	created = false;
+    logger.error(e.toString());
+    created = false;
 }
 return created;
 }
@@ -998,10 +993,10 @@ return created;
    */
 /*
 public static void downloadToOutputStream(MultiMediaConfigModel mmc,
-	String fileName, HttpServletResponse response) {
+    String fileName, HttpServletResponse response) {
 String localFilePath = "";
 if (mmc != null) {
-	*//**
+    *//**
        * ------------------------ 如果本地目录不存在，创建目录 如果存在，删除本地同名文件 -----------------------
        */
 /*
@@ -1046,21 +1041,21 @@ localDir.mkdirs();
     if (ftpFiles != null) {
     FileOutputStream fos = null;
     for (int i = 0; i < ftpFiles.length; i++) {
-    	FTPFile ftpFile = ftpFiles[i];
-    	String ftpFileName = ftpFile.getName();
-    	if (ftpFile.isFile()
-    			&& ftpFile.getName().equals(fileName)) {
-    		localFilePath = localPath + ftpFileName;
-    		fos = new FileOutputStream(localFilePath);
-    		fc.setFileType(FTPClient.BINARY_FILE_TYPE);
-    		fc.retrieveFile(remotePath + ftpFileName,
-    				fos);
-    		fos.flush();
-    	}
+    FTPFile ftpFile = ftpFiles[i];
+    String ftpFileName = ftpFile.getName();
+    if (ftpFile.isFile()
+           && ftpFile.getName().equals(fileName)) {
+       localFilePath = localPath + ftpFileName;
+       fos = new FileOutputStream(localFilePath);
+       fc.setFileType(FTPClient.BINARY_FILE_TYPE);
+       fc.retrieveFile(remotePath + ftpFileName,
+               fos);
+       fos.flush();
+    }
     
-    	if (fos != null) {
-    		fos.close();
-    	}
+    if (fos != null) {
+       fos.close();
+    }
     }
     }
     }
@@ -1079,7 +1074,7 @@ localDir.mkdirs();
     try {
     response.setContentType("application/x-download");
     response.setHeader("content-disposition",
-    	"attachment; filename=" + fileName);
+    "attachment; filename=" + fileName);
     fis = new FileInputStream(local);
     out = response.getOutputStream();
     byte[] buffer = new byte[1024];

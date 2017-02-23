@@ -63,7 +63,7 @@ private Producer captchaProducers;
     } finally {
     try {
     if (null != out) {
-    	out.close();
+    out.close();
     }
     } catch (Exception e) {
     // TODO Auto-generated catch block
