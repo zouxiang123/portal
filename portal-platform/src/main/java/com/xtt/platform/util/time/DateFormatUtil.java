@@ -25,17 +25,27 @@ import com.xtt.platform.framework.exception.RDPException;
 public class DateFormatUtil extends DateFormatUtils {
     public static final String START_TIME_SUF = " 00:00:00";
     public static final String END_TIME_SUF = " 23:59:59";
-
+    /** yyyy年MM月dd日 */
     public static final String FORMAT_DATE_CN = "yyyy年MM月dd日";
+    /** yyyy-MM-dd */
     public static final String FORMAT_DATE1 = "yyyy-MM-dd";
+    /** yyyy/MM/dd */
     public static final String FORMAT_DATE2 = "yyyy/MM/dd";
+    /** MM/dd */
     public static final String FORMAT_DATE3 = "MM/dd";
+    /** yyyyMMdd */
     public static final String FORMAT_DATE_YYYYMMDD = "yyyyMMdd";
+    /** yyyy-MM */
     public static final String FORMAT_YYYY_MM = "yyyy-MM";
+    /** yyyyMM */
     public static final String FORMAT_YYYYMM = "yyyyMM";
+    /** yyyy-MM-dd HH:mm:ss */
     public static final String FORMAT_TIME1 = "yyyy-MM-dd HH:mm:ss";
+    /** HH:mm */
     public static final String FORMAT_TIME2 = "HH:mm";
+    /** HHmmss */
     public static final String FORMAT_TIME3 = "HHmmss";
+    /** HH:mm:ss */
     public static final String FORMAT_TIME4 = "HH:mm:ss";
 
     public static final String HOUR = "hour";
