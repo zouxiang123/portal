@@ -107,7 +107,7 @@ public class CharToolsUtil {
             while (p != -1) {
                 result += text.substring(0, p);
                 text = text.substring(p, text.length());
-                if (text == "" || text.length() < 9)
+                if (text.equals("") || text.length() < 9)
                     return result;
 
                 result += CodeToWord(text.substring(0, 9));
