@@ -64,13 +64,29 @@ public class PrimaryKeyUtil {
      *
      */
     public static synchronized Long getPrimaryKey(String modelName, Integer tenantId) {
-        if (StringUtils.isBlank(modelName)) {
+        return getPrimaryKey(modelName, tenantId, 1);
+    }
+
+    /**
+     * 根据table名称和租户id获取主键id
+     * 
+     * @Title: getPrimaryKey
+     * @param modelName
+     * @param tenantId
+     * @param count
+     *            id的数目
+     * @return 开始的那个id
+     *
+     */
+    public static synchronized Long getPrimaryKey(String modelName, Integer tenantId, int count) {
+        if (StringUtils.isBlank(modelName) || count < 0) {
             return null;
         }
         String id = (tenantId == null ? Constants.DEFAULT_SYS_TENANT_ID : tenantId) + modelName;
         Long current = null;
         try {
-            current = (Long) DBUtil.getSingle("select getPrimaryKey('" + id + "') from dual;");
+            current = (Long) DBUtil.getSingle("select getPrimaryKeyWithCount('" + id + "'," + count + ") from dual;");
+            current = current - count + 1;
         } catch (SQLException e) {
             e.printStackTrace();
         }
