@@ -1,17 +1,18 @@
 package com.xtt.platform.util.time;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.xtt.platform.framework.exception.RDPException;
 
@@ -23,6 +24,8 @@ import com.xtt.platform.framework.exception.RDPException;
  * @version: V1.0
  */
 public class DateFormatUtil extends DateFormatUtils {
+    protected static Logger LOGGER = LoggerFactory.getLogger(DateFormatUtil.class);
+
     public static final String START_TIME_SUF = " 00:00:00";
     public static final String END_TIME_SUF = " 23:59:59";
     /** yyyy年MM月dd日 */
@@ -144,11 +147,8 @@ public class DateFormatUtil extends DateFormatUtils {
      * @throws RDPException
      */
     public static String convertDateToStr(Date date, String pattern) {
-        final DateTimeFormatter formatter = DateTimeFormat.forPattern(pattern);
-        if (date != null) {
-            return formatter.print(new DateTime(date.getTime()));
-        }
-        return "";
+
+        return DateFormatUtils.format(date, pattern);
 
     }
 
@@ -161,11 +161,8 @@ public class DateFormatUtil extends DateFormatUtils {
      * 
      */
     public static Date convertStrToDate(String date) {
-        final DateTimeFormatter formatter = DateTimeFormat.forPattern(FORMAT_DATE1);
-        if (StringUtils.isNotEmpty(date)) {
-            return formatter.parseDateTime(date).toDate();
-        }
-        return null;
+
+        return convertStrToDate(date, FORMAT_DATE1);
 
     }
 
@@ -181,12 +178,13 @@ public class DateFormatUtil extends DateFormatUtils {
      * @throws RDPException
      */
     public static Date convertStrToDate(String date, String pattern) {
-        final DateTimeFormatter formatter = DateTimeFormat.forPattern(pattern);
-        if (StringUtils.isNotEmpty(date)) {
-            return formatter.parseDateTime(date).toDate();
+        Date parseDate = null;
+        try {
+            parseDate = DateUtils.parseDate(date, pattern);
+        } catch (ParseException e) {
+            LOGGER.error("convertStrToDate(data:{}) error", date, e);
         }
-        return null;
-
+        return parseDate;
     }
 
     /**
@@ -333,4 +331,7 @@ public class DateFormatUtil extends DateFormatUtils {
         return sdf.format(calendar.getTime());
     }
 
+    public static void main(String[] args) {
+        System.out.println(convertStrToDate("03/13", FORMAT_DATE3));
+    }
 }
