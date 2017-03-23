@@ -14,6 +14,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import com.xtt.platform.framework.exception.RDPException;
+import com.xtt.platform.util.lang.StringUtil;
 
 /**
  * 
@@ -119,11 +120,20 @@ public class DateFormatUtil extends DateFormatUtils {
         return null;
     }
 
+    /**
+     * 根据当前时间的字符串
+     * 
+     * @Title: getCurrentDateStr
+     * @param formatStr
+     *            日期格式
+     * @return
+     *
+     */
     public static String getCurrentDateStr(String formatStr) {
-        String strDate = "";
-        DateFormat dateFormat = new SimpleDateFormat(formatStr);
-        strDate = dateFormat.format(new Date());
-        return strDate;
+        if (StringUtil.isBlank(formatStr)) {
+            formatStr = FORMAT_DATE1;
+        }
+        return convertDateToStr(new Date(), formatStr);
     }
 
     /**
@@ -161,11 +171,7 @@ public class DateFormatUtil extends DateFormatUtils {
      * 
      */
     public static Date convertStrToDate(String date) {
-        final DateTimeFormatter formatter = DateTimeFormat.forPattern(FORMAT_DATE1);
-        if (StringUtils.isNotEmpty(date)) {
-            return formatter.parseDateTime(date).toDate();
-        }
-        return null;
+        return convertStrToDate(date, FORMAT_DATE1);
 
     }
 
@@ -181,8 +187,8 @@ public class DateFormatUtil extends DateFormatUtils {
      * @throws RDPException
      */
     public static Date convertStrToDate(String date, String pattern) {
-        final DateTimeFormatter formatter = DateTimeFormat.forPattern(pattern);
         if (StringUtils.isNotEmpty(date)) {
+            final DateTimeFormatter formatter = DateTimeFormat.forPattern(pattern);
             return formatter.parseDateTime(date).toDate();
         }
         return null;
