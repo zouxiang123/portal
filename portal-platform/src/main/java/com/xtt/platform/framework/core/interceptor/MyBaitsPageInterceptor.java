@@ -66,6 +66,12 @@ public class MyBaitsPageInterceptor implements Interceptor {
         // 如果有排序条件，拼接排序条件
         if (obj instanceof MyBatisSuperModel) {
             MyBatisSuperModel pageModel = (MyBatisSuperModel) obj;
+
+            // 如果排序条件为空，调用默认排序条件
+            if (pageModel.getOrderByList() == null || pageModel.getOrderByList().isEmpty()) {
+                pageModel.setDefaultOrderBy();
+            }
+
             List<MybatisOrderByModel> orderByList = pageModel.getOrderByList();
             if (orderByList != null && !orderByList.isEmpty()) {
                 // 获取当前要执行的Sql语句，也就是我们直接在Mapper映射语句中写的Sql语句

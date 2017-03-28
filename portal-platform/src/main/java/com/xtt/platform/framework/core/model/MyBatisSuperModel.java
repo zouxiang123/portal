@@ -1,5 +1,6 @@
 package com.xtt.platform.framework.core.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -132,4 +133,27 @@ public class MyBatisSuperModel {
         this.orderByList = orderByList;
     }
 
+    /**
+     * 添加排序条件对象
+     * 
+     * @Title: addOrderBy
+     * @param entity
+     *
+     */
+    public void addOrderBy(MybatisOrderByModel entity) {
+        if (this.orderByList == null) {
+            orderByList = new ArrayList<MybatisOrderByModel>();
+        }
+        orderByList.add(entity);
+    }
+
+    /**
+     * 设置默认默认排序
+     * 
+     * @Title: setDefaultOrderBy
+     *
+     */
+    public void setDefaultOrderBy() {
+
+    }
 }
