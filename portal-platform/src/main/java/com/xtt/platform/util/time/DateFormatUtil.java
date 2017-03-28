@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.xtt.platform.framework.exception.RDPException;
+import com.xtt.platform.util.lang.StringUtil;
 
 /**
  * 
@@ -122,7 +123,7 @@ public class DateFormatUtil extends DateFormatUtils {
         return null;
     }
 
-    public static String getCurrentDateStr(String formatStr) {
+    public static String getCurrentDateStr(final String formatStr) {
         String strDate = "";
         DateFormat dateFormat = new SimpleDateFormat(formatStr);
         strDate = dateFormat.format(new Date());
@@ -146,8 +147,10 @@ public class DateFormatUtil extends DateFormatUtils {
      * @return
      * @throws RDPException
      */
-    public static String convertDateToStr(Date date, String pattern) {
-
+    public static String convertDateToStr(final Date date, final String pattern) {
+        if (date == null) {
+            return "";
+        }
         return DateFormatUtils.format(date, pattern);
 
     }
@@ -178,13 +181,15 @@ public class DateFormatUtil extends DateFormatUtils {
      * @throws RDPException
      */
     public static Date convertStrToDate(String date, String pattern) {
-        Date parseDate = null;
+        if (StringUtil.isBlank(date)) {
+            return null;
+        }
         try {
-            parseDate = DateUtils.parseDate(date, pattern);
+            return DateUtils.parseDate(date, pattern);
         } catch (ParseException e) {
             LOGGER.error("convertStrToDate(data:{}) error", date, e);
         }
-        return parseDate;
+        return null;
     }
 
     /**
