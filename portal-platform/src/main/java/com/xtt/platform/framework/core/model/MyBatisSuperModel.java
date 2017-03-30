@@ -19,7 +19,6 @@ import javax.servlet.http.HttpServletRequest;
 public class MyBatisSuperModel {
 
     // 租户Id;设置为字符类型，以方便将来扩展
-    public String tenantId;
     private int pageNo = 1;// 页码，默认是第一页
     private int pageSize = 15;// 每页显示的记录数，默认是15
     private int totalRecord;// 总记录数
@@ -95,14 +94,6 @@ public class MyBatisSuperModel {
 
     public void setResults(List results) {
         this.results = results;
-    }
-
-    public String getTenantId() {
-        return tenantId;
-    }
-
-    public void setTenantId(String tenantId) {
-        this.tenantId = tenantId;
     }
 
     // 分页请求路径
