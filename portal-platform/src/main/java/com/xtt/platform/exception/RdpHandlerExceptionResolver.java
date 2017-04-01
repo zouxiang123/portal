@@ -12,7 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
 
-import com.google.common.base.Objects;
+import java.util.Objects;
 import com.xtt.platform.util.CommonUtil;
 
 /**
@@ -77,7 +77,7 @@ public class RdpHandlerExceptionResolver extends SimpleMappingExceptionResolver 
     }
 
     private boolean isAjaxRequest(HttpServletRequest request) {
-        return Objects.equal(request.getHeader("X-Requested-With"), "XMLHttpRequest");
+        return Objects.equals(request.getHeader("X-Requested-With"), "XMLHttpRequest");
     }
 
     private void writeLog(Exception ex) {
