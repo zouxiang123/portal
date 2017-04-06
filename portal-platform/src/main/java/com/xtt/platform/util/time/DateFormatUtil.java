@@ -125,11 +125,20 @@ public class DateFormatUtil extends DateFormatUtils {
         return null;
     }
 
-    public static String getCurrentDateStr(final String formatStr) {
-        String strDate = "";
-        DateFormat dateFormat = new SimpleDateFormat(formatStr);
-        strDate = dateFormat.format(new Date());
-        return strDate;
+    /**
+     * 根据当前时间的字符串
+     * 
+     * @Title: getCurrentDateStr
+     * @param formatStr
+     *            日期格式
+     * @return
+     *
+     */
+    public static String getCurrentDateStr(String formatStr) {
+        if (StringUtil.isBlank(formatStr)) {
+            formatStr = FORMAT_DATE1;
+        }
+        return convertDateToStr(new Date(), formatStr);
     }
 
     /**
@@ -166,9 +175,7 @@ public class DateFormatUtil extends DateFormatUtils {
      * 
      */
     public static Date convertStrToDate(String date) {
-
         return convertStrToDate(date, FORMAT_DATE1);
-
     }
 
     /**
