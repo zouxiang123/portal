@@ -31,14 +31,6 @@ public class KafkaProducerUtil {
     private static final String STRATEGY_NORMAL = "NORMAL";
     private static final String STRATEGY_CALLBACK = "CALLBACK";
 
-    public static final String TOPIC_SYS_LOG = "sysLog";
-    public static final String TOPIC_SECRETARY = "secretary";
-    public static final String TOPIC_PROCESSHIST = "processHist";
-    public static final String TOPIC_CHARGE = "charge";
-    public static final String TOPIC_SHIFT_BORAD = "shiftBorad";
-    public static final String TOPIC_MESSAGE = "message";
-    public static final String TOPIC_PATIENT_TYPE = "patientType";
-
     private static KafkaTemplate<Integer, String> kafkaTemplate;
 
     public static ListenableFuture<SendResult<Integer, String>> sendDefault(String msg) {
