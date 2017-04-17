@@ -1,9 +1,9 @@
 /**   
- * @Title: SpellUtil.java 
- * @Package com.xtt.platform.util
+ * @Title: PinyinUtil.java 
+ * @Package com.xtt.common.util
  * Copyright: Copyright (c) 2015
  * @author: bruce   
- * @date: 2016年9月12日 下午4:34:20 
+ * @date: 2017年3月21日 下午7:00:07 
  *
  */
 package com.xtt.platform.util;
@@ -14,15 +14,40 @@ import java.util.List;
 import com.github.stuxuhai.jpinyin.PinyinFormat;
 import com.github.stuxuhai.jpinyin.PinyinHelper;
 
-/**
- * 将中文转成拼音首字母拼写
- * 
- * @ClassName: SpellUtil
- * @date: 2016年9月12日 下午4:42:28
- * @version: V1.0
- *
- */
-public class SpellUtil {
+public class PinyinUtil {
+    /**
+     * 获取字符串的中文拼音
+     * 
+     * @Title: getPinyin
+     * @param str
+     *            字符串
+     * @return 字符串的拼音
+     *
+     */
+    public static String getPinyin(String str) {
+        return PinyinHelper.convertToPinyinString(str, "", PinyinFormat.WITHOUT_TONE);
+    }
+
+    /**
+     * 获取字符串对应拼音的首字母
+     * 
+     * @Title: getShortPinyin
+     * @param str
+     * @return 对应拼音的首字母
+     *
+     */
+    public static String getShortPinyin(String str) {
+        return PinyinHelper.getShortPinyin(str);
+    }
+
+    /**
+     * 获取拼音首字母
+     * 
+     * @Title: getSpellInitials
+     * @param name
+     * @return 多音字时，返回以,分隔的多个首字母
+     *
+     */
     public static String getSpellInitials(String name) {
         char[] names = name.toCharArray();
         List<List<String>> list = new ArrayList<List<String>>();
@@ -74,7 +99,4 @@ public class SpellUtil {
         return str;
     }
 
-    public static void main(String[] args) {
-        System.out.println(getSpellInitials("小张"));
-    }
 }

@@ -27,6 +27,6 @@ public class FamilyUtil {
         if (familyProp == null) {
             familyProp = PropertiesUtil.loadJarProperties("/family.properties", "utf-8");
         }
-        return familyProp.get(name) == null ? SpellUtil.getSpellInitials(name) : (String) familyProp.get(name);
+        return familyProp.get(name) == null ? PinyinUtil.getShortPinyin(name) : (String) familyProp.get(name);
     }
 }
