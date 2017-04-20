@@ -1,6 +1,7 @@
 package com.xtt.platform.exception;
 
 import java.io.PrintWriter;
+import java.util.Objects;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,7 +13,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
 
-import java.util.Objects;
 import com.xtt.platform.util.CommonUtil;
 
 /**
@@ -62,7 +62,8 @@ public class RdpHandlerExceptionResolver extends SimpleMappingExceptionResolver 
                 response.setStatus(500);
                 return new ModelAndView();
             } catch (Exception e) {
-                e.printStackTrace();
+                writeLog(ex);
+                writeLog(e);
             }
         } else {
             ModelAndView errorModel = new ModelAndView("error/500");
