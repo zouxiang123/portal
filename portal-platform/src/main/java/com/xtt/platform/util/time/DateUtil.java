@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import org.apache.commons.lang3.time.DateUtils;
 
@@ -178,6 +179,24 @@ public class DateUtil extends DateUtils {
 
         String dayAfter = new SimpleDateFormat("yyyy-MM-dd").format(c.getTime());
         return dayAfter;
+    }
+
+    /**
+     * 在指定时间上加减时长
+     * 
+     * @param date
+     *            日期
+     * @param amount
+     *            加减时长
+     * @param field
+     *            加减字段标识值（1：年，2：月，3：星期，5：日，10：小时，12：分钟，13：秒）
+     * @return
+     */
+    public static Date calendarAddDate(Date date, int amount, int field) {
+        GregorianCalendar calendar = new GregorianCalendar();
+        calendar.setTime(date);
+        calendar.add(field, amount);
+        return calendar.getTime();
     }
 
 }
