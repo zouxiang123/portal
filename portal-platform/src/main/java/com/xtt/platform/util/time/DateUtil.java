@@ -187,13 +187,14 @@ public class DateUtil extends DateUtils {
      * 
      * @param date
      *            日期
-     * @param amount
-     *            加减时长
      * @param field
      *            加减字段标识值（1：年，2：月，3：星期，5：日，10：小时，12：分钟，13：秒）
+     * @param amount
+     *            加减时长
+     * 
      * @return
      */
-    public static Date calendarAddDate(Date date, int amount, int field) {
+    public static Date add(Date date, int field, int amount) {
         GregorianCalendar calendar = new GregorianCalendar();
         calendar.setTime(date);
         calendar.add(field, amount);
