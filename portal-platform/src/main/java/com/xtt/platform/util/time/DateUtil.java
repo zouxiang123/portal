@@ -15,19 +15,20 @@ public class DateUtil extends DateUtils {
     }
 
     /**
-     * 计算年龄
+     * 根据两个时间差来计算年龄
      * 
      * @Title: getAge
-     * @param brithday
+     * @param brithday:出生日期
+     * @param paramDate:对比日期
      * @return
      *
      */
-    public static int getAge(Date brithday) {
+    public static int getAge(Date brithday, Date paramDate) {
         int age = 0;
         Calendar born = Calendar.getInstance();
         Calendar now = Calendar.getInstance();
-        if (brithday != null) {
-            now.setTime(new Date());
+        if (brithday != null && paramDate != null) {
+            now.setTime(paramDate);
             born.setTime(brithday);
             if (born.after(now)) {
                 throw new IllegalArgumentException("Can't be born in the future");
