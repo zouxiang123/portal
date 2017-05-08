@@ -15,6 +15,19 @@ public class DateUtil extends DateUtils {
     }
 
     /**
+     * 计算年龄
+     * 
+     * @Title: getAge
+     * @param brithday
+     *            出生日期
+     * @return
+     *
+     */
+    public static int getAge(Date brithday) {
+        return getAge(brithday, new Date());
+    }
+
+    /**
      * 根据两个时间差来计算年龄
      * 
      * @Title: getAge
