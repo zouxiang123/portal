@@ -9,7 +9,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.ibatis.executor.parameter.ParameterHandler;
 import org.apache.ibatis.executor.statement.RoutingStatementHandler;
 import org.apache.ibatis.executor.statement.StatementHandler;
@@ -27,6 +30,7 @@ import org.apache.ibatis.scripting.defaults.DefaultParameterHandler;
 
 import com.xtt.platform.framework.core.model.MyBatisSuperModel;
 import com.xtt.platform.framework.core.model.MybatisOrderByModel;
+import com.xtt.platform.framework.core.model.MybatisResultColumn;
 import com.xtt.platform.util.lang.StringUtil;
 
 /**
@@ -72,31 +76,34 @@ public class MyBaitsPageInterceptor implements Interceptor {
                 pageModel.setDefaultOrderBy();
             }
 
-            List<MybatisOrderByModel> orderByList = pageModel.getOrderByList();
-            if (orderByList != null && !orderByList.isEmpty()) {
+            List<MybatisOrderByModel> orderByList = pageModel.getOrderByList();// 排序集合
+            List<MybatisResultColumn> resultColumnList = pageModel.getResultColumnList();// 返回值集合
+            // 如果入参包含排序集合、返回集合、分页其中一个，重新拼接sql
+            if (CollectionUtils.isNotEmpty(orderByList) || CollectionUtils.isNotEmpty(resultColumnList) || pageModel.isIspaging()) {
                 // 获取当前要执行的Sql语句，也就是我们直接在Mapper映射语句中写的Sql语句
                 String sql = boundSql.getSql();
-                String orderByModelSql = getOrderByModelSql(orderByList, sql);
+                // 如果有排序集合，拼接至sql
+                if (CollectionUtils.isNotEmpty(orderByList)) {
+                    sql = getOrderByModelSql(orderByList, sql);
+                }
+                // 如果有返回集合，拼接至sql
+                if (CollectionUtils.isNotEmpty(resultColumnList)) {
+                    sql = getResultColumnByModelSql(resultColumnList, sql);
+                }
 
-                ReflectUtil.setFieldValue(boundSql, "sql", orderByModelSql);
+                if (pageModel.isIspaging()) {
+                    // 通过反射获取delegate父类BaseStatementHandler的mappedStatement属性
+                    MappedStatement mappedStatement = (MappedStatement) ReflectUtil.getFieldValue(delegate, "mappedStatement");
+                    // 拦截到的prepare方法参数是一个Connection对象
+                    Connection connection = (Connection) invocation.getArgs()[0];
+                    // 给当前的PageModel参数对象设置总记录数
+                    this.setTotalRecord(pageModel, mappedStatement, connection);
+                    // 获取分页Sql语句
+                    sql = this.getPageModelSql(pageModel, sql);
+                }
+
+                ReflectUtil.setFieldValue(boundSql, "sql", sql);
             }
-        }
-
-        // 这里我们简单的通过传入的是PageModel对象就认定它是需要进行分页操作的。
-        if (obj instanceof MyBatisSuperModel && ((MyBatisSuperModel) obj).isIspaging()) {
-            MyBatisSuperModel pageModel = (MyBatisSuperModel) obj;
-            // 通过反射获取delegate父类BaseStatementHandler的mappedStatement属性
-            MappedStatement mappedStatement = (MappedStatement) ReflectUtil.getFieldValue(delegate, "mappedStatement");
-            // 拦截到的prepare方法参数是一个Connection对象
-            Connection connection = (Connection) invocation.getArgs()[0];
-            // 获取当前要执行的Sql语句，也就是我们直接在Mapper映射语句中写的Sql语句
-            String sql = boundSql.getSql();
-            // 给当前的PageModel参数对象设置总记录数
-            this.setTotalRecord(pageModel, mappedStatement, connection);
-            // 获取分页Sql语句
-            String pageModelSql = this.getPageModelSql(pageModel, sql);
-            // 利用反射设置当前BoundSql对应的sql属性为我们建立好的分页Sql语句
-            ReflectUtil.setFieldValue(boundSql, "sql", pageModelSql);
         }
 
         return invocation.proceed();
@@ -380,6 +387,35 @@ public class MyBaitsPageInterceptor implements Interceptor {
     }
 
     /**
+     * 根据返回集合重拼sql
+     * 
+     * @Title: getResultColumnByModelSql
+     * @param resultColumnList
+     * @param sql
+     * @return
+     *
+     */
+    public String getResultColumnByModelSql(List<MybatisResultColumn> resultColumnList, String sql) {
+        if (CollectionUtils.isEmpty(resultColumnList)) {
+            return sql;
+        }
+        Pattern p = Pattern.compile("SELECT([\\s\\S]*)FROM", Pattern.CASE_INSENSITIVE);
+        Matcher m = p.matcher(sql);
+        StringBuffer buffer = new StringBuffer("SELECT ");
+        for (int i = 0; i < resultColumnList.size(); i++) {
+            MybatisResultColumn model = resultColumnList.get(i);
+            if (i > 0) {
+                buffer.append(",");
+            }
+            buffer.append(convertPropertyToColumn(model.getResultName()));
+        }
+        buffer.append(" FROM");
+
+        sql = m.replaceAll(buffer.toString());
+        return sql;
+    }
+
+    /**
      * 将实体类的属性名称转为表的属性名
      * 
      * @Title: convertPropertyToColumn
@@ -403,4 +439,5 @@ public class MyBaitsPageInterceptor implements Interceptor {
         }
         return buffer.toString();
     }
+
 }

@@ -29,6 +29,8 @@ public class MyBatisSuperModel {
 
     private List<MybatisOrderByModel> orderByList;// 排序条件集合
 
+    private List<MybatisResultColumn> resultColumnList;// 返回属性集合
+
     private String tableId;
 
     public String getTableId() {
@@ -128,14 +130,26 @@ public class MyBatisSuperModel {
      * 添加排序条件对象
      * 
      * @Title: addOrderBy
+     * @param orderBy
+     *
+     */
+    public MyBatisSuperModel addOrderBy(String orderBy) {
+        return addOrderBy(new MybatisOrderByModel(orderBy));
+    }
+
+    /**
+     * 添加排序条件对象
+     * 
+     * @Title: addOrderBy
      * @param entity
      *
      */
-    public void addOrderBy(MybatisOrderByModel entity) {
+    public MyBatisSuperModel addOrderBy(MybatisOrderByModel entity) {
         if (this.orderByList == null) {
             orderByList = new ArrayList<MybatisOrderByModel>();
         }
         orderByList.add(entity);
+        return this;
     }
 
     /**
@@ -146,5 +160,39 @@ public class MyBatisSuperModel {
      */
     public void setDefaultOrderBy() {
 
+    }
+
+    public List<MybatisResultColumn> getResultColumnList() {
+        return resultColumnList;
+    }
+
+    public void setResultColumnList(List<MybatisResultColumn> resultColumnList) {
+        this.resultColumnList = resultColumnList;
+    }
+
+    /**
+     * 添加返回结果数据
+     * 
+     * @Title: addResultColumn
+     * @param entity
+     *
+     */
+    public MyBatisSuperModel addResultColumn(MybatisResultColumn entity) {
+        if (this.resultColumnList == null) {
+            resultColumnList = new ArrayList<MybatisResultColumn>();
+        }
+        resultColumnList.add(entity);
+        return this;
+    }
+
+    /**
+     * 添加返回结果数据
+     * 
+     * @Title: addResultColumn
+     * @param resultColumn
+     *
+     */
+    public MyBatisSuperModel addResultColumn(String resultColumn) {
+        return addResultColumn(new MybatisResultColumn(resultColumn));
     }
 }
