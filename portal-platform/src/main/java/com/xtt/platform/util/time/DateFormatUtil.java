@@ -53,6 +53,7 @@ public class DateFormatUtil extends DateFormatUtils {
     public static final String FORMAT_TIME4 = "HH:mm:ss";
     /** yyyy/MM/dd HH:mm */
     public static final String FORMAT_TIME5 = "yyyy/MM/dd HH:mm";
+    public static final String FORMAT_TIME6 = "MM月dd日  HH:mm";
 
     public static final String HOUR = "hour";
     public static final String MINUTE = "minute";
