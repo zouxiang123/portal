@@ -6,7 +6,7 @@ import org.aspectj.lang.JoinPoint;
 
 import com.xtt.platform.util.PrimaryKeyUtil;
 
-public class MyBaitsInsertInterceptor {
+public class MyBatisInsertInterceptor {
 
     public void doBefore(JoinPoint jp) {
         Object entity = jp.getArgs()[0];

@@ -43,7 +43,7 @@ import com.xtt.platform.util.lang.StringUtil;
  * 
  */
 @Intercepts({ @Signature(method = "prepare", type = StatementHandler.class, args = { Connection.class }) })
-public class MyBaitsPageInterceptor implements Interceptor {
+public class MyBatisPageInterceptor implements Interceptor {
     private String databaseType;// 数据库类型，不同的数据库有不同的分页方法
 
     /**

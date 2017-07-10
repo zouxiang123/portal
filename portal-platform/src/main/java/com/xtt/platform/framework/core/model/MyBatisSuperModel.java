@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 
 /***
  * 
- * @ClassName: MyBaitsSuperModel
+ * @ClassName: MyBatisSuperModel
  * @author: Tik
  * @CreateDate: 2014-3-27 下午12:48:18
  * @UpdateUser: Tik
