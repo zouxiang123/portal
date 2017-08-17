@@ -72,15 +72,9 @@ public class ChargeUtil {
             sql = "update charge_seq set next_val = next_val+1 where id > " + params.toString() + " and patientId=" + patientId;
             DBUtil.update(sql);
 
-            // 更新交易记录序号
-            /* sql = "update transaction_record set charge_seq = charge_seq + 1 WHERE charge_seq>=" + (maxVal) + " AND fk_patient_id = " + patientId
-                            + " AND fk_tenant_id = " + tenantId;
-            DBUtil.update(sql);*/
-
             return maxVal;
         } catch (SQLException e) {
-            e.printStackTrace();
-            log.error("Charge Seq ERROR!");
+            log.error("Charge Seq ERROR!", e);
         }
         return null;
     }
