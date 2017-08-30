@@ -10,7 +10,6 @@ package com.xtt.platform.util;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import com.github.stuxuhai.jpinyin.PinyinFormat;
 import com.github.stuxuhai.jpinyin.PinyinHelper;
 
@@ -65,7 +64,9 @@ public class PinyinUtil {
         combine("", list, rl);
         String spellInitials = "";
         for (String s : rl) {
-            spellInitials += "," + s;
+            if (spellInitials.indexOf(s) == -1) {//去掉重复字符
+                spellInitials += "," + s;
+            }
         }
         return spellInitials.length() > 0 ? spellInitials.substring(1) : name;
     }
