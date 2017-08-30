@@ -138,6 +138,42 @@ public class StringUtil extends StringUtils {
         return currentDate + "_" + reqId;
     }
 
+    /**
+     * 将字符串第一个字符转为小写
+     * 
+     * @Title: firstToLowerCase
+     * @param str
+     * @return
+     *
+     */
+    public static String firstToLowerCase(String str) {
+        if (isBlank(str)) {
+            return str;
+        }
+        if (str.length() == 1) {
+            return str.toLowerCase();
+        }
+        return str.substring(0, 1).toLowerCase().concat(str.substring(1));
+    }
+
+    /**
+     * 将字符串第一个字符转为大写
+     * 
+     * @Title: firstToUpperCase
+     * @param str
+     * @return
+     *
+     */
+    public static String firstToUpperCase(String str) {
+        if (isBlank(str)) {
+            return str;
+        }
+        if (str.length() == 1) {
+            return str.toUpperCase();
+        }
+        return str.substring(0, 1).toUpperCase().concat(str.substring(1));
+    }
+
     public static void main(String[] args) {
 
     }
