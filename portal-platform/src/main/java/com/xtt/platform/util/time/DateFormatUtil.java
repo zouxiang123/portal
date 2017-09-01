@@ -71,9 +71,8 @@ public class DateFormatUtil extends DateFormatUtils {
      * @version: V1.0
      * @param date
      *            日期函数
-     * @param pattern
-     *            返回自己所需字符型的日期
      * @return
+     *          返回自己所需字符型的日期
      * @throws RDPException
      */
     public static String convertDateToStr(Date date) {
@@ -85,8 +84,8 @@ public class DateFormatUtil extends DateFormatUtils {
     /**
      * 获得两个String型日期之间相差的天数（第2个减第1个）
      * 
-     * @param String
-     *            first, String second
+     * @param first
+     * @param second
      * @return int 相差的天数
      */
     public static int getDaysBetweenDates(String first, String second) {
@@ -344,6 +343,19 @@ public class DateFormatUtil extends DateFormatUtils {
         }
 
         return sdf.format(calendar.getTime());
+    }
+
+    /**
+     *
+     * @Title: getSysDate
+     * @param date
+     * @return yyyy-MM-dd HH:mm:ss
+     *
+     */
+    public static Map<String, String> getSysDate(Date date){
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("sysDate", DateUtil.format(date,DateFormatUtil.FORMAT_TIME1));
+        return map;
     }
 
     public static void main(String[] args) {
