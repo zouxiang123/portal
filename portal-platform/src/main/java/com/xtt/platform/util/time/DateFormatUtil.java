@@ -172,6 +172,7 @@ public class DateFormatUtil extends DateFormatUtils {
      * 
      * @Title: convertStrToDate
      * @param date
+     *            (yyyy-MM-dd )
      * @return
      * 
      */
