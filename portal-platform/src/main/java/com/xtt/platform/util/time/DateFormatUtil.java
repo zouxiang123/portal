@@ -299,6 +299,42 @@ public class DateFormatUtil extends DateFormatUtils {
     }
 
     /**
+     * 根据日期字符串获取对应的日期 <br/>
+     * <note>支持日期格式： <br/>
+     * yyyy-MM-dd <br/>
+     * yyyy/MM/dd <br/>
+     * </note>
+     * 
+     * @Title: getDateByStr
+     * @param dateStr
+     * @return
+     *
+     */
+    public static Date getDateByStr(String dateStr) {
+        Date date = null;
+        if (StringUtil.isBlank(dateStr)) {
+            return date;
+        }
+        String split = "-";
+        String[] arr = null;
+        if (dateStr.indexOf(split) > 0) {
+            arr = dateStr.split("-");
+        }
+        split = "/";
+        if (arr == null && dateStr.indexOf(split) > 0) {
+            arr = dateStr.split("/");
+        }
+        if (arr != null && arr.length == 3) {
+            Calendar c = Calendar.getInstance();
+            c.set(Calendar.YEAR, Integer.valueOf(arr[0]));
+            c.set(Calendar.MONTH, Integer.valueOf(arr[1]) - 1);
+            c.set(Calendar.DAY_OF_MONTH, Integer.valueOf(arr[2]));
+            return c.getTime();
+        }
+        return date;
+    }
+
+    /**
      * 当前时间之前或之后的时间
      * 
      * @param hourTime
