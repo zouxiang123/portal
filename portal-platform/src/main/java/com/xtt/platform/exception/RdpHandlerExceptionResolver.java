@@ -35,6 +35,10 @@ public class RdpHandlerExceptionResolver extends SimpleMappingExceptionResolver 
         // if (ex instanceof FileNotFoundException) {
         // return new ModelAndView();
         // }
+        // 忽略中断请求异常（因为ClientAbortException异常属于tomcat包，platform没有引用，所以使用类别比较）
+        if ("ClientAbortException".equals(ex.getClass().getName())) {
+            return new ModelAndView();
+        }
         if (isAjaxRequest(request)) {
             response.setContentType("application/json");
             try {
