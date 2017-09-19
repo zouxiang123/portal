@@ -114,29 +114,23 @@ public class DateUtil extends DateUtils {
     /**
      * 计算两个日期之间相差的天数
      * 
-     * @param moreDate
-     *            大日期
-     * @param lessDate
-     *            小日期
-     * @return -1 日期为null或日期传入相反
+     * @param date1
+     *            日期1
+     * @param date2
+     *            日期2
+     * @return -1 日期为null
      */
-    public static int getDays(Date moreDate, Date lessDate) {
-        if (moreDate == null || lessDate == null) {
+    public static int getDays(Date date1, Date date2) {
+        if (date1 == null || date2 == null) {
             return -1;
         }
-
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(moreDate);
-        long time1 = cal.getTimeInMillis();
-        cal.setTime(lessDate);
-        long time2 = cal.getTimeInMillis();
-        long between_days = (time1 - time2) / (1000 * 3600 * 24);
-        return Integer.parseInt(String.valueOf(between_days));
+        long between_days = Math.abs(date1.getTime() - date2.getTime()) / (1000 * 3600 * 24);
+        return (int) between_days;
     }
 
     public static void main(String[] args) {
-        Date d1 = new Date();
-        Date d2 = DateFormatUtil.convertStrToDate("2016-10-01", "yyyy-MM-dd");
+        Date d1 = DateFormatUtil.convertStrToDate("1999-03-01", "yyyy-MM-dd");
+        Date d2 = DateFormatUtil.convertStrToDate("2000-03-01", "yyyy-MM-dd");
         System.out.println(getDays(d1, d2));
     }
 

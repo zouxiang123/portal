@@ -71,9 +71,8 @@ public class DateFormatUtil extends DateFormatUtils {
      * @version: V1.0
      * @param date
      *            日期函数
-     * @param pattern
-     *            返回自己所需字符型的日期
      * @return
+     *          返回自己所需字符型的日期
      * @throws RDPException
      */
     public static String convertDateToStr(Date date) {
@@ -85,8 +84,8 @@ public class DateFormatUtil extends DateFormatUtils {
     /**
      * 获得两个String型日期之间相差的天数（第2个减第1个）
      * 
-     * @param String
-     *            first, String second
+     * @param first
+     * @param second
      * @return int 相差的天数
      */
     public static int getDaysBetweenDates(String first, String second) {
@@ -172,6 +171,7 @@ public class DateFormatUtil extends DateFormatUtils {
      * 
      * @Title: convertStrToDate
      * @param date
+     *            (yyyy-MM-dd )
      * @return
      * 
      */
@@ -299,6 +299,42 @@ public class DateFormatUtil extends DateFormatUtils {
     }
 
     /**
+     * 根据日期字符串获取对应的日期 <br/>
+     * <note>支持日期格式： <br/>
+     * yyyy-MM-dd <br/>
+     * yyyy/MM/dd <br/>
+     * </note>
+     * 
+     * @Title: getDateByStr
+     * @param dateStr
+     * @return
+     *
+     */
+    public static Date getDateByStr(String dateStr) {
+        Date date = null;
+        if (StringUtil.isBlank(dateStr)) {
+            return date;
+        }
+        String split = "-";
+        String[] arr = null;
+        if (dateStr.indexOf(split) > 0) {
+            arr = dateStr.split("-");
+        }
+        split = "/";
+        if (arr == null && dateStr.indexOf(split) > 0) {
+            arr = dateStr.split("/");
+        }
+        if (arr != null && arr.length == 3) {
+            Calendar c = Calendar.getInstance();
+            c.set(Calendar.YEAR, Integer.valueOf(arr[0]));
+            c.set(Calendar.MONTH, Integer.valueOf(arr[1]) - 1);
+            c.set(Calendar.DAY_OF_MONTH, Integer.valueOf(arr[2]));
+            return c.getTime();
+        }
+        return date;
+    }
+
+    /**
      * 当前时间之前或之后的时间
      * 
      * @param hourTime
@@ -344,6 +380,19 @@ public class DateFormatUtil extends DateFormatUtils {
         }
 
         return sdf.format(calendar.getTime());
+    }
+
+    /**
+     *
+     * @Title: getSysDate
+     * @param date
+     * @return yyyy-MM-dd HH:mm:ss
+     *
+     */
+    public static Map<String, String> getSysDate(Date date){
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("sysDate", DateUtil.format(date,DateFormatUtil.FORMAT_TIME1));
+        return map;
     }
 
     public static void main(String[] args) {

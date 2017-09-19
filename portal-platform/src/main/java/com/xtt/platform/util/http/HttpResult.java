@@ -40,6 +40,32 @@ public class HttpResult {
     private String errcode;
 
     /**
+     * 获取成功实例
+     * 
+     * @Title: getSuccessInstance
+     * @return
+     *
+     */
+    public static HttpResult getSuccessInstance() {
+        HttpResult result = new HttpResult();
+        result.setStatus(SUCCESS);
+        return result;
+    }
+
+    /**
+     * 获取警告实例
+     * 
+     * @Title: getWarningInstance
+     * @return
+     *
+     */
+    public static HttpResult getWarningInstance() {
+        HttpResult result = new HttpResult();
+        result.setStatus(WARNING);
+        return result;
+    }
+
+    /**
      * @return the status
      */
     public String getStatus() {
