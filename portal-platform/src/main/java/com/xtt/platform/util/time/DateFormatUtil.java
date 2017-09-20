@@ -383,6 +383,20 @@ public class DateFormatUtil extends DateFormatUtils {
     }
 
     /**
+     * 获取 系统 时间HH:mm:ss
+     *
+     * @Title: getSysTime
+     * @param date
+     * @return
+     *
+     */
+    public static Map<String, String> getSysTime(Date date) {
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("sysTime", DateUtil.format(date, DateFormatUtil.FORMAT_TIME4));
+        return map;
+    }
+
+    /**
      *
      * @Title: getSysDate
      * @param date
