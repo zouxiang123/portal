@@ -64,7 +64,7 @@ public class PinyinUtil {
         combine("", list, rl);
         String spellInitials = "";
         for (String s : rl) {
-            if (spellInitials.indexOf(s) == -1) {//去掉重复字符
+            if (spellInitials.indexOf(s) == -1) {// 去掉重复字符
                 spellInitials += "," + s;
             }
         }
