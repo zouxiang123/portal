@@ -13,9 +13,9 @@
 		<module>../../common/common-service</module>
 		<module>../../common/common-util</module>
 		<module>../portal-platform</module>
-		<module>../../project/cheetah</module>
-		<module>../../project/cheetah-dao</module>
-		<module>../../project/cheetah-service</module>
+		<module>../../hd/cheetah</module>
+		<module>../../hd/cheetah-dao</module>
+		<module>../../hd/cheetah-service</module>
 		<module>../../secretary/secretary.service</module>
 	</modules>
 
