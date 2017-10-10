@@ -4,6 +4,7 @@ bin/
 *.classpath
 *.project
 *.iml
+*.tern-project
 .settings/
 .idea/
 # Mobile Tools for Java (J2ME)
