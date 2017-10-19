@@ -58,6 +58,7 @@ public class DateFormatUtil extends DateFormatUtils {
     public static final String HOUR = "hour";
     public static final String MINUTE = "minute";
     public static final String SECOND = "second";
+    public static final String FORMDAT_YEAR = "yyyy";
 
     /**
      * 
