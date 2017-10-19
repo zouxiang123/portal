@@ -84,11 +84,9 @@ public interface MyBatisSuperMapper<T> {
      * 
      * @param: <p>
      * @param str_value
-     *            @param:
-     *            <p>
+     * @param: <p>
      * @param tenantId
-     *            @param:
-     *            <p>
+     * @param: <p>
      * @return @param:
      *         <p>
      * @throws RDPException
@@ -116,11 +114,9 @@ public interface MyBatisSuperMapper<T> {
      * 
      * @param: <p>
      * @param str_value
-     *            @param:
-     *            <p>
+     * @param: <p>
      * @param tenantId
-     *            @param:
-     *            <p>
+     * @param: <p>
      * @return @param:
      *         <p>
      * @throws RDPException
@@ -156,8 +152,7 @@ public interface MyBatisSuperMapper<T> {
      *            集合值 @param:
      *            <p>
      * @param tenantId
-     *            @param:
-     *            <p>
+     * @param: <p>
      * @return @param:
      *         <p>
      * @throws RDPException
@@ -185,14 +180,11 @@ public interface MyBatisSuperMapper<T> {
      * 
      * @param: <p>
      * @param key_name
-     *            @param:
-     *            <p>
+     * @param: <p>
      * @param str_value
-     *            @param:
-     *            <p>
+     * @param: <p>
      * @param tenantId
-     *            @param:
-     *            <p>
+     * @param: <p>
      * @return @param:
      *         <p>
      * @throws RDPException

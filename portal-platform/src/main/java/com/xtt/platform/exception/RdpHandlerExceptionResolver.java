@@ -75,6 +75,7 @@ public class RdpHandlerExceptionResolver extends SimpleMappingExceptionResolver 
                 errorModel.setViewName("error/404");
             }
             errorModel.addObject("message", CommonUtil.getExceptionMessage(ex));
+            writeLog(ex);
             return errorModel;
         }
         writeLog(ex);

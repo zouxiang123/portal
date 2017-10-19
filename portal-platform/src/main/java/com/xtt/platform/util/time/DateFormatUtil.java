@@ -71,8 +71,7 @@ public class DateFormatUtil extends DateFormatUtils {
      * @version: V1.0
      * @param date
      *            日期函数
-     * @return
-     *          返回自己所需字符型的日期
+     * @return 返回自己所需字符型的日期
      * @throws RDPException
      */
     public static String convertDateToStr(Date date) {
@@ -383,15 +382,29 @@ public class DateFormatUtil extends DateFormatUtils {
     }
 
     /**
+     * 获取 系统 时间HH:mm:ss
+     *
+     * @Title: getSysTime
+     * @param date
+     * @return
+     *
+     */
+    public static Map<String, String> getSysTime(Date date) {
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("sysTime", DateUtil.format(date, DateFormatUtil.FORMAT_TIME4));
+        return map;
+    }
+
+    /**
      *
      * @Title: getSysDate
      * @param date
      * @return yyyy-MM-dd HH:mm:ss
      *
      */
-    public static Map<String, String> getSysDate(Date date){
+    public static Map<String, String> getSysDate(Date date) {
         Map<String, String> map = new HashMap<String, String>();
-        map.put("sysDate", DateUtil.format(date,DateFormatUtil.FORMAT_TIME1));
+        map.put("sysDate", DateUtil.format(date, DateFormatUtil.FORMAT_TIME1));
         return map;
     }
 

@@ -1044,17 +1044,17 @@ localDir.mkdirs();
     FTPFile ftpFile = ftpFiles[i];
     String ftpFileName = ftpFile.getName();
     if (ftpFile.isFile()
-           && ftpFile.getName().equals(fileName)) {
-       localFilePath = localPath + ftpFileName;
-       fos = new FileOutputStream(localFilePath);
-       fc.setFileType(FTPClient.BINARY_FILE_TYPE);
-       fc.retrieveFile(remotePath + ftpFileName,
-               fos);
-       fos.flush();
+          && ftpFile.getName().equals(fileName)) {
+      localFilePath = localPath + ftpFileName;
+      fos = new FileOutputStream(localFilePath);
+      fc.setFileType(FTPClient.BINARY_FILE_TYPE);
+      fc.retrieveFile(remotePath + ftpFileName,
+              fos);
+      fos.flush();
     }
     
     if (fos != null) {
-       fos.close();
+      fos.close();
     }
     }
     }
