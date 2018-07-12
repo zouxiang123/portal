@@ -3,7 +3,7 @@
   <parent>
   	<groupId>com.xtt.common</groupId>
   	<artifactId>portal</artifactId>
-  	<version>pd_1.1.01</version>
+  	<version>1.0.1.RELEASE</version>
   </parent>
   <groupId>com.xtt.platform</groupId>
   <artifactId>portal-platform</artifactId>
