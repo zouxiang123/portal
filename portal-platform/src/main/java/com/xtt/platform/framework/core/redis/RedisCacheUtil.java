@@ -291,6 +291,7 @@ public class RedisCacheUtil {
                 public List<Object> execute(RedisOperations operations) throws DataAccessException {
                     Set<byte[]> rawKeys = redisTemplate.execute(new RedisCallback<Set<byte[]>>() {
 
+                        @Override
                         public Set<byte[]> doInRedis(RedisConnection connection) {
                             if (dbIndex != null) {
                                 connection.select(dbIndex);
@@ -339,7 +340,7 @@ public class RedisCacheUtil {
 
     public static List<?> getList(String key) {
         try {
-            return (List<?>) redisTemplate.opsForList().range(key, 0, -1);
+            return redisTemplate.opsForList().range(key, 0, -1);
         } catch (Exception e) {
             LOGGER.error("catch redis getList error", e);
             throw e;
@@ -389,7 +390,7 @@ public class RedisCacheUtil {
 
     public static Set<?> getSet(String key) {
         try {
-            return (Set<?>) redisTemplate.opsForSet().members(key);
+            return redisTemplate.opsForSet().members(key);
         } catch (Exception e) {
             LOGGER.error("catch redis getSet error", e);
             throw e;
@@ -422,6 +423,7 @@ public class RedisCacheUtil {
     public static boolean setTimeout(String key, Long timeout, Integer dbIndex) {
         return redisTemplate.execute(new RedisCallback<Boolean>() {
 
+            @Override
             public Boolean doInRedis(RedisConnection connection) {
                 if (dbIndex != null) {
                     connection.select(dbIndex);
@@ -454,6 +456,7 @@ public class RedisCacheUtil {
     public static void deleteWithDB(String key, Integer dbIndex) {
         try {
             redisTemplate.execute(new RedisCallback<Object>() {
+                @Override
                 public Object doInRedis(RedisConnection connection) {
                     if (dbIndex != null) {
                         connection.select(dbIndex);
@@ -494,6 +497,7 @@ public class RedisCacheUtil {
             }
             final byte[][] rawKeys = serializeKeys(keys, redisTemplate.getKeySerializer());
             redisTemplate.execute(new RedisCallback<Boolean>() {
+                @Override
                 public Boolean doInRedis(RedisConnection connection) {
                     if (dbIndex != null) {
                         connection.select(dbIndex);
@@ -660,6 +664,51 @@ public class RedisCacheUtil {
 
     public static void setRedisTemplate(RedisTemplate<String, Object> redisTemplate) {
         RedisCacheUtil.redisTemplate = redisTemplate;
+    }
+
+    /**
+     * 发布消息
+     * 
+     * @Title: publish
+     * @param channel
+     *            通道类型
+     * @param message
+     *            消息体
+     *
+     */
+    public static void publish(String channel, Object message) {
+        redisTemplate.convertAndSend(channel, message);
+    }
+
+    /**
+     * 反序列化key
+     * 
+     * @Title: deserializeKey
+     * @param key
+     * @return
+     *
+     */
+    public static String deserializeKey(byte[] key) {
+        if (key != null && key.length > 0) {
+            return (String) redisTemplate.getKeySerializer().deserialize(key);
+        }
+        return null;
+    }
+
+    /**
+     * 反序列化值的数据
+     * 
+     * @Title: deserializeValue
+     * @param value
+     * @param t
+     * @return
+     *
+     */
+    public static Object deserializeValue(byte[] value) {
+        if (value != null && value.length > 0) {
+            return redisTemplate.getValueSerializer().deserialize(value);
+        }
+        return null;
     }
 
     public static void main(String[] args) {
