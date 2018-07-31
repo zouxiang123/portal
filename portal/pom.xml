@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.xtt.common</groupId>
 	<artifactId>portal</artifactId>
-	<version>1.0.1.RELEASE</version>
+	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<modules>
