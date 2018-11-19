@@ -5,10 +5,15 @@ package com.xtt.platform.util.config;
  */
 
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
 
 import org.slf4j.Logger;
@@ -231,4 +236,45 @@ public class PropertiesUtil {
         return h;
     }
 
+    /**
+     * 写入文件
+     * 
+     * @Title: writeProperties
+     * @param filePath
+     *            文件
+     * @param pKey
+     * @param pValue
+     * @throws IOException
+     *
+     */
+    public static void writeProperties(String filePath, String pKey, String pValue) throws IOException {
+        Properties pps = loadProperties(filePath, "utf-8");
+        OutputStream out = new FileOutputStream(filePath);
+        pps.setProperty(pKey, pValue);
+        pps.store(out, null);
+        out.close();
+    }
+
+    /**
+     * 写入文件
+     * 
+     * @Title: writeProperties
+     * @param filePath
+     *            文件
+     * @param map
+     * @throws IOException
+     *
+     */
+    public static void writeProperties(String filePath, Map<String, String> map) throws IOException {
+        if (map == null) {
+            return;
+        }
+        Properties pps = loadProperties(filePath, "utf-8");
+        OutputStream out = new FileOutputStream(filePath);
+        for (Entry<String, String> entry : map.entrySet()) {
+            pps.setProperty(entry.getKey(), entry.getValue());
+        }
+        pps.store(out, null);
+        out.close();
+    }
 }
