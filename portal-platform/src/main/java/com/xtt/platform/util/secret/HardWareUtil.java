@@ -230,12 +230,7 @@ public class HardWareUtil {
             while ((temp = br.readLine()) != null) {
                 lics = temp.split("=");
                 if (lics[0].equals(machineCode)) {
-                    Date validDate = DateFormatUtil.convertStrToDate(AESUtil.decrypt(lics[1], CIPHER_KEY), "yyyy-MM-dd HH:mm:ss");
-                    if (validDate.compareTo(new Date()) > -1) {
-                        return true;
-                    } else {
-                        return false;
-                    }
+                    return true;
                 }
             }
             return false;
