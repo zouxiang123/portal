@@ -31,6 +31,7 @@ import org.apache.ibatis.scripting.defaults.DefaultParameterHandler;
 import com.xtt.platform.framework.core.model.MyBatisSuperModel;
 import com.xtt.platform.framework.core.model.MybatisOrderByModel;
 import com.xtt.platform.framework.core.model.MybatisResultColumn;
+import com.xtt.platform.util.ParseSqlUtil;
 import com.xtt.platform.util.lang.StringUtil;
 
 /**
@@ -193,8 +194,14 @@ public class MyBatisPageInterceptor implements Interceptor {
         BoundSql boundSql = mappedStatement.getBoundSql(PageModel);
         // 获取到我们自己写在Mapper映射语句中对应的Sql语句
         String sql = boundSql.getSql();
+
+        ParseSqlUtil ps = new ParseSqlUtil();
+        // 将查询的列换成1
+        String newSql = ps.processColumn(sql);
         // 通过查询Sql语句获取到对应的计算总记录数的sql语句
-        String countSql = this.getCountSql(sql);
+        String countSql = this.getCountSql(newSql);
+        // 去除order by xx 语句
+        countSql = ps.removeOrderBy(countSql);
         // 通过BoundSql获取对应的参数映射
         List<ParameterMapping> parameterMappings = boundSql.getParameterMappings();
         // 利用Configuration、查询记录数的Sql语句countSql、参数映射关系parameterMappings和参数对象PageModel建立查询记录数对应的BoundSql对象。
